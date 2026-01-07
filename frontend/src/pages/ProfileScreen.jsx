@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ArrowRight, Eye, EyeOff, User, Building2, GraduationCap, Stethoscope, Check } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
 import { useLocationContext } from "@/context/LocationContext";
@@ -35,7 +35,11 @@ const roleOptions = [
 
 export default function ProfileScreen() {
   const navigate = useNavigate();
+  const routeLocation = useLocation();
   const { location, isLocating, refreshLocation } = useLocationContext();
+  
+  // Get phone number from OTP screen
+  const phoneNumber = routeLocation.state?.phoneNumber;
   
   const [isLoading, setIsLoading] = useState(false);
   const [showAddress, setShowAddress] = useState(true);
