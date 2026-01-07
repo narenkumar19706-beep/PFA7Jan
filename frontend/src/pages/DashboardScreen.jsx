@@ -60,12 +60,14 @@ export default function DashboardScreen() {
       navigator.vibrate([200, 100, 200, 100, 200]);
     }
     
-    toast.success("SOS Alert Sent! Help is on the way.", {
-      duration: 5000,
+    toast.success("SOS Alert Activated!", {
+      duration: 2000,
     });
     
-    // Navigate to SOS active screen or show alert details
-    // For now, just show the toast
+    // Navigate to SOS active screen
+    setTimeout(() => {
+      navigate("/sos-active");
+    }, 500);
   };
 
   // Cleanup on unmount
