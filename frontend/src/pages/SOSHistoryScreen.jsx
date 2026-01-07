@@ -173,7 +173,7 @@ export default function SOSHistoryScreen() {
             onClick={() => setActiveTab('past')}
             className={`flex-1 py-2 px-3 rounded-md text-sm font-semibold tracking-wide transition-all ${
               activeTab === 'past'
-                ? 'bg-white text-black'
+                ? 'bg-[#424242] text-white'
                 : 'text-secondary hover:text-foreground'
             }`}
           >
