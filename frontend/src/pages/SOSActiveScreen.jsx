@@ -11,9 +11,15 @@ export default function SOSActiveScreen() {
   const { sosState, isSOSActive, activatedAt, deactivateSOS } = useSOS();
   
   // COUNT-UP timer state - starts at 0 and increments
-  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [elapsedSeconds, setElapsedSeconds] = useState(() => {
+    // Initialize with calculated elapsed time if activatedAt exists
+    if (activatedAt) {
+      return Math.floor((Date.now() - activatedAt) / 1000);
+    }
+    return 0;
+  });
   const timerRef = useRef(null);
-  const startTimeRef = useRef(null);
+  const startTimeRef = useRef(activatedAt);
 
   // Calculate elapsed time accurately based on activatedAt timestamp
   const calculateElapsedTime = useCallback(() => {
@@ -29,9 +35,7 @@ export default function SOSActiveScreen() {
       return;
     }
 
-    // Set initial elapsed time (handles app backgrounding/reopening)
-    const initialElapsed = calculateElapsedTime();
-    setElapsedSeconds(initialElapsed);
+    // Update ref when activatedAt changes
     startTimeRef.current = activatedAt;
 
     // Start the COUNT-UP timer interval
@@ -48,7 +52,7 @@ export default function SOSActiveScreen() {
         timerRef.current = null;
       }
     };
-  }, [isSOSActive, activatedAt, calculateElapsedTime, navigate]);
+  }, [isSOSActive, activatedAt, navigate]);
 
   // Listen for SOS deactivation (real-time sync)
   useEffect(() => {
