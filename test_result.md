@@ -406,20 +406,21 @@ frontend:
         agent: "testing"
         comment: "✅ ALL UPDATED PROFILE SCREEN TESTS PASSED: Card-based role selector working perfectly - NO dropdown implemented, 4 role cards in 2x2 grid layout with correct icons (Individual-User, NGO-Building2, School-GraduationCap, Veterinarian-Stethoscope), primary heading 'How would you like to use PFA?' and supporting text 'Choose the option that best describes you' displayed correctly, single selection functionality working (only one card selected at a time), selected card shows white border, background highlight, and checkmark in top-right corner, role switching works between all cards, form validation working (CREATE ACCOUNT button disabled without role/name), all existing fields working (FULL NAME, EMAIL ADDRESS OPTIONAL, ADDRESS with eye icon toggle, DISTRICT with AUTO POPULATE), AUTO POPULATE functionality working with location detection toast, full form submission successfully navigates to /account-success, footer 'SECURE ACCESS • PRIVACY ENSURED' displayed. All functionality is MOCKED with appropriate delays as expected."
 
-  - task: "Authentication and Logout Functionality"
+frontend:
+  - task: "FAQ Removal from User Profile Screen"
     implemented: true
     working: true
-    file: "/app/frontend/src/context/AuthContext.jsx"
+    file: "/app/frontend/src/pages/UserProfileScreen.jsx"
     stuck_count: 0
     priority: "high"
     needs_retesting: false
     status_history:
       - working: "NA"
         agent: "testing"
-        comment: "Initial testing required for complete authentication and logout functionality. Testing login flow (phone number → OTP → profile creation → account success → dashboard), protected route access, user profile screen elements, logout button styling and functionality, session persistence, and authentication state management."
+        comment: "Critical verification required: Test complete signup flow and verify FAQ option has been removed from User Profile screen menu. Should only show 'Help & Support' and 'Log Out' button. Key file: UserProfileScreen.jsx - FAQ was removed from menuItems array."
       - working: true
         agent: "testing"
-        comment: "✅ ALL AUTHENTICATION AND LOGOUT TESTS PASSED: Complete login flow working perfectly - phone number input (10 digits) → OTP verification (6 digits) → profile creation with card-based role selector → account success → dashboard navigation with localStorage authentication storage. Protected routes (/home, /user-profile) properly protected and accessible when authenticated. User Profile screen elements all visible (user name 'Ananya Rao', Help & Support, FAQ, Log Out button). Logout button has red styling (rgb(239, 68, 68)) with LogOut icon visible and proper border styling. Logout functionality successfully clears authentication from localStorage, shows 'Logged out successfully' toast, and redirects to login screen. Session persistence working correctly - protected routes redirect to login when not authenticated, authentication persists across page refreshes when logged in. All functionality is MOCKED with appropriate delays as expected. Complete authentication system working correctly."
+        comment: "✅ FAQ REMOVAL VERIFICATION COMPLETED SUCCESSFULLY: Tested complete signup flow (Phone: 9876543210 → OTP: 123456 → Profile: Individual role + 'Test User' name → Account Success → Dashboard → User Profile). CRITICAL VERIFICATION PASSED: User Profile screen (/user-profile) now shows ONLY 'Help & Support' menu item and 'Log Out' button. FAQ option has been successfully removed from the menuItems array in UserProfileScreen.jsx. Screenshot captured showing clean menu with only expected items. Total menu items found: 2 (Help & Support + Log Out). Implementation correctly removes FAQ while maintaining all other functionality."
 
 agent_communication:
   - agent: "testing"
