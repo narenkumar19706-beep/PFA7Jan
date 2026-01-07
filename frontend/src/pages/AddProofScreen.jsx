@@ -139,10 +139,9 @@ export default function AddProofScreen() {
       mediaRecorderRef.current.onstop = () => {
         const blob = new Blob(chunksRef.current, { type: 'video/webm' });
         const videoUrl = URL.createObjectURL(blob);
-        const videoId = `video_${Math.random().toString(36).substr(2, 9)}`;
         
         const newVideo = {
-          id: videoId,
+          id: generateId('video'),
           type: 'video',
           data: videoUrl,
           blob: blob,
