@@ -1,42 +1,106 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Bell, Camera, Square } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
 import { HomeIcon, CommunityIcon, SOSIcon, ProfileIcon } from "@/components/BottomNav";
+import { useSOS } from "@/context/SOSContext";
 
 export default function SOSActiveScreen() {
   const navigate = useNavigate();
-  const [timeRemaining, setTimeRemaining] = useState(150); // 2:30 in seconds
+  const { sosState, isSOSActive, activatedAt, deactivateSOS } = useSOS();
+  
+  // COUNT-UP timer state - starts at 0 and increments
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const timerRef = useRef(null);
+  const startTimeRef = useRef(null);
 
-  // Start countdown timer
+  // Calculate elapsed time accurately based on activatedAt timestamp
+  const calculateElapsedTime = useCallback(() => {
+    if (!activatedAt) return 0;
+    return Math.floor((Date.now() - activatedAt) / 1000);
+  }, [activatedAt]);
+
+  // Initialize and run COUNT-UP timer
   useEffect(() => {
+    // If SOS is not active, redirect to home
+    if (!isSOSActive) {
+      navigate("/home", { replace: true });
+      return;
+    }
+
+    // Set initial elapsed time (handles app backgrounding/reopening)
+    const initialElapsed = calculateElapsedTime();
+    setElapsedSeconds(initialElapsed);
+    startTimeRef.current = activatedAt;
+
+    // Start the COUNT-UP timer interval
     timerRef.current = setInterval(() => {
-      setTimeRemaining(prev => {
-        if (prev <= 0) {
-          clearInterval(timerRef.current);
-          return 0;
-        }
-        return prev - 1;
-      });
+      // Always calculate from the original activatedAt timestamp
+      // This ensures accuracy even after app backgrounding
+      const currentElapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
+      setElapsedSeconds(currentElapsed);
     }, 1000);
 
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
     };
-  }, []);
+  }, [isSOSActive, activatedAt, calculateElapsedTime, navigate]);
 
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
+  // Listen for SOS deactivation (real-time sync)
+  useEffect(() => {
+    if (!isSOSActive && timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+      // Auto-navigate away when SOS is deactivated by anyone
+      navigate("/home", { replace: true });
+    }
+  }, [isSOSActive, navigate]);
+
+  // Handle visibility change (app backgrounding/foregrounding)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && isSOSActive && activatedAt) {
+        // Recalculate elapsed time when app comes to foreground
+        const currentElapsed = calculateElapsedTime();
+        setElapsedSeconds(currentElapsed);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [isSOSActive, activatedAt, calculateElapsedTime]);
+
+  // Format time as MM:SS or HH:MM:SS if over an hour
+  const formatTime = (totalSeconds) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const mins = Math.floor((totalSeconds % 3600) / 60);
+    const secs = totalSeconds % 60;
+    
+    if (hours > 0) {
+      return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  // Handle STOP SOS - immediately deactivates for all users
   const handleStopSOS = () => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    toast.success("SOS Alert Stopped");
-    navigate("/home");
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    
+    // Deactivate SOS system-wide (updates localStorage and dispatches events)
+    deactivateSOS();
+    
+    toast.success("SOS Alert Stopped", {
+      description: "Alert has been deactivated for all responders"
+    });
+    
+    navigate("/home", { replace: true });
   };
 
   const handleAddProof = () => {
@@ -118,13 +182,13 @@ export default function SOSActiveScreen() {
             </div>
           </div>
 
-          {/* Countdown Timer */}
+          {/* COUNT-UP Timer - Shows elapsed time since activation */}
           <div className="mt-10 text-center">
             <p className="text-xs text-white/60 tracking-[0.2em] uppercase mb-2">
-              ALERT DURATION
+              ELAPSED TIME
             </p>
-            <p className="text-5xl sm:text-6xl font-bold text-white tracking-wider">
-              {formatTime(timeRemaining)}
+            <p className="text-5xl sm:text-6xl font-bold text-white tracking-wider font-mono">
+              {formatTime(elapsedSeconds)}
             </p>
           </div>
         </div>
