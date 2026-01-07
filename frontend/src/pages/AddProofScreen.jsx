@@ -73,16 +73,10 @@ export default function AddProofScreen() {
 
         {/* Title Section */}
         <div className="mt-6 sm:mt-8">
-          <h1 
-            className="text-4xl sm:text-5xl font-bold text-white leading-none"
-            style={{ letterSpacing: '-1px' }}
-          >
+          <h1 className="text-4xl sm:text-5xl font-bold text-white leading-none">
             Rapid
           </h1>
-          <h2 
-            className="text-2xl sm:text-3xl font-normal text-white/60 leading-none mt-1"
-            style={{ letterSpacing: '-0.5px' }}
-          >
+          <h2 className="text-2xl sm:text-3xl text-white/60 leading-none mt-1">
             Response Team
           </h2>
         </div>
