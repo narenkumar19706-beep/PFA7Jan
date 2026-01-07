@@ -1,0 +1,186 @@
+import { useState, useRef, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import { toast } from "sonner";
+import PawIcon from "@/components/icons/PawIcon";
+
+export default function LoginScreen() {
+  const [phoneDigits, setPhoneDigits] = useState(Array(10).fill(""));
+  const inputRefs = useRef([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Auto-focus first input on mount
+  useEffect(() => {
+    if (inputRefs.current[0]) {
+      inputRefs.current[0].focus();
+    }
+  }, []);
+
+  const handleDigitChange = (index, value) => {
+    // Only allow single digit
+    const digit = value.replace(/\D/g, "").slice(-1);
+    
+    const newDigits = [...phoneDigits];
+    newDigits[index] = digit;
+    setPhoneDigits(newDigits);
+
+    // Auto-advance to next input
+    if (digit && index < 9) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleKeyDown = (index, e) => {
+    // Handle backspace
+    if (e.key === "Backspace") {
+      if (!phoneDigits[index] && index > 0) {
+        inputRefs.current[index - 1]?.focus();
+      }
+    }
+    // Handle arrow keys
+    if (e.key === "ArrowLeft" && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    }
+    if (e.key === "ArrowRight" && index < 9) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 10);
+    const newDigits = [...phoneDigits];
+    
+    for (let i = 0; i < pastedData.length; i++) {
+      newDigits[i] = pastedData[i];
+    }
+    
+    setPhoneDigits(newDigits);
+    
+    // Focus the next empty input or last input
+    const nextEmptyIndex = newDigits.findIndex(d => !d);
+    if (nextEmptyIndex !== -1) {
+      inputRefs.current[nextEmptyIndex]?.focus();
+    } else {
+      inputRefs.current[9]?.focus();
+    }
+  };
+
+  const handleProceed = () => {
+    const phoneNumber = phoneDigits.join("");
+    
+    if (phoneNumber.length !== 10) {
+      toast.error("Please enter a valid 10-digit mobile number");
+      return;
+    }
+
+    setIsLoading(true);
+    
+    // Simulate API call - Mock functionality
+    setTimeout(() => {
+      setIsLoading(false);
+      toast.success("OTP sent to +91 " + phoneNumber);
+      // In a real app, this would navigate to OTP verification screen
+    }, 1500);
+  };
+
+  const isPhoneComplete = phoneDigits.every(d => d !== "");
+
+  return (
+    <div className="min-h-screen min-h-dvh bg-background flex flex-col px-6 py-10 safe-area-top safe-area-bottom">
+      {/* Logo */}
+      <div 
+        className="w-16 h-16 border border-foreground flex items-center justify-center animate-fade-in"
+        style={{ animationDelay: '0.1s' }}
+      >
+        <PawIcon className="w-8 h-8 text-foreground" />
+      </div>
+
+      {/* Title Section */}
+      <div className="mt-10 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+        <h1 className="text-5xl font-bold text-foreground leading-tight">
+          Rapid
+        </h1>
+        <h2 className="text-4xl font-normal text-secondary leading-tight">
+          Response Team
+        </h2>
+      </div>
+
+      {/* Tagline */}
+      <div className="mt-10 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+        <p className="text-xl text-foreground font-normal">
+          where empathy meets action.
+        </p>
+        <p className="text-sm text-muted tracking-widest-custom mt-2 uppercase font-medium">
+          A collective for the conscious citizen.
+        </p>
+      </div>
+
+      {/* Phone Input Section */}
+      <div className="mt-12 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+        <label className="text-sm text-secondary tracking-wide-custom uppercase font-normal">
+          Mobile Number
+        </label>
+        
+        <div className="mt-4 flex items-center gap-4 border-b border-accent pb-3">
+          {/* Country Code */}
+          <span className="text-3xl text-foreground font-light">+91</span>
+          
+          {/* Phone Digits */}
+          <div className="flex gap-1 flex-1">
+            {phoneDigits.map((digit, index) => (
+              <input
+                key={index}
+                ref={(el) => (inputRefs.current[index] = el)}
+                type="tel"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                maxLength={1}
+                value={digit}
+                onChange={(e) => handleDigitChange(index, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(index, e)}
+                onPaste={index === 0 ? handlePaste : undefined}
+                className="w-6 h-10 text-center text-3xl font-light bg-transparent border-none outline-none text-foreground placeholder:text-muted"
+                placeholder="0"
+                aria-label={`Digit ${index + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Spacer */}
+      <div className="flex-1 min-h-[80px]" />
+
+      {/* Proceed Button */}
+      <div className="animate-slide-up" style={{ animationDelay: '0.5s' }}>
+        <Button
+          onClick={handleProceed}
+          disabled={!isPhoneComplete || isLoading}
+          className="w-full h-14 bg-primary hover:bg-primary/90 text-primary-foreground rounded-none flex items-center justify-between px-6 group disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <span className="text-base font-semibold tracking-widest-custom uppercase">
+            {isLoading ? "Sending OTP..." : "Proceed"}
+          </span>
+          <div className="w-12 h-12 border border-primary-foreground flex items-center justify-center group-hover:bg-primary-foreground/10 transition-colors">
+            <ArrowRight className="w-5 h-5 text-primary-foreground" />
+          </div>
+        </Button>
+      </div>
+
+      {/* Footer */}
+      <div 
+        className="mt-6 flex items-center justify-center gap-3 animate-fade-in" 
+        style={{ animationDelay: '0.6s' }}
+      >
+        <span className="text-xs text-secondary tracking-wide-custom uppercase">
+          Secure Access
+        </span>
+        <span className="text-xs text-secondary">•</span>
+        <span className="text-xs text-secondary tracking-wide-custom uppercase">
+          Privacy Ensured
+        </span>
+      </div>
+    </div>
+  );
+}
