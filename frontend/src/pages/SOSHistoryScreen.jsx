@@ -193,11 +193,52 @@ export default function SOSHistoryScreen() {
 
         {/* Alert Cards */}
         <div className="mt-4 space-y-3">
+          {/* HISTORY Label for PAST tab */}
+          {activeTab === 'past' && (
+            <div className="flex items-center gap-3 py-2">
+              <div className="flex-1 h-px bg-[#333333]" />
+              <span className="text-xs text-secondary tracking-[1px] uppercase">History</span>
+              <div className="flex-1 h-px bg-[#333333]" />
+            </div>
+          )}
+
           {getAlertsByTab().length === 0 ? (
             <div className="py-12 text-center">
               <p className="text-secondary">No alerts in this category</p>
             </div>
+          ) : activeTab === 'past' ? (
+            // PAST Alerts - Simplified card design
+            getAlertsByTab().map((alert) => (
+              <div 
+                key={alert.id}
+                className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg overflow-hidden"
+              >
+                {/* Top Row - Location and Resolved badge */}
+                <div className="p-4 flex items-center justify-between">
+                  <p className="text-base text-secondary">
+                    {alert.location}
+                  </p>
+                  
+                  {/* Resolved Badge */}
+                  <div className="bg-[#333333] border border-[#424242] rounded-lg px-3 py-1.5 flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-secondary" />
+                    <span className="text-sm text-secondary">
+                      Resolved
+                    </span>
+                  </div>
+                </div>
+
+                {/* CLOSED Status Row */}
+                <div className="bg-[#2A2A2A] px-4 py-3 flex items-center justify-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-foreground" />
+                  <span className="text-sm font-semibold text-foreground tracking-wide uppercase">
+                    Closed
+                  </span>
+                </div>
+              </div>
+            ))
           ) : (
+            // CURRENT and MY ALERTS - Full card design with actions
             getAlertsByTab().map((alert) => (
               <div 
                 key={alert.id}
