@@ -1,21 +1,14 @@
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Bell, Home, Users, Megaphone, User, ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Bell, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
+import BottomNav from "@/components/BottomNav";
 
 export default function ReportBugScreen() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [bugDescription, setBugDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const navItems = [
-    { id: 'home', icon: Home, label: 'HOME', path: '/home' },
-    { id: 'community', icon: Users, label: 'COMMUNITY', path: '/community' },
-    { id: 'sos', icon: Megaphone, label: 'SOS', path: '/sos' },
-    { id: 'profile', icon: User, label: 'PROFILE', path: '/user-profile' },
-  ];
 
   const handleSubmit = async () => {
     if (!bugDescription.trim()) {
@@ -107,26 +100,7 @@ export default function ReportBugScreen() {
       </div>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-[#1F1F1F] border-t border-accent safe-area-bottom">
-        <div className="max-w-lg mx-auto flex items-center justify-around h-16 sm:h-20">
-          {navItems.map((item) => {
-            const isActive = item.path === '/user-profile';
-            const Icon = item.icon;
-            return (
-              <button
-                key={item.id}
-                onClick={() => navigate(item.path)}
-                className={`flex flex-col items-center justify-center px-4 py-2 transition-colors ${isActive ? 'bg-white/10 rounded-lg' : ''}`}
-              >
-                <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${isActive ? 'text-foreground' : 'text-secondary'}`} />
-                <span className={`text-[10px] sm:text-xs mt-1 tracking-[0.5px] ${isActive ? 'text-foreground font-bold' : 'text-secondary font-normal'}`}>
-                  {item.label}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </nav>
+      <BottomNav activePath="/user-profile" />
     </div>
   );
 }
