@@ -3,6 +3,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import PawIcon from "@/components/icons/PawIcon";
 import { useAuth } from "@/context/AuthContext";
 
+// Storage key for registered users (simulates backend database)
+const REGISTERED_USERS_KEY = 'pfa_registered_users';
+
 export default function AccountSuccessScreen() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -10,22 +13,33 @@ export default function AccountSuccessScreen() {
   
   // Get user data from navigation state
   const userData = location.state?.userData;
+  const phoneNumber = location.state?.phoneNumber;
 
   const handleProceed = () => {
-    // Log the user in with actual user data from profile creation
-    login({
+    const userToSave = {
       name: userData?.name || 'User',
       email: userData?.email || '',
+      phone: phoneNumber || '',
       role: userData?.role || 'individual',
       address: userData?.address || '',
       district: userData?.district || '',
-      joinedDays: 0 // New user
-    });
+      joinedDays: 0, // New user
+      createdAt: Date.now()
+    };
     
-    // Navigate to home with user name
-    navigate("/home", {
-      state: { userName: userData?.name || 'User' }
-    });
+    // Save user to registered users storage (simulates database)
+    // This allows returning users to skip profile creation on future logins
+    if (phoneNumber) {
+      const registeredUsers = JSON.parse(localStorage.getItem(REGISTERED_USERS_KEY) || '{}');
+      registeredUsers[phoneNumber] = userToSave;
+      localStorage.setItem(REGISTERED_USERS_KEY, JSON.stringify(registeredUsers));
+    }
+    
+    // Log the user in with actual user data from profile creation
+    login(userToSave);
+    
+    // Navigate to home
+    navigate("/home", { replace: true });
   };
 
   return (
