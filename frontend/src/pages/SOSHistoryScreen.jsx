@@ -108,6 +108,10 @@ export default function SOSHistoryScreen() {
     }
   };
 
+  const handleChat = () => {
+    toast.success("Opening group chat with attendees...");
+  };
+
   const navItems = [
     { id: 'home', icon: Home, label: 'HOME', path: '/home' },
     { id: 'community', icon: Users, label: 'COMMUNITY', path: '/community' },
