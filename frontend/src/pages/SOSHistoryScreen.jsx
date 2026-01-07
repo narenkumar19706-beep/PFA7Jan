@@ -145,21 +145,17 @@ export default function SOSHistoryScreen() {
         {/* Header with Logo and Bell */}
         <div className="flex items-start justify-between">
           {/* Logo */}
-          <div className="w-14 h-14 sm:w-16 sm:h-16 border border-accent bg-[#262626] flex items-center justify-center">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 border border-accent flex items-center justify-center">
             <PawIcon className="w-7 h-7 sm:w-8 sm:h-8 text-foreground" />
           </div>
           
           {/* Notification Bell */}
           <button 
             className="relative p-2"
-            onClick={() => {
-              navigate("/notifications");
-            }}
+            onClick={() => navigate("/notifications")}
           >
             <Bell className="w-6 h-6 text-foreground" />
-            {hasNotification && (
-              <span className="absolute top-1 right-1 w-3 h-3 bg-[#E53935] rounded-full" />
-            )}
+            <span className="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full" />
           </button>
         </div>
 
