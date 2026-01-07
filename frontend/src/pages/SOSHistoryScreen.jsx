@@ -117,7 +117,15 @@ export default function SOSHistoryScreen() {
   };
 
   const handleChat = () => {
-    toast.success("Opening group chat with attendees...");
+    navigate("/chat", { 
+      state: { 
+        volunteer: {
+          name: "Group Chat",
+          initials: "GC",
+          status: 'available'
+        }
+      }
+    });
   };
 
   const navItems = [
