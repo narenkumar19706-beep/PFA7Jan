@@ -41,8 +41,8 @@ export default function SOSActiveScreen() {
   };
 
   const handleAddProof = () => {
-    // Mock: In real app, this would open camera
-    toast.info("Camera opening... (Feature coming soon)");
+    // Navigate to Add Proof screen
+    navigate("/add-proof");
   };
 
   const navItems = [
