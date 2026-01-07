@@ -98,20 +98,20 @@ export default function LoginScreen() {
 
       {/* Title Section */}
       <div className="mt-10 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-        <h1 className="text-5xl font-bold text-foreground leading-tight">
+        <h1 className="text-[48px] font-extrabold text-foreground leading-none tracking-tight">
           Rapid
         </h1>
-        <h2 className="text-4xl font-normal text-secondary leading-tight">
+        <h2 className="text-[42px] font-normal text-secondary leading-none mt-1">
           Response Team
         </h2>
       </div>
 
       {/* Tagline */}
       <div className="mt-10 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-        <p className="text-xl text-foreground font-normal">
+        <p className="text-[22px] text-foreground font-medium leading-snug">
           where empathy meets action.
         </p>
-        <p className="text-sm text-muted tracking-widest-custom mt-2 uppercase font-medium">
+        <p className="text-xs text-muted tracking-[0.2em] mt-2 uppercase font-normal">
           A collective for the conscious citizen.
         </p>
       </div>

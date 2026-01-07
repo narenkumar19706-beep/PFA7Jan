@@ -8,16 +8,14 @@ export default function PawIcon({ className = "w-6 h-6" }) {
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* Main pad */}
-      <ellipse cx="12" cy="16" rx="4" ry="3.5" />
+      {/* Main pad - larger oval at bottom */}
+      <ellipse cx="12" cy="17" rx="5" ry="4" />
       
-      {/* Toe pads - top row */}
-      <circle cx="7" cy="10" r="2" />
-      <circle cx="11" cy="7" r="2" />
-      <circle cx="17" cy="10" r="2" />
-      
-      {/* Toe pad - middle top */}
-      <circle cx="14" cy="8" r="1.8" />
+      {/* Toe pads - arranged like a real paw */}
+      <ellipse cx="6.5" cy="10" rx="2.2" ry="2.5" />
+      <ellipse cx="10.5" cy="7" rx="2" ry="2.3" />
+      <ellipse cx="14.5" cy="7.5" rx="2" ry="2.3" />
+      <ellipse cx="18" cy="10.5" rx="2.2" ry="2.5" />
     </svg>
   );
 }
