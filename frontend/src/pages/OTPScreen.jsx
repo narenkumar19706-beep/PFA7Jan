@@ -94,12 +94,24 @@ export default function OTPScreen() {
 
     setIsLoading(true);
     
-    // Simulate API call - Mock functionality
+    // Simulate API call - Check if user exists (returning user vs new user)
     setTimeout(() => {
       setIsLoading(false);
-      toast.success("OTP verified successfully!");
-      // Navigate directly to profile screen
-      navigate("/profile");
+      
+      // Check if this phone number is already registered
+      const registeredUsers = JSON.parse(localStorage.getItem(REGISTERED_USERS_KEY) || '{}');
+      const existingUser = registeredUsers[phoneNumber];
+      
+      if (existingUser) {
+        // RETURNING USER - Log them in directly and go to Dashboard
+        toast.success("Welcome back!");
+        login(existingUser);
+        navigate("/home", { replace: true });
+      } else {
+        // NEW USER - Go to profile screen for first-time signup
+        toast.success("OTP verified! Please complete your profile.");
+        navigate("/profile", { state: { phoneNumber } });
+      }
     }, 1500);
   };
 
