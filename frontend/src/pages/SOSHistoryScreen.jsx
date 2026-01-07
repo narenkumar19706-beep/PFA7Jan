@@ -153,8 +153,7 @@ export default function SOSHistoryScreen() {
           <button 
             className="relative p-2"
             onClick={() => {
-              setHasNotification(false);
-              toast.info("No new notifications");
+              navigate("/notifications");
             }}
           >
             <Bell className="w-6 h-6 text-foreground" />
