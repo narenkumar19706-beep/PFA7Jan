@@ -201,11 +201,29 @@ metadata:
   test_sequence: 2
   run_ui: true
 
+frontend:
+  - task: "Complete Signup and Login Flow with Name Display Verification"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/DashboardScreen.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Critical bug fix verification required: Test complete flow from login → phone number → OTP → profile creation with custom name (John Smith) → account success → dashboard. Verify Dashboard displays 'Hello John!' instead of hardcoded 'Hello Ananya!' or any other hardcoded name. Key files: AuthContext.jsx (user state management), ProfileScreen.jsx (name input), AccountSuccessScreen.jsx (login trigger), DashboardScreen.jsx (name display)"
+
 test_plan:
-  current_focus: []
+  current_focus:
+    - "Complete Signup and Login Flow with Name Display Verification"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: "Critical bug fix implemented: Dashboard name display now uses actual user name from AuthContext instead of hardcoded values. Need testing agent to verify complete signup flow with custom name entry and confirm Dashboard shows correct greeting."
 
 frontend:
   - task: "Report Bug Screen UI Elements"
