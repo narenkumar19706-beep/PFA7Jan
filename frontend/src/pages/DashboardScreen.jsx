@@ -110,7 +110,7 @@ export default function DashboardScreen() {
         {/* Greeting */}
         <div className="mt-8">
           <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
-            Hello {userName}!
+            Hello {userName.split(' ')[0]}!
           </h3>
           <p className="text-xs text-secondary tracking-[0.15em] mt-2 uppercase">
             WELCOME TO PEOPLE FOR ANIMALS.
