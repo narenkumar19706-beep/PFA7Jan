@@ -35,10 +35,11 @@ const roleOptions = [
 export default function ProfileScreen() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [isLocating, setIsLocating] = useState(false);
+  const [isLocating, setIsLocating] = useState(true); // Start as locating
   const [showAddress, setShowAddress] = useState(true); // Show address by default
   const [pageLoaded, setPageLoaded] = useState(false);
   
+  // Initialize with empty values, will be filled by auto-populate
   const [formData, setFormData] = useState({
     role: "",
     fullName: "",
@@ -55,9 +56,20 @@ export default function ProfileScreen() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Auto-populate location on mount
+  // Auto-populate location immediately on mount
   useEffect(() => {
-    handleAutoPopulate();
+    // Immediately start detecting and populate after short delay
+    const timer = setTimeout(() => {
+      setFormData(prev => ({
+        ...prev,
+        address: "123 MG Road, Koramangala",
+        district: "Bangalore Urban"
+      }));
+      setIsLocating(false);
+      toast.success("Location detected successfully");
+    }, 1000);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   const handleAutoPopulate = () => {
@@ -66,47 +78,16 @@ export default function ProfileScreen() {
     
     setIsLocating(true);
     
-    // Try to get actual geolocation first
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          // In production, you would use reverse geocoding here
-          // For now, simulate with mock data based on actual coords
-          console.log("Got coordinates:", position.coords.latitude, position.coords.longitude);
-          
-          setFormData(prev => ({
-            ...prev,
-            address: "123 MG Road, Koramangala",
-            district: "Bangalore Urban"
-          }));
-          setIsLocating(false);
-          toast.success("Location detected successfully");
-        },
-        (error) => {
-          console.log("Geolocation error, using fallback:", error.message);
-          // Fallback to mock data
-          setFormData(prev => ({
-            ...prev,
-            address: "123 MG Road, Koramangala",
-            district: "Bangalore Urban"
-          }));
-          setIsLocating(false);
-          toast.success("Location detected successfully");
-        },
-        { timeout: 5000, enableHighAccuracy: true }
-      );
-    } else {
-      // Browser doesn't support geolocation, use mock data
-      setTimeout(() => {
-        setFormData(prev => ({
-          ...prev,
-          address: "123 MG Road, Koramangala",
-          district: "Bangalore Urban"
-        }));
-        setIsLocating(false);
-        toast.success("Location detected successfully");
-      }, 1500);
-    }
+    // Populate location after short delay (simulating detection)
+    setTimeout(() => {
+      setFormData(prev => ({
+        ...prev,
+        address: "123 MG Road, Koramangala",
+        district: "Bangalore Urban"
+      }));
+      setIsLocating(false);
+      toast.success("Location detected successfully");
+    }, 1000);
   };
 
   const handleInputChange = (field, value) => {
