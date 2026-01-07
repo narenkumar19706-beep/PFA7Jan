@@ -27,17 +27,26 @@ const alertsData = {
   past: [
     {
       id: 3,
-      name: "Priya Sharma",
-      initials: "PS",
-      location: "from Koramangala",
-      distance: "3km away",
-      isAttending: false,
+      location: "from Mysore Road",
       resolved: true,
+      closed: true,
+    },
+    {
+      id: 4,
+      location: "from Indiranagar",
+      resolved: true,
+      closed: true,
+    },
+    {
+      id: 5,
+      location: "from J.P. Nagar",
+      resolved: true,
+      closed: true,
     },
   ],
   myAlerts: [
     {
-      id: 4,
+      id: 6,
       name: "You",
       initials: "ME",
       location: "from MG Road",
