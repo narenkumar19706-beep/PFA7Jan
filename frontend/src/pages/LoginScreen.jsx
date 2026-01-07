@@ -81,7 +81,8 @@ export default function LoginScreen() {
     setTimeout(() => {
       setIsLoading(false);
       toast.success("OTP sent to +91 " + phoneNumber);
-      // In a real app, this would navigate to OTP verification screen
+      // Navigate to OTP screen with phone number
+      navigate("/otp", { state: { phoneNumber } });
     }, 1500);
   };
 
