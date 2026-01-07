@@ -154,18 +154,21 @@ export default function LoginScreen() {
 
       {/* Proceed Button */}
       <div className="animate-slide-up" style={{ animationDelay: '0.5s' }}>
-        <button
-          onClick={handleProceed}
-          disabled={!isPhoneComplete || isLoading}
-          className="btn-proceed w-full h-14 rounded-none flex items-center justify-between px-6 disabled:cursor-not-allowed"
-        >
-          <span className="text-[24px] font-bold tracking-[1.5px] uppercase text-[#0D0D0D]">
-            {isLoading ? "Sending..." : "Proceed"}
-          </span>
-          <div className="w-12 h-12 flex items-center justify-center border border-[#0D0D0D]">
-            <ArrowRight className="w-5 h-5 text-[#0D0D0D]" />
-          </div>
-        </button>
+        <div className="bg-white">
+          <button
+            onClick={handleProceed}
+            disabled={!isPhoneComplete || isLoading}
+            className="w-full h-14 rounded-none flex items-center justify-between px-6 disabled:cursor-not-allowed bg-white"
+            style={{ backgroundColor: 'white' }}
+          >
+            <span className="text-[24px] font-bold tracking-[1.5px] uppercase text-black">
+              {isLoading ? "Sending..." : "Proceed"}
+            </span>
+            <div className="w-12 h-12 flex items-center justify-center border border-black">
+              <ArrowRight className="w-5 h-5 text-black" />
+            </div>
+          </button>
+        </div>
       </div>
 
       {/* Footer */}
