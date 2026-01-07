@@ -1,86 +1,100 @@
-<analysis>**original_problem_statement**: we are building an app called rapid response team to help animal welfare volunteers. it has to be PWA. will share screen by screen, need your help to develop it. 1st screen is at attached. create ditto from looks POV.
+<analysis>**original_problem_statement**: we are building an app called rapid response team to help animal welfare volunteers. it has to be PWA. will share screen by screen, need your help to develop it. The user provides feature requests and design changes screen-by-screen via image uploads and expects a pixel-perfect PWA.
+
+Key user requests implemented in this session:
+- Update User Profile screen design.
+- Create Report a Bug and Report a User screens.
+- Redesign the Create Account screen with a card-based role selector.
+- Enforce design consistency (fonts, styles, icons) across all screens.
+- Implement persistent login with a logout button.
+- Implement auto-population of user's location (address/district).
+- Ensure the user's actual name is displayed on the dashboard/profile, not a hardcoded one.
+- The SOS timer should count UP, not down, and be managed in real-time.
 
 **User's preferred language**: English
 
 **what currently exists?**
-A comprehensive frontend prototype for a PWA named Rapid Response Team. It features a full user authentication and onboarding flow: Login (phone), OTP, Profile Setup, and Success screens. Post-login, there is a Dashboard with a press and hold SOS feature, which leads to an SOS Active screen with a countdown and an Add Proof flow. The app includes a bottom navigation bar for accessing the Dashboard (Home), a Community screen listing local volunteers, and an SOS Alerts screen with tabs for CURRENT, PAST, and MY ALERTS. A fully functional, mock-data-driven Chat screen is accessible from the Community and SOS Alerts sections. All screens are designed to be responsive and follow a consistent dark-themed design system.
+A comprehensive, mock-data-driven React frontend for the Rapid Response Team PWA. It includes a full authentication flow (Login, OTP, Profile Creation, Success screens) with persistent sessions managed by a React Context. After login, the app has a Dashboard, Community, SOS Alerts, Chat, and User Profile screen, all accessible via a consistent bottom navigation bar. It also features Report a Bug and Report a User pages. A global context manages and displays the user's auto-detected location across relevant screens. The design system and styling have been standardized across the application.
 
 **Last working item**:
-- **Last item agent was working**: Implementing the Notifications Screen. The agent created the file , added the route in , and updated the  handlers for the notification bell icon on various screens to navigate to . The implementation of the UI itself has not started.
+- **Last item agent was working**: Fixing a critical bug where the Dashboard and other screens display a hardcoded name (Ananya Rao) instead of the name provided by the user during profile creation. The user is extremely frustrated by this recurring issue. The agent has identified hardcoded data in  and  as the likely cause.
 - **Status**: IN PROGRESS
 - **Agent Testing Done**: N
-- **Which testing method agent to use?**: Frontend testing agent
+- **Which testing method agent to use?**: Frontend testing agent. The test should cover the entire sign-up and login flow, ensuring the user-entered name is correctly stored in the auth context and displayed on the Dashboard and User Profile screens.
 - **User Testing Done**: N
 
 **All Pending/In progress Issue list**:
--   Issue 1: A user-reported bug where the app was stuck after OTP validation. The agent claims to have fixed this, but the user was extremely frustrated. This needs immediate verification. (PRIORITY: P0)
--   Issue 2: The UI and functionality for the Notifications screen are not implemented yet. (PRIORITY: P1)
+-   Issue 1: The app displays a hardcoded user name (Ananya Rao) instead of the dynamic name entered during profile creation. (PRIORITY: P0)
+-   Issue 2: The SOS Activated screen uses a countdown timer instead of the required count-up timer, and real-time state management is not implemented. (PRIORITY: P1)
+-   Issue 3: The UI for the Notifications screen is not implemented. (PRIORITY: P2)
 
 **Issues Detail**:
-- **Issue 1**:
-    - **Attempted fixes**: The agent ensured the  function in  correctly uses , checked  for correct routing, and restarted the server. Screenshots were provided to the user as proof of the fix.
+- **Issue 1**: **Hardcoded User Name Bug**
+    - **Attempted fixes**: The agent attempted to pass the user's name via props and context, but the hardcoded value persisted. A  command revealed hardcoded Ananya Rao in  (as initial state) and  (in mock data).
     - **Next debug checklist**:
-        1.  Run the full authentication flow from a fresh browser session (incognito mode) to rule out caching.
-        2.  Verify the URL correctly changes from  to  after successful OTP submission.
-        3.  Confirm the OTP verified successfully! toast appears on the  screen.
-    - **Why fix this issue and what will be achieved with the fix?**: This was a major point of user frustration and credit usage complaints. Verifying the fix is critical to restore user confidence and ensure the core onboarding flow works reliably.
-    - **Status**: USER VERIFICATION PENDING
+        1.  In , remove the hardcoded  from the initial  state. The initial user should be  or an empty object.
+        2.  In , ensure the  function from  is called with the full user object received from the , including the .
+        3.  In  and , verify that the user's name is being read from the  object in the  and not from a local or hardcoded state.
+        4.  Remove any hardcoded names from mock data in .
+    - **Why fix this issue and what will be achieved with the fix?**: This is a critical, user-facing bug that has caused extreme user frustration and is breaking the core functionality of personalizing the app experience. Fixing it is essential to restore user trust.
+    - **Status**: IN PROGRESS
     - **Is recurring issue?**: Y
     - **Should Test frontend/backend/both after fix?**: Frontend
     - **Blocked on other issue**: None
 
-- **Issue 2**:
-    - **Attempted fixes**: The agent created the file  and updated the routing. No UI implementation has been attempted.
+- **Issue 2**: **Incorrect SOS Timer Behavior**
+    - **Attempted fixes**: The agent created  and added the provider to  but did not implement the logic.
     - **Next debug checklist**:
-        1.  Analyze the user-provided images for the notifications screen ( and ).
-        2.  Implement the UI in  to replicate the design.
-        3.  Use mocked data for the notification list.
-    - **Why fix this issue and what will be achieved with the fix?**: This is the next feature requested by the user. Completing it will add a key piece of functionality accessible from the main app header.
+        1.  Implement the logic in  to manage the active SOS state and a timer.
+        2.  Modify  to activate the SOS in the context when the button is pressed.
+        3.  Modify  to read the timer from the context and display it as a count-up timer (starting from 00:00).
+        4.  Implement the deactivation logic in the context, to be triggered from .
+    - **Why fix this issue and what will be achieved with the fix?**: To meet the user's explicit requirement for a count-up timer that shows elapsed time, which is a more logical behavior for an SOS alert.
+    - **Status**: IN PROGRESS
+    - **Is recurring issue?**: N
+    - **Should Test frontend/backend/both after fix?**: Frontend
+    - **Blocked on other issue**: None
+
+- **Issue 3**: **Notifications Screen UI Not Implemented**
+    - **Attempted fixes**: The file  was created, and routing was added. No UI has been implemented.
+    - **Next debug checklist**:
+        1.  Analyze the user-provided images for the notifications screen (,  from previous fork).
+        2.  Build the React component in  to replicate the design, using mocked data for the notification list.
+    - **Why fix this issue and what will be achieved with the fix?**: This is a pending feature request from the previous session. Completing it will add a key piece of functionality to the app.
     - **Status**: NOT STARTED
     - **Is recurring issue?**: N
     - **Should Test frontend/backend/both after fix?**: Frontend
     - **Blocked on other issue**: None
 
 **In progress Task List**:
-- **Task 1**: Complete the implementation of the Notifications Screen. (PRIORITY: P0)
-    - **Where to resume**: The file  has been created but is empty. The agent needs to build the React component UI based on the two images the user provided for notifications. Routing and navigation links from bell icons have already been partially set up.
-    - **What will be achieved with this?**: A functional notifications page accessible from the bell icon throughout the app, as requested by the user.
+- **Task 1**: Implement real-time SOS state management and a count-up timer. (PRIORITY: P1)
+    - **Where to resume**: . The file exists but is empty. The logic for managing state and the timer needs to be added, then integrated into  and .
+    - **What will be achieved with this?**: A functional SOS screen that correctly displays the elapsed time and can be deactivated in real-time.
     - **Status**: IN PROGRESS
     - **Should Test frontend/backend/both after fix?**: Frontend
-    - **Blocked on something**: None
+    - **Blocked on something**: Blocked by **Issue 1**, as the agent should prioritize the user's most recent and frustrated feedback.
 
 **Upcoming and Future Tasks**
-The user provides screens sequentially. The next task will be whatever screen the user provides after the Notifications screen is complete.
+- **Upcoming Tasks**:
+  - P0: Implement the UI for the  based on the user-provided design from the previous fork.
 
 **Completed work in this session**
-- **Authentication & Onboarding Flow**:
-    - Login Screen ()
-    - OTP Screen ()
-    - Verification Success Screen ()
-    - Profile Creation Screen ()
-    - Account Creation Success Screen ()
-- **Core App Screens (Post-Login)**:
-    - Dashboard Screen () with a press-and-hold SOS button.
-    - SOS Activated Screen ()
-    - Add Proof Screen ()
-    - Community Screen ()
-    - SOS Alerts / History Screen () with CURRENT, PAST, and MY ALERTS tabs.
-    - Chat Screen ()
-- **App-wide Features**:
-    - PWA setup (, ).
-    - Responsive design for all screens.
-    - Bottom navigation component ().
-    - Consistent dark-themed design system ().
+- **User Profile & Reporting**:
+  - Redesigned .
+  - Created and implemented  and .
+- **Onboarding Flow**:
+  - Replaced the old  with a new Create Account screen featuring a card-based role selector.
+- **Authentication & State Management**:
+  - Implemented persistent login using  to keep users logged in across sessions.
+  - Added a Log Out button to the .
+  - Created a global  to ensure location data is fetched once and shared across all components, fixing an auto-population bug.
+- **Design & UI Consistency**:
+  - Performed a full-app design audit to standardize the Rapid Response Team title font size and remove all instances of unwanted italic styling.
+  - Refactored the bottom navigation into a single shared component () and updated all icons to match user specifications.
+- **Data Flow**:
+  - Modified the onboarding flow to pass the user's name from profile creation to the .
 
 **Earlier issues found/mentioned but not fixed**
-- **Issue 1**: User frustration with the OTP to Profile navigation flow.
-    - **Debug checklist**:
-        1.  Verify navigation from  to  after successful OTP entry in an incognito window.
-        2.  Check the browser console for any errors during the transition.
-        3.  Confirm the correct toast message appears on the  screen.
-    - **Why to solve this issue and what will be achieved with this?**: This caused significant user frustration. Resolving it definitively is critical for user trust.
-    - **Should Test frontend/backend/both after fix**: Frontend
-    - **Is recurring issue?**: Y
+- **Issue 1**: Hardcoded user name bug, as detailed in the All Pending/In progress Issue list. This is the most critical unresolved issue.
 
 **Known issue recurrence from previous fork**
 -   **Issue recurrence in previous fork**: None
@@ -92,10 +106,11 @@ The user provides screens sequentially. The next task will be whatever screen th
 
 **Key Technical Concepts**
 -   **Frontend**: React.js
--   **Styling**: Tailwind CSS, shadcn/ui components, custom CSS for animations.
--   **Routing**:  for client-side routing.
--   **State Management**: React Hooks (, , ).
--   **Data**: All data is mocked and hardcoded within the components. No backend is used.
+-   **Styling**: Tailwind CSS, shadcn/ui components.
+-   **Routing**: .
+-   **State Management**: React Hooks (, ) and React Context API (, , ).
+-   **Data**: All data is mocked on the frontend. No backend is used.
+-   **Persistence**:  is used by  to persist the login state.
 
 **key DB schema**
 -   NA (No database used)
@@ -104,48 +119,56 @@ The user provides screens sequentially. The next task will be whatever screen th
 -   None.
 
 **All files of reference**
--   : Newly created, empty file for the notifications feature.
--   : Contains the OTP verification logic that was a point of user frustration.
--   : Main router setup for all pages.
--   : Core design system, custom CSS, and animations.
+-   : Contains the logic for authentication and the hardcoded user name that needs to be removed.
+-   : Needs to be fixed to display the dynamic user name from context.
+-   : The Create Account screen where user data originates.
+-   : The screen responsible for triggering the  function with user data.
+-   : To be implemented for the count-up timer.
+-   : Needs to be updated to use the  and display a count-up timer.
+-   : UI needs to be implemented.
 
 **Areas that need refactoring**:
--   None identified.
+- The agent created  but later implemented a more robust . The utility file might now be redundant and could be removed to avoid confusion.
 
 **key api endpoints**
 -   NA (No backend API calls are made).
 
 **Critical Info for New Agent**
--   The user provides requirements screen-by-screen via image uploads and expects pixel-perfect replication.
--   All functionality is mocked on the frontend. Do not attempt to build a backend.
--   There has been significant user frustration regarding a perceived bug in the OTP-to-Profile navigation flow. Even if the flow appears to work, you must re-test it thoroughly in a clean environment (incognito mode) to ensure there are no caching issues and to restore user confidence.
--   Your immediate task is to build the UI for the Notifications screen in  based on the two images the user has provided.
+-   **Top Priority**: The user is extremely frustrated with the bug where a hardcoded name (Ananya Rao) appears instead of their own. You must fix this immediately. Do not work on anything else until this is resolved and verified.
+-   **User Sensitivity**: The user is very particular about design details. After fixing the name bug, double-check that all UI elements (fonts, spacing, colors) are consistent and match the provided reference images. The user has previously reacted strongly to small deviations like italic fonts.
+-   **Follow Instructions Exactly**: The user has provided very specific, mandatory instructions for features like the SOS count-up timer. Adhere to these requirements strictly.
+-   **Workflow**: Fix the critical name bug -> Implement the SOS count-up timer -> Implement the Notifications screen UI. Confirm with the user after each major step.
 
 **documents and test reports created in this job**
--   None.
+-   Multiple frontend test reports were generated in this session. The latest reports cover the authentication flow but failed to catch the hardcoded data issue.
 
 **Last 10 User Messages and any pending HUMAN messages**
-1.  **User**:  (with image for SOS Alerts PAST tab) - **DONE**
-2.  **User**:  (with image for SOS Alerts MY ALERTS tab) - **DONE**
-3.  **User**:  (with image for Chat screen) - **DONE**
-4.  **User**:  (with image for Notifications screen) - **IN PROGRESS**
-5.  **User**:  (with a second image for Notifications screen) - **PENDING**. This is the current task.
+1.  **User**: fix the location detection aspect across the platform.. it is still broken. (Status: **RESOLVED**. Agent implemented a global .)
+2.  **User**: one should be logged in, until and unless voluntarily logs out. there should be a log out button in the profile page..fully functional pls (Status: **RESOLVED**. Agent implemented  with  persistence and a logout button.)
+3.  **User**: ensure that home page/dashboard shows the actual name.. so it has to be appropriately and entirely functional (Status: **IN PROGRESS**. This is the start of the critical bug report.)
+4.  **User**: SOS Activated Screen – Timer & Deactivation Behavior (Instruction Prompt) (Status: **IN PROGRESS**. Agent started .)
+5.  **User**: home screen needs to be dynamic..it needs to show the name of the person. it cannot be random! (Status: **IN PROGRESS**. User re-iterating the name bug.)
+6.  **User**: why show ananya?? it is not the name of the person. wth is happening? (Status: **IN PROGRESS**. User getting more frustrated.)
+7.  **User**: I see the issue - there's old cached data in localStorage with Ananya Rao. Let me fix this properly by: (This is an agent's thought, not a user message).
+8.  **User**: home screen still shows random name..FIX this bug..once for all. (Status: **PENDING**. User is extremely frustrated.)
 
 **Project Health Check:**
--   **Broken**: None.
--   **Mocked**: All functionality is mocked. This includes user authentication, OTP verification, location detection, SOS alerts, chat messaging, and all user data.
+-   **Broken**: The dynamic user data flow is critically broken due to hardcoded values in the  and other mock data files.
+-   **Mocked**: All application data and functionality (API calls, user data, etc.) are mocked on the frontend.
 
 **3rd Party Integrations**
 -   None.
 
 **Testing status**
--   **Testing agent used after significant changes**: YES (once, for the login screen).
+-   **Testing agent used after significant changes**: YES
 -   **Troubleshoot agent used after agent stuck in loop**: NO
 -   **Test files created**: None
--   **Known regressions**: A potential regression in the OTP-to-Profile navigation flow, as reported by the user, needs verification.
+-   **Known regressions**: The user's name display is a major regression. The location auto-population was also a recurring issue that was hopefully fixed with .
 
 **Credentials to test flow:**
 -   NA
 
 **What agent forgot to execute**
-The agent has not yet implemented the UI for the  file. The file was created and routes were updated, but the component itself is empty. This is the next logical step based on the user's last two requests.</analysis>
+-   The agent failed to remove hardcoded data (Ananya Rao) from the initial state and mock files, leading to a critical bug and severe user frustration, despite multiple attempts and user complaints.
+-   The agent did not complete the implementation of the  UI, a task carried over from the previous session.
+-   The agent started but did not finish the implementation of the  for the count-up timer as requested by the user.</analysis>
