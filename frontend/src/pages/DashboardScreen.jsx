@@ -141,6 +141,14 @@ export default function DashboardScreen() {
           <p className="text-xs text-secondary tracking-[0.15em] mt-2 uppercase">
             WELCOME TO PEOPLE FOR ANIMALS.
           </p>
+          
+          {/* Location Display */}
+          <div className="mt-4 flex items-center gap-2">
+            <MapPin className="w-4 h-4 text-secondary" />
+            <span className="text-sm text-secondary">
+              {isLocating ? "Detecting location..." : userLocation.district}
+            </span>
+          </div>
         </div>
 
         {/* SOS Button Section */}
