@@ -2,6 +2,7 @@ import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginScreen from "@/pages/LoginScreen";
 import OTPScreen from "@/pages/OTPScreen";
+import HomeScreen from "@/pages/HomeScreen";
 import { Toaster } from "@/components/ui/sonner";
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginScreen />} />
           <Route path="/otp" element={<OTPScreen />} />
+          <Route path="/home" element={<HomeScreen />} />
         </Routes>
       </BrowserRouter>
       <Toaster position="top-center" />
