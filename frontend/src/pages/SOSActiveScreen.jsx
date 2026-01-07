@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Bell, Home, Users, Megaphone, User, Camera, Square } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Bell, Camera, Square } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
+import { HomeIcon, CommunityIcon, SOSIcon, ProfileIcon } from "@/components/BottomNav";
 
 export default function SOSActiveScreen() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [timeRemaining, setTimeRemaining] = useState(150); // 2:30 in seconds
   const timerRef = useRef(null);
 
@@ -44,10 +44,10 @@ export default function SOSActiveScreen() {
   };
 
   const navItems = [
-    { id: 'home', icon: Home, label: 'HOME', path: '/home' },
-    { id: 'community', icon: Users, label: 'COMMUNITY', path: '/community' },
-    { id: 'sos', icon: Megaphone, label: 'SOS', path: '/sos-active', isActive: true },
-    { id: 'profile', icon: User, label: 'PROFILE', path: '/user-profile' },
+    { id: 'home', icon: HomeIcon, label: 'HOME', path: '/home' },
+    { id: 'community', icon: CommunityIcon, label: 'COMMUNITY', path: '/community' },
+    { id: 'sos', icon: SOSIcon, label: 'SOS', path: '/sos-active', isActive: true },
+    { id: 'profile', icon: ProfileIcon, label: 'PROFILE', path: '/user-profile' },
   ];
 
   return (
@@ -157,7 +157,7 @@ export default function SOSActiveScreen() {
         </div>
       </div>
 
-      {/* Bottom Navigation */}
+      {/* Bottom Navigation - Custom for SOS Active */}
       <nav className="fixed bottom-0 left-0 right-0 bg-[#1F1F1F] border-t border-white/10 safe-area-bottom">
         <div className="max-w-lg mx-auto flex items-center justify-around h-16 sm:h-20">
           {navItems.map((item) => {
