@@ -164,17 +164,11 @@ export default function SOSHistoryScreen() {
         </div>
 
         {/* Title Section */}
-        <div className="mt-6 sm:mt-8">
-          <h1 
-            className="text-4xl sm:text-5xl font-bold text-foreground leading-none"
-            style={{ letterSpacing: '-1px' }}
-          >
+        <div className="mt-6">
+          <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
             Rapid
           </h1>
-          <h2 
-            className="text-2xl sm:text-3xl font-normal text-secondary leading-none mt-1"
-            style={{ letterSpacing: '-0.5px' }}
-          >
+          <h2 className="text-2xl sm:text-3xl font-bold text-secondary leading-none mt-1 italic">
             Response Team
           </h2>
         </div>
@@ -432,23 +426,18 @@ export default function SOSHistoryScreen() {
       </div>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-[#1A1A1A] border-t border-accent safe-area-bottom">
+      <nav className="fixed bottom-0 left-0 right-0 bg-[#1F1F1F] border-t border-accent safe-area-bottom">
         <div className="max-w-lg mx-auto flex items-center justify-around h-16 sm:h-20">
           {navItems.map((item) => {
             const isActive = currentPath === item.path;
             const Icon = item.icon;
-            const isSOS = item.id === 'sos';
             
             return (
               <button
                 key={item.id}
                 onClick={() => navigate(item.path)}
-                className={`flex flex-col items-center justify-center px-4 py-2 rounded-lg transition-colors ${
-                  isSOS && isActive
-                    ? 'bg-[#E53935]'
-                    : isActive 
-                    ? 'bg-[#2A2A2A]' 
-                    : 'hover:bg-white/5'
+                className={`flex flex-col items-center justify-center px-4 py-2 transition-colors ${
+                  isActive ? 'bg-white/10 rounded-lg' : ''
                 }`}
               >
                 <Icon 
