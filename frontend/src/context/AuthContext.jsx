@@ -28,14 +28,15 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = (userData) => {
+    // userData MUST be provided - no fallback to hardcoded values
+    if (!userData || !userData.name) {
+      console.error('Login called without valid userData');
+      return;
+    }
+    
     const authData = {
       isAuthenticated: true,
-      user: userData || {
-        name: 'Ananya Rao',
-        phone: '+91 9876543210',
-        role: 'individual',
-        joinedDays: 120
-      }
+      user: userData
     };
     
     localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(authData));

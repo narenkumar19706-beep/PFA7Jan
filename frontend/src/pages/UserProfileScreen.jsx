@@ -10,11 +10,11 @@ export default function UserProfileScreen() {
   const location = useLocation();
   const { user, logout } = useAuth();
 
-  // Use auth user data or defaults
+  // Use auth user data - display actual user name from context
   const userData = {
-    initials: user?.name ? user.name.split(' ').map(n => n[0]).join('') : "AR",
-    name: user?.name || "Ananya Rao",
-    joinedDays: user?.joinedDays || 120
+    initials: user?.name ? user.name.split(' ').map(n => n[0]).join('').toUpperCase() : "U",
+    name: user?.name || "User",
+    joinedDays: user?.joinedDays || 0
   };
 
   const menuItems = [
