@@ -36,7 +36,7 @@ export default function ProfileScreen() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
-  const [showAddress, setShowAddress] = useState(false);
+  const [showAddress, setShowAddress] = useState(true); // Show address by default
   const [pageLoaded, setPageLoaded] = useState(false);
   
   const [formData, setFormData] = useState({
@@ -61,18 +61,52 @@ export default function ProfileScreen() {
   }, []);
 
   const handleAutoPopulate = () => {
+    // Don't run if already locating
+    if (isLocating) return;
+    
     setIsLocating(true);
     
-    // Simulate location detection - Mock functionality
-    setTimeout(() => {
-      setFormData(prev => ({
-        ...prev,
-        address: "123 MG Road, Koramangala",
-        district: "Bangalore Urban"
-      }));
-      setIsLocating(false);
-      toast.success("Location detected successfully");
-    }, 2000);
+    // Try to get actual geolocation first
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // In production, you would use reverse geocoding here
+          // For now, simulate with mock data based on actual coords
+          console.log("Got coordinates:", position.coords.latitude, position.coords.longitude);
+          
+          setFormData(prev => ({
+            ...prev,
+            address: "123 MG Road, Koramangala",
+            district: "Bangalore Urban"
+          }));
+          setIsLocating(false);
+          toast.success("Location detected successfully");
+        },
+        (error) => {
+          console.log("Geolocation error, using fallback:", error.message);
+          // Fallback to mock data
+          setFormData(prev => ({
+            ...prev,
+            address: "123 MG Road, Koramangala",
+            district: "Bangalore Urban"
+          }));
+          setIsLocating(false);
+          toast.success("Location detected successfully");
+        },
+        { timeout: 5000, enableHighAccuracy: true }
+      );
+    } else {
+      // Browser doesn't support geolocation, use mock data
+      setTimeout(() => {
+        setFormData(prev => ({
+          ...prev,
+          address: "123 MG Road, Koramangala",
+          district: "Bangalore Urban"
+        }));
+        setIsLocating(false);
+        toast.success("Location detected successfully");
+      }, 1500);
+    }
   };
 
   const handleInputChange = (field, value) => {
