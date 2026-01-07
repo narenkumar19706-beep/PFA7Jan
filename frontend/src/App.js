@@ -4,7 +4,10 @@ import LoginScreen from "@/pages/LoginScreen";
 import OTPScreen from "@/pages/OTPScreen";
 import ProfileScreen from "@/pages/ProfileScreen";
 import AccountSuccessScreen from "@/pages/AccountSuccessScreen";
-import HomeScreen from "@/pages/HomeScreen";
+import DashboardScreen from "@/pages/DashboardScreen";
+import CommunityScreen from "@/pages/CommunityScreen";
+import SOSHistoryScreen from "@/pages/SOSHistoryScreen";
+import UserProfileScreen from "@/pages/UserProfileScreen";
 import { Toaster } from "@/components/ui/sonner";
 
 function App() {
@@ -16,7 +19,10 @@ function App() {
           <Route path="/otp" element={<OTPScreen />} />
           <Route path="/profile" element={<ProfileScreen />} />
           <Route path="/account-success" element={<AccountSuccessScreen />} />
-          <Route path="/home" element={<HomeScreen />} />
+          <Route path="/home" element={<DashboardScreen />} />
+          <Route path="/community" element={<CommunityScreen />} />
+          <Route path="/sos" element={<SOSHistoryScreen />} />
+          <Route path="/user-profile" element={<UserProfileScreen />} />
         </Routes>
       </BrowserRouter>
       <Toaster position="top-center" />
