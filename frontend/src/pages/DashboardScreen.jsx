@@ -11,33 +11,28 @@ export default function DashboardScreen() {
   const [isHolding, setIsHolding] = useState(false);
   const [holdProgress, setHoldProgress] = useState(0);
   const [userLocation, setUserLocation] = useState({
-    address: "",
-    district: "Bangalore Urban"
+    address: "Detecting...",
+    district: "Detecting..."
   });
-  const [isLocating, setIsLocating] = useState(false);
+  const [isLocating, setIsLocating] = useState(true);
   const holdTimerRef = useRef(null);
   const progressIntervalRef = useRef(null);
   
   // Get user name from state or use default
   const userName = location.state?.userName || "Ananya";
 
-  // Auto-detect location on mount
+  // Auto-detect location immediately on mount
   useEffect(() => {
-    autoDetectLocation();
-  }, []);
-
-  const autoDetectLocation = () => {
-    setIsLocating(true);
-    
-    // Simulate location detection
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setUserLocation({
         address: "123 MG Road, Koramangala",
         district: "Bangalore Urban"
       });
       setIsLocating(false);
-    }, 1500);
-  };
+    }, 800);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSOSStart = () => {
     setIsHolding(true);
