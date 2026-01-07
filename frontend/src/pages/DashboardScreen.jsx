@@ -4,48 +4,31 @@ import { Bell, MapPin } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
 import BottomNav from "@/components/BottomNav";
+import { useLocationContext } from "@/context/LocationContext";
 
 export default function DashboardScreen() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const routeLocation = useLocation();
+  const { location: userLocation, isLocating } = useLocationContext();
+  
   const [isHolding, setIsHolding] = useState(false);
   const [holdProgress, setHoldProgress] = useState(0);
-  const [userLocation, setUserLocation] = useState({
-    address: "Detecting...",
-    district: "Detecting..."
-  });
-  const [isLocating, setIsLocating] = useState(true);
   const holdTimerRef = useRef(null);
   const progressIntervalRef = useRef(null);
   
   // Get user name from state or use default
-  const userName = location.state?.userName || "Ananya";
-
-  // Auto-detect location immediately on mount
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setUserLocation({
-        address: "123 MG Road, Koramangala",
-        district: "Bangalore Urban"
-      });
-      setIsLocating(false);
-    }, 800);
-    
-    return () => clearTimeout(timer);
-  }, []);
+  const userName = routeLocation.state?.userName || "Ananya";
 
   const handleSOSStart = () => {
     setIsHolding(true);
     setHoldProgress(0);
     
-    // Progress animation
     let progress = 0;
     progressIntervalRef.current = setInterval(() => {
-      progress += 100 / 30; // 3 seconds = 30 intervals of 100ms
+      progress += 100 / 30;
       setHoldProgress(Math.min(progress, 100));
     }, 100);
     
-    // Trigger SOS after 3 seconds
     holdTimerRef.current = setTimeout(() => {
       triggerSOS();
     }, 3000);
@@ -73,26 +56,19 @@ export default function DashboardScreen() {
       clearInterval(progressIntervalRef.current);
     }
     
-    // Vibrate if supported
     if (navigator.vibrate) {
       navigator.vibrate([200, 100, 200, 100, 200]);
     }
     
-    toast.success("SOS Alert Activated!", {
-      duration: 2000,
-    });
+    toast.success("SOS Alert Activated!", { duration: 2000 });
     
-    // Navigate to SOS active screen with location data
     setTimeout(() => {
       navigate("/sos-active", {
-        state: {
-          userLocation: userLocation
-        }
+        state: { userLocation }
       });
     }, 500);
   };
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
@@ -102,17 +78,14 @@ export default function DashboardScreen() {
 
   return (
     <div className="min-h-screen min-h-dvh bg-background flex flex-col safe-area-top safe-area-bottom">
-      {/* Main Content */}
       <div className="flex-1 flex flex-col px-5 sm:px-6 md:px-8 pt-12 sm:pt-14 pb-24 max-w-lg mx-auto w-full">
         
-        {/* Header with Logo and Bell */}
+        {/* Header */}
         <div className="flex items-start justify-between">
-          {/* Logo */}
           <div className="w-14 h-14 sm:w-16 sm:h-16 border border-accent flex items-center justify-center">
             <PawIcon className="w-7 h-7 sm:w-8 sm:h-8 text-foreground" />
           </div>
           
-          {/* Notification Bell */}
           <button 
             className="relative p-2"
             onClick={() => navigate("/notifications")}
@@ -122,7 +95,7 @@ export default function DashboardScreen() {
           </button>
         </div>
 
-        {/* Title Section */}
+        {/* Title */}
         <div className="mt-6">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
             Rapid
@@ -145,21 +118,18 @@ export default function DashboardScreen() {
           <div className="mt-4 flex items-center gap-2">
             <MapPin className="w-4 h-4 text-secondary" />
             <span className="text-sm text-secondary">
-              {isLocating ? "Detecting location..." : userLocation.district}
+              {isLocating ? "Detecting location..." : userLocation.district || "Location not available"}
             </span>
           </div>
         </div>
 
-        {/* SOS Button Section */}
+        {/* SOS Button */}
         <div className="flex-1 flex flex-col items-center justify-center py-8">
-          {/* SOS Button with Glow */}
           <div className="relative">
-            {/* Outer glow rings */}
             <div className={`absolute inset-0 rounded-full transition-all duration-300 ${
               isHolding ? 'sos-glow-active' : 'sos-glow'
             }`} />
             
-            {/* Main SOS Button */}
             <button
               className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-full flex flex-col items-center justify-center z-10 touch-none select-none"
               style={{ 
@@ -175,50 +145,24 @@ export default function DashboardScreen() {
               onTouchEnd={handleSOSEnd}
               onTouchCancel={handleSOSEnd}
             >
-              <span className="text-5xl sm:text-6xl font-bold text-white">
-                SOS
-              </span>
-              <span className="text-xl sm:text-2xl font-normal text-white mt-1">
-                HELP
-              </span>
+              <span className="text-5xl sm:text-6xl font-bold text-white">SOS</span>
+              <span className="text-xl sm:text-2xl font-normal text-white mt-1">HELP</span>
               
-              {/* Progress ring when holding */}
               {isHolding && (
-                <svg 
-                  className="absolute inset-0 w-full h-full -rotate-90"
-                  viewBox="0 0 100 100"
-                >
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="48"
-                    fill="none"
-                    stroke="rgba(255,255,255,0.3)"
-                    strokeWidth="4"
-                  />
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="48"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="4"
-                    strokeLinecap="round"
-                    strokeDasharray={`${holdProgress * 3.02} 302`}
-                  />
+                <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="4" />
+                  <circle cx="50" cy="50" r="48" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" strokeDasharray={`${holdProgress * 3.02} 302`} />
                 </svg>
               )}
             </button>
           </div>
 
-          {/* Instruction Text */}
           <p className="mt-8 text-xs text-secondary text-center tracking-[0.15em] uppercase leading-relaxed">
             PRESS AND HOLD FOR 3 SECONDS<br />TO ACTIVATE
           </p>
         </div>
       </div>
 
-      {/* Bottom Navigation */}
       <BottomNav activePath="/home" />
     </div>
   );
