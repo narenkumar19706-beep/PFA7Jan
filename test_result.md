@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Test the User Profile Screen of the Rapid Response Team PWA app at http://localhost:3000/user-profile. Test all UI elements, navigation functionality, toast messages, and responsive design on mobile viewport (430x932)."
+user_problem_statement: "Test the complete signup and login flow to verify the user's name is displayed correctly on the Dashboard. Critical bug fix verification: ensure Dashboard shows actual user's name (e.g., 'Hello John!') instead of hardcoded 'Hello Ananya!' when user enters their name during profile creation."
 
 frontend:
   - task: "PWA Login Screen Visual Elements"
