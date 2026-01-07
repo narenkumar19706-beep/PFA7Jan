@@ -95,10 +95,10 @@ export default function ProfileScreen() {
 
       {/* Title Section */}
       <div className="mt-6 sm:mt-8">
-        <h1 className="text-4xl sm:text-5xl font-bold text-foreground italic leading-none">
+        <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
           Rapid
         </h1>
-        <h2 className="text-3xl sm:text-4xl font-bold text-secondary leading-none mt-1">
+        <h2 className="text-2xl sm:text-3xl text-secondary leading-none mt-1">
           Response Team
         </h2>
       </div>
