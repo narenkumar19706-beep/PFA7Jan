@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { Bell, Headphones, FileQuestion, Pencil, ChevronRight, LogOut } from "lucide-react";
+import { Bell, Headphones, Pencil, ChevronRight, LogOut } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
 import BottomNav from "@/components/BottomNav";
