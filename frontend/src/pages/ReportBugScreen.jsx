@@ -25,9 +25,9 @@ export default function ReportBugScreen() {
     setBugDescription("");
     setIsSubmitting(false);
     
-    // Navigate back to profile after submission
+    // Navigate back to help & support after submission
     setTimeout(() => {
-      navigate("/user-profile");
+      navigate("/help-support");
     }, 1500);
   };
 
