@@ -1,21 +1,31 @@
 import { ArrowRight, Check } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import PawIcon from "@/components/icons/PawIcon";
 import { useAuth } from "@/context/AuthContext";
 
 export default function AccountSuccessScreen() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
+  
+  // Get user data from navigation state
+  const userData = location.state?.userData;
 
   const handleProceed = () => {
-    // Log the user in when they proceed to dashboard
+    // Log the user in with actual user data from profile creation
     login({
-      name: 'Ananya Rao',
-      phone: '+91 9876543210',
-      role: 'individual',
-      joinedDays: 120
+      name: userData?.name || 'User',
+      email: userData?.email || '',
+      role: userData?.role || 'individual',
+      address: userData?.address || '',
+      district: userData?.district || '',
+      joinedDays: 0 // New user
     });
-    navigate("/home");
+    
+    // Navigate to home with user name
+    navigate("/home", {
+      state: { userName: userData?.name || 'User' }
+    });
   };
 
   return (
