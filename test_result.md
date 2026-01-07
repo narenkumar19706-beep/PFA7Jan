@@ -228,6 +228,18 @@ test_plan:
   test_priority: "high_first"
 
 frontend:
+  - task: "Add Proof Screen Functionality"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/AddProofScreen.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing required for Add Proof screen functionality. Must verify: 1) Complete login flow (Phone: 9876543210 → OTP: 123456 → Dashboard), 2) SOS activation by holding button for 3 seconds, 3) Navigation to Add Proof screen from SOS Active screen, 4) UI elements (Capture Photo/Video buttons, 0/4 indicator, info text), 5) Camera permission flow, 6) Key features (max 4 videos, 2 min recording, preview/delete functionality, submit button states). Key file: /app/frontend/src/pages/AddProofScreen.jsx"
+
   - task: "SOS COUNT-UP Timer Feature with Real-time State Management"
     implemented: true
     working: true
