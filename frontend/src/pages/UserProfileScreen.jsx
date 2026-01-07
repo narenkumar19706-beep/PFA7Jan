@@ -22,7 +22,7 @@ export default function UserProfileScreen() {
       id: 'help', 
       icon: Headphones, 
       label: 'Help & Support',
-      onClick: () => navigate("/report-bug")
+      onClick: () => navigate("/help-support")
     },
   ];
 
