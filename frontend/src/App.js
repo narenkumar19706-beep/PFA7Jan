@@ -13,6 +13,7 @@ import ChatScreen from "@/pages/ChatScreen";
 import NotificationsScreen from "@/pages/NotificationsScreen";
 import UserProfileScreen from "@/pages/UserProfileScreen";
 import ReportBugScreen from "@/pages/ReportBugScreen";
+import ReportUserScreen from "@/pages/ReportUserScreen";
 import { Toaster } from "@/components/ui/sonner";
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
           <Route path="/notifications" element={<NotificationsScreen />} />
           <Route path="/user-profile" element={<UserProfileScreen />} />
           <Route path="/report-bug" element={<ReportBugScreen />} />
+          <Route path="/report-user" element={<ReportUserScreen />} />
         </Routes>
       </BrowserRouter>
       <Toaster position="top-center" />
