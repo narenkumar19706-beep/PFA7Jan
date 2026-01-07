@@ -19,7 +19,7 @@ export default function UserProfileScreen() {
       id: 'help', 
       icon: Headphones, 
       label: 'Help & Support',
-      onClick: () => toast.info("Help & Support coming soon!")
+      onClick: () => navigate("/report-bug")
     },
     { 
       id: 'faq', 
