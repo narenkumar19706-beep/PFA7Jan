@@ -219,7 +219,7 @@ frontend:
 
 test_plan:
   current_focus:
-    - "Complete Signup and Login Flow with Name Display Verification"
+    - "SOS COUNT-UP Timer Feature with Real-time State Management"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
