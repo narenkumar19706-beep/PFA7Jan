@@ -219,7 +219,7 @@ frontend:
 
 test_plan:
   current_focus:
-    - "SOS COUNT-UP Timer Feature with Real-time State Management"
+    - "FAQ Removal from User Profile Screen"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
