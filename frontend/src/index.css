@@ -226,6 +226,43 @@ code {
     }
 }
 
+/* SOS Active Screen Background */
+.sos-active-bg {
+    background: radial-gradient(circle at center, #4A0A0A 0%, #2A0505 40%, #1A0A0A 70%, #0D0D0D 100%);
+}
+
+/* SOS Signal Rings */
+.sos-signal-ring {
+    border-radius: 50%;
+    border: 2px solid rgba(229, 0, 0, 0.4);
+    animation: signal-pulse 2s ease-out infinite;
+}
+
+.sos-signal-ring-1 {
+    animation-delay: 0s;
+}
+
+.sos-signal-ring-2 {
+    animation-delay: 0.5s;
+}
+
+.sos-signal-ring-3 {
+    animation-delay: 1s;
+}
+
+@keyframes signal-pulse {
+    0% {
+        transform: scale(0.6);
+        opacity: 1;
+        border-color: rgba(229, 0, 0, 0.8);
+    }
+    100% {
+        transform: scale(1.2);
+        opacity: 0;
+        border-color: rgba(229, 0, 0, 0);
+    }
+}
+
 @layer base {
     [data-debug-wrapper="true"] {
         display: contents !important;
