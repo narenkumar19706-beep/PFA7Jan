@@ -111,6 +111,22 @@ code {
     opacity: 0.5;
 }
 
+/* OTP Input Boxes */
+.otp-input {
+    border: 2px solid hsl(var(--accent));
+    border-radius: 4px;
+    transition: border-color 0.2s ease;
+}
+
+.otp-input:focus {
+    border-color: hsl(var(--foreground));
+    outline: none;
+}
+
+.otp-input::placeholder {
+    color: transparent;
+}
+
 @layer base {
     [data-debug-wrapper="true"] {
         display: contents !important;
