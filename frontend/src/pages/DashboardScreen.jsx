@@ -6,12 +6,14 @@ import PawIcon from "@/components/icons/PawIcon";
 import BottomNav from "@/components/BottomNav";
 import { useLocationContext } from "@/context/LocationContext";
 import { useAuth } from "@/context/AuthContext";
+import { useSOS } from "@/context/SOSContext";
 
 export default function DashboardScreen() {
   const navigate = useNavigate();
   const routeLocation = useLocation();
   const { location: userLocation, isLocating } = useLocationContext();
   const { user } = useAuth();
+  const { activateSOS, isSOSActive } = useSOS();
   
   const [isHolding, setIsHolding] = useState(false);
   const [holdProgress, setHoldProgress] = useState(0);
@@ -20,6 +22,13 @@ export default function DashboardScreen() {
   
   // Get user name from auth context, then route state, then default
   const userName = user?.name || routeLocation.state?.userName || "User";
+
+  // If SOS is already active, redirect to SOS Active screen
+  useEffect(() => {
+    if (isSOSActive) {
+      navigate("/sos-active", { replace: true });
+    }
+  }, [isSOSActive, navigate]);
 
   const handleSOSStart = () => {
     setIsHolding(true);
@@ -62,12 +71,16 @@ export default function DashboardScreen() {
       navigator.vibrate([200, 100, 200, 100, 200]);
     }
     
+    // Activate SOS through context (sets activatedAt timestamp for count-up timer)
+    activateSOS(
+      { name: userName, id: user?.id },
+      { address: userLocation.address, district: userLocation.district }
+    );
+    
     toast.success("SOS Alert Activated!", { duration: 2000 });
     
     setTimeout(() => {
-      navigate("/sos-active", {
-        state: { userLocation }
-      });
+      navigate("/sos-active", { replace: true });
     }, 500);
   };
 
