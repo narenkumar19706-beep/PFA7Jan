@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Bell, Home, Users, Megaphone, User, Camera, Video, X, Play, Trash2, Eye, Square, CircleDot } from "lucide-react";
 import { toast } from "sonner";
@@ -6,6 +6,10 @@ import PawIcon from "@/components/icons/PawIcon";
 
 const MAX_VIDEOS = 4;
 const MAX_VIDEO_DURATION = 120; // 2 minutes in seconds
+
+// Generate unique ID outside component
+let idCounter = 0;
+const generateId = (prefix) => `${prefix}_${++idCounter}_${performance.now()}`;
 
 export default function AddProofScreen() {
   const navigate = useNavigate();
