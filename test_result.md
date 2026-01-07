@@ -240,6 +240,22 @@ frontend:
         agent: "testing"
         comment: "✅ ALL CRITICAL SOS COUNT-UP TIMER TESTS PASSED SUCCESSFULLY: 1) ELAPSED TIME label confirmed (not TIME REMAINING) - proves COUNT-UP timer, 2) Timer starts at 00:02 and counts UP continuously (00:02 → 00:07 → 00:12), 3) Timer persistence works perfectly across navigation (maintained counting during screen changes from 12s to 17s), 4) SOS deactivation immediately redirects and clears localStorage state, 5) No stale indicators remain after deactivation. Timer behavior is exactly as specified - COUNT-UP from activation timestamp, real-time updates, accurate persistence. Implementation is correct and fully functional."
 
+frontend:
+  - task: "Login Flow - Returning User Skip Profile Screen Verification"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/OTPScreen.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Critical testing required to verify that returning users skip the profile/role selection screen and go DIRECTLY to Dashboard after OTP verification. Must test both first-time user flow (Login → OTP → Profile Screen → Dashboard) and returning user flow (Login → OTP → Dashboard DIRECTLY). Key implementation: OTPScreen.jsx checks localStorage 'pfa_registered_users' to determine if user exists."
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE LOGIN FLOW TESTING COMPLETED SUCCESSFULLY: Both critical scenarios verified perfectly. FIRST-TIME USER FLOW: Login → Phone number (9876543210) → OTP (123456) → Profile/Create Account screen with role selection - PASSED. RETURNING USER FLOW: Login → Phone number (9876543210) → OTP (123456) → Dashboard DIRECTLY (skipped profile screen) → Dashboard shows 'Hello First!' - PASSED. CRITICAL REQUIREMENTS VERIFIED: ✅ First-time users see Profile/Create Account screen after OTP, ✅ Returning users go DIRECTLY to Dashboard after OTP (skip profile screen), ✅ Dashboard displays correct user name from registration. Implementation working exactly as specified - OTPScreen.jsx correctly checks localStorage 'pfa_registered_users' and routes accordingly."
+
 agent_communication:
   - agent: "main"
     message: "Critical bug fix implemented: Dashboard name display now uses actual user name from AuthContext instead of hardcoded values. Need testing agent to verify complete signup flow with custom name entry and confirm Dashboard shows correct greeting."
@@ -247,6 +263,8 @@ agent_communication:
     message: "✅ CRITICAL BUG FIX VERIFICATION COMPLETED SUCCESSFULLY: Tested complete signup and login flow end-to-end. All steps working perfectly: Login → Phone number (9876543210) → OTP (123456) → Profile creation with role selection (Individual) → Full name entry ('John Smith') → Account Success → Dashboard. CRITICAL TEST PASSED: Dashboard correctly displays 'Hello John!' using actual user's name instead of hardcoded 'Hello Ananya!'. Authentication system working correctly with proper user data flow from ProfileScreen → AccountSuccessScreen → AuthContext → DashboardScreen. Bug fix implementation successful and verified."
   - agent: "testing"
     message: "✅ SOS COUNT-UP TIMER COMPREHENSIVE TESTING COMPLETED SUCCESSFULLY: All critical requirements verified. Timer displays 'ELAPSED TIME' label confirming COUNT-UP behavior (not countdown). Timer starts at 00:00 and counts UP continuously in real-time (verified 00:02 → 00:07 → 00:12 progression). Timer persistence works perfectly - maintained accurate counting during navigation (12s → 17s after screen changes). SOS deactivation immediately clears state and redirects. No stale SOS indicators remain. Implementation is exactly as specified - COUNT-UP timer with real-time state management working correctly."
+  - agent: "testing"
+    message: "✅ LOGIN FLOW RETURNING USER VERIFICATION COMPLETED SUCCESSFULLY: Comprehensive testing of both first-time and returning user flows completed. CRITICAL REQUIREMENTS VERIFIED: First-time users correctly see Profile/Create Account screen after OTP verification, allowing them to complete signup process. Returning users correctly skip profile screen and go DIRECTLY to Dashboard after OTP verification, with Dashboard displaying correct user name ('Hello First!') from their original registration. Implementation in OTPScreen.jsx working perfectly - checks localStorage 'pfa_registered_users' to determine user status and routes accordingly. Both user flows working exactly as specified in the review request."
 
 frontend:
   - task: "Report Bug Screen UI Elements"
