@@ -1,11 +1,20 @@
 import { ArrowRight, Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import PawIcon from "@/components/icons/PawIcon";
+import { useAuth } from "@/context/AuthContext";
 
 export default function AccountSuccessScreen() {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleProceed = () => {
+    // Log the user in when they proceed to dashboard
+    login({
+      name: 'Ananya Rao',
+      phone: '+91 9876543210',
+      role: 'individual',
+      joinedDays: 120
+    });
     navigate("/home");
   };
 
