@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Test the Rapid Response Team PWA login screen at http://localhost:3000. This is a PWA app for animal welfare volunteers. Test visual elements, functional tests, and mobile/PWA features on mobile viewport (430x932)."
+user_problem_statement: "Test the User Profile Screen of the Rapid Response Team PWA app at http://localhost:3000/user-profile. Test all UI elements, navigation functionality, toast messages, and responsive design on mobile viewport (430x932)."
 
 frontend:
   - task: "PWA Login Screen Visual Elements"
