@@ -44,17 +44,28 @@ const alertsData = {
       closed: true,
     },
   ],
-  myAlerts: [
-    {
+  myAlerts: {
+    active: {
       id: 6,
-      name: "You",
-      initials: "ME",
-      location: "from MG Road",
-      distance: "0km",
-      isAttending: false,
-      isOwn: true,
+      location: "from Bengaluru District",
+      distance: "2km away",
+      attendingCount: 3,
     },
-  ],
+    history: [
+      {
+        id: 7,
+        location: "from Mysore Road",
+        resolved: true,
+        closed: true,
+      },
+      {
+        id: 8,
+        location: "from Indiranagar",
+        resolved: true,
+        closed: true,
+      },
+    ],
+  },
 };
 
 export default function SOSHistoryScreen() {
