@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Bell, Home, Users, Megaphone, User, Camera, Square, Wifi } from "lucide-react";
+import { Bell, Home, Users, Megaphone, User, Camera, Square } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
 
@@ -8,7 +8,6 @@ export default function SOSActiveScreen() {
   const navigate = useNavigate();
   const location = useLocation();
   const [timeRemaining, setTimeRemaining] = useState(150); // 2:30 in seconds
-  const [isPulsing, setIsPulsing] = useState(true);
   const timerRef = useRef(null);
 
   // Start countdown timer
@@ -41,7 +40,6 @@ export default function SOSActiveScreen() {
   };
 
   const handleAddProof = () => {
-    // Navigate to Add Proof screen
     navigate("/add-proof");
   };
 
@@ -51,8 +49,6 @@ export default function SOSActiveScreen() {
     { id: 'sos', icon: Megaphone, label: 'SOS', path: '/sos-active', isActive: true },
     { id: 'profile', icon: User, label: 'PROFILE', path: '/user-profile' },
   ];
-
-  const currentPath = location.pathname;
 
   return (
     <div className="min-h-screen min-h-dvh flex flex-col safe-area-top safe-area-bottom sos-active-bg">
@@ -67,64 +63,65 @@ export default function SOSActiveScreen() {
           </div>
           
           {/* Notification Bell */}
-          <button className="relative p-2">
+          <button 
+            className="relative p-2"
+            onClick={() => navigate("/notifications")}
+          >
             <Bell className="w-6 h-6 text-white" />
             <span className="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full" />
           </button>
         </div>
 
         {/* Title Section */}
-        <div className="mt-6 sm:mt-8">
-          <h1 
-            className="text-4xl sm:text-5xl font-bold text-white leading-none"
-            style={{ letterSpacing: '-1px' }}
-          >
+        <div className="mt-6">
+          <h1 className="text-4xl sm:text-5xl font-bold text-white leading-none">
             Rapid
           </h1>
-          <h2 
-            className="text-2xl sm:text-3xl font-normal text-white/60 leading-none mt-1"
-            style={{ letterSpacing: '-0.5px' }}
-          >
+          <h2 className="text-2xl sm:text-3xl font-bold text-white/60 leading-none mt-1 italic">
             Response Team
           </h2>
         </div>
 
         {/* SOS Activated Text */}
-        <div className="mt-6 sm:mt-8">
+        <div className="mt-6">
           <h3 
-            className="text-2xl sm:text-3xl font-bold tracking-[2px] uppercase"
-            style={{ color: '#E50000', textShadow: '0 0 20px rgba(229, 0, 0, 0.5)' }}
+            className="text-lg sm:text-xl font-bold tracking-[0.2em] uppercase"
+            style={{ color: '#E50000' }}
           >
-            SOS Activated!
+            SOS ACTIVATED!
           </h3>
         </div>
 
         {/* Active Signal Area */}
-        <div className="flex-1 flex flex-col items-center justify-center py-6">
-          {/* Pulsing Signal */}
-          <div className="relative w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center">
+        <div className="flex-1 flex flex-col items-center justify-center py-8">
+          {/* Pulsing Signal - Oval shape */}
+          <div className="relative w-48 h-32 sm:w-56 sm:h-40 flex items-center justify-center">
             {/* Outer pulsing rings */}
-            <div className="absolute inset-0 sos-signal-ring sos-signal-ring-1" />
-            <div className="absolute inset-0 sos-signal-ring sos-signal-ring-2" />
-            <div className="absolute inset-0 sos-signal-ring sos-signal-ring-3" />
+            <div className="absolute inset-0 rounded-[50%] sos-signal-ring sos-signal-ring-1" />
+            <div className="absolute inset-0 rounded-[50%] sos-signal-ring sos-signal-ring-2" />
+            <div className="absolute inset-0 rounded-[50%] sos-signal-ring sos-signal-ring-3" />
             
-            {/* Main circle */}
+            {/* Main oval */}
             <div 
-              className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full flex flex-col items-center justify-center z-10"
+              className="relative w-40 h-24 sm:w-48 sm:h-28 rounded-[50%] flex flex-col items-center justify-center z-10"
               style={{ backgroundColor: '#E50000' }}
             >
-              {/* Signal icon */}
-              <Wifi className="w-6 h-6 sm:w-8 sm:h-8 text-white mb-1" />
-              <span className="text-xl sm:text-2xl font-bold text-white tracking-[2px]">
+              {/* Signal waves icon */}
+              <div className="flex items-center gap-1 mb-1">
+                <div className="w-1 h-3 bg-white rounded-full opacity-60"></div>
+                <div className="w-1 h-5 bg-white rounded-full"></div>
+                <div className="w-1 h-3 bg-white rounded-full opacity-60"></div>
+              </div>
+              <span className="text-lg sm:text-xl font-bold text-white tracking-[0.15em]">
                 ACTIVE
               </span>
             </div>
           </div>
 
           {/* Countdown Timer */}
-          <div className="mt-8 text-center">
-            <p className="text-xs sm:text-sm text-white/60 tracking-[1px] uppercase mb-2">
-              Alert Duration
+          <div className="mt-10 text-center">
+            <p className="text-xs text-white/60 tracking-[0.2em] uppercase mb-2">
+              ALERT DURATION
             </p>
             <p className="text-5xl sm:text-6xl font-bold text-white tracking-wider">
               {formatTime(timeRemaining)}
@@ -133,38 +130,38 @@ export default function SOSActiveScreen() {
         </div>
 
         {/* Action Buttons */}
-        <div className="space-y-3 sm:space-y-4 mb-4">
+        <div className="space-y-3 mb-4">
           {/* Stop SOS Button */}
           <button
             onClick={handleStopSOS}
-            className="w-full h-14 sm:h-16 bg-[#1A1A1A] rounded-lg flex items-center justify-center gap-3"
+            className="w-full h-14 bg-[#1A1A1A] border border-accent flex items-center justify-center gap-3"
           >
-            <Square className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: '#E50000', fill: '#E50000' }} />
-            <span className="text-base sm:text-lg font-bold text-white tracking-[1px] uppercase">
-              Stop SOS
+            <Square className="w-4 h-4" style={{ color: '#E50000', fill: '#E50000' }} />
+            <span className="text-sm font-bold text-white tracking-[0.15em] uppercase">
+              STOP SOS
             </span>
           </button>
 
           {/* Add Proof Button */}
           <button
             onClick={handleAddProof}
-            className="w-full h-14 sm:h-16 bg-[#1A1A1A] rounded-lg flex items-center justify-center gap-3"
+            className="w-full h-14 bg-[#1A1A1A] border border-accent flex items-center justify-center gap-3"
           >
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/20 flex items-center justify-center">
-              <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+              <Camera className="w-4 h-4 text-white" />
             </div>
-            <span className="text-base sm:text-lg font-bold text-white tracking-[1px] uppercase">
-              Add Proof
+            <span className="text-sm font-bold text-white tracking-[0.15em] uppercase">
+              ADD PROOF
             </span>
           </button>
         </div>
       </div>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-[#121212] border-t border-white/10 safe-area-bottom">
+      <nav className="fixed bottom-0 left-0 right-0 bg-[#1F1F1F] border-t border-white/10 safe-area-bottom">
         <div className="max-w-lg mx-auto flex items-center justify-around h-16 sm:h-20">
           {navItems.map((item) => {
-            const isActive = item.isActive || currentPath === item.path;
+            const isActive = item.isActive;
             const Icon = item.icon;
             const isSOS = item.id === 'sos';
             
@@ -172,8 +169,8 @@ export default function SOSActiveScreen() {
               <button
                 key={item.id}
                 onClick={() => !item.isActive && navigate(item.path)}
-                className={`flex flex-col items-center justify-center px-4 py-2 rounded-lg transition-colors ${
-                  isActive ? 'bg-white/10' : 'hover:bg-white/5'
+                className={`flex flex-col items-center justify-center px-4 py-2 transition-colors ${
+                  isActive ? 'bg-white/10 rounded-lg' : ''
                 }`}
               >
                 <Icon 
