@@ -1,15 +1,43 @@
 import { useState, useEffect } from "react";
-import { ArrowRight, Eye, EyeOff, ChevronDown } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, User, Building2, GraduationCap, Stethoscope, Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
+
+// Role options with icons
+const roleOptions = [
+  {
+    id: "individual",
+    title: "Individual",
+    description: "Personal volunteer account",
+    icon: User
+  },
+  {
+    id: "ngo",
+    title: "NGO",
+    description: "Animal Welfare Organization",
+    icon: Building2
+  },
+  {
+    id: "school",
+    title: "School",
+    description: "Educational Institution",
+    icon: GraduationCap
+  },
+  {
+    id: "veterinarian",
+    title: "Veterinarian",
+    description: "Veterinary Clinic",
+    icon: Stethoscope
+  }
+];
 
 export default function ProfileScreen() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   const [showAddress, setShowAddress] = useState(false);
-  const [isRoleDropdownOpen, setIsRoleDropdownOpen] = useState(false);
+  const [pageLoaded, setPageLoaded] = useState(false);
   
   const [formData, setFormData] = useState({
     role: "",
@@ -19,14 +47,13 @@ export default function ProfileScreen() {
     district: ""
   });
 
-  const roles = [
-    "Volunteer",
-    "Coordinator",
-    "Veterinarian",
-    "Rescuer",
-    "Foster Parent",
-    "Donor"
-  ];
+  // Page load animation
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPageLoaded(true);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Auto-populate location on mount
   useEffect(() => {
@@ -55,12 +82,11 @@ export default function ProfileScreen() {
     }));
   };
 
-  const handleRoleSelect = (role) => {
+  const handleRoleSelect = (roleId) => {
     setFormData(prev => ({
       ...prev,
-      role: role
+      role: roleId
     }));
-    setIsRoleDropdownOpen(false);
   };
 
   const handleCreateAccount = () => {
@@ -87,14 +113,14 @@ export default function ProfileScreen() {
   const isFormValid = formData.role !== "" && formData.fullName.trim() !== "";
 
   return (
-    <div className="min-h-screen min-h-dvh bg-background flex flex-col px-5 sm:px-6 md:px-8 pt-12 sm:pt-14 md:pt-16 pb-8 sm:pb-10 safe-area-top safe-area-bottom max-w-lg mx-auto w-full">
+    <div className={`min-h-screen min-h-dvh bg-background flex flex-col px-5 sm:px-6 md:px-8 pt-12 sm:pt-14 md:pt-16 pb-8 sm:pb-10 safe-area-top safe-area-bottom max-w-lg mx-auto w-full transition-opacity duration-500 ${pageLoaded ? 'opacity-100' : 'opacity-0'}`}>
       {/* Logo - Paw icon in square border */}
-      <div className="w-14 h-14 sm:w-16 sm:h-16 border border-accent flex items-center justify-center">
+      <div className={`w-14 h-14 sm:w-16 sm:h-16 border border-accent flex items-center justify-center transition-all duration-500 delay-100 ${pageLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
         <PawIcon className="w-7 h-7 sm:w-8 sm:h-8 text-foreground" />
       </div>
 
       {/* Title Section */}
-      <div className="mt-6 sm:mt-8">
+      <div className={`mt-6 sm:mt-8 transition-all duration-500 delay-200 ${pageLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
         <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
           Rapid
         </h1>
@@ -103,53 +129,65 @@ export default function ProfileScreen() {
         </h2>
       </div>
 
-      {/* Tagline */}
-      <div className="mt-4 sm:mt-6">
-        <p className="text-base sm:text-lg text-foreground font-medium">
-          where empathy meets action.
-        </p>
-        <p className="text-xs text-secondary tracking-[0.15em] uppercase mt-1">
-          A COLLECTIVE FOR THE CONSCIOUS CITIZEN.
+      {/* Role Selection Section */}
+      <div className={`mt-6 sm:mt-8 transition-all duration-500 delay-300 ${pageLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+        <h3 className="text-xl sm:text-2xl font-bold text-foreground">
+          How would you like to use PFA?
+        </h3>
+        <p className="text-sm text-secondary mt-2">
+          Choose the option that best describes you
         </p>
       </div>
 
-      {/* Form Section */}
-      <div className="mt-6 sm:mt-8 space-y-4 sm:space-y-5 flex-1">
-        
-        {/* Role Dropdown */}
-        <div>
-          <label className="text-xs text-secondary tracking-[0.2em] uppercase block mb-2">
-            ROLE
-          </label>
-          <div className="relative">
+      {/* Role Cards */}
+      <div className={`mt-5 grid grid-cols-2 gap-3 transition-all duration-500 delay-400 ${pageLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+        {roleOptions.map((role, index) => {
+          const Icon = role.icon;
+          const isSelected = formData.role === role.id;
+          
+          return (
             <button
-              type="button"
-              onClick={() => setIsRoleDropdownOpen(!isRoleDropdownOpen)}
-              className="w-full h-14 px-4 bg-transparent border border-accent text-left flex items-center justify-between focus:outline-none focus:border-foreground transition-colors"
+              key={role.id}
+              onClick={() => handleRoleSelect(role.id)}
+              className={`relative p-4 border transition-all duration-200 flex flex-col items-center text-center ${
+                isSelected 
+                  ? 'border-white bg-white/10' 
+                  : 'border-accent hover:border-white/50 hover:bg-white/5'
+              }`}
+              style={{
+                transitionDelay: `${400 + (index * 50)}ms`
+              }}
             >
-              <span className={formData.role ? "text-foreground" : "text-secondary/70"}>
-                {formData.role || "Select Role"}
-              </span>
-              <ChevronDown className={`w-5 h-5 text-secondary transition-transform ${isRoleDropdownOpen ? 'rotate-180' : ''}`} />
-            </button>
-            
-            {isRoleDropdownOpen && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-[#1A1A1A] border border-accent z-50 max-h-48 overflow-y-auto">
-                {roles.map((role) => (
-                  <button
-                    key={role}
-                    type="button"
-                    onClick={() => handleRoleSelect(role)}
-                    className="w-full px-4 py-3 text-left text-foreground hover:bg-white/10 transition-colors border-b border-accent/50 last:border-b-0"
-                  >
-                    {role}
-                  </button>
-                ))}
+              {/* Selected checkmark */}
+              {isSelected && (
+                <div className="absolute top-2 right-2 w-5 h-5 bg-white rounded-full flex items-center justify-center">
+                  <Check className="w-3 h-3 text-black" />
+                </div>
+              )}
+              
+              {/* Icon */}
+              <div className={`w-12 h-12 border flex items-center justify-center mb-3 ${
+                isSelected ? 'border-white' : 'border-accent'
+              }`}>
+                <Icon className={`w-6 h-6 ${isSelected ? 'text-white' : 'text-secondary'}`} />
               </div>
-            )}
-          </div>
-        </div>
+              
+              {/* Title */}
+              <h4 className={`text-base font-bold ${isSelected ? 'text-white' : 'text-foreground'}`}>
+                {role.title}
+              </h4>
+              
+              {/* Description */}
+              <p className={`text-xs mt-1 ${isSelected ? 'text-white/70' : 'text-secondary'}`}>
+                {role.description}
+              </p>
+            </button>
+          );
+        })}
+      </div>
 
+      {/* Form Section */}
+      <div className={`mt-6 space-y-4 flex-1 transition-all duration-500 delay-500 ${pageLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
         {/* Full Name */}
         <div>
           <label className="text-xs text-secondary tracking-[0.2em] uppercase block mb-2">
@@ -241,7 +279,7 @@ export default function ProfileScreen() {
       </div>
 
       {/* Create Account Button */}
-      <div className="mt-6">
+      <div className={`mt-6 transition-all duration-500 delay-600 ${pageLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
         <button
           onClick={handleCreateAccount}
           disabled={!isFormValid || isLoading}
@@ -257,7 +295,7 @@ export default function ProfileScreen() {
       </div>
 
       {/* Footer */}
-      <div className="mt-4 flex items-center justify-center gap-2">
+      <div className={`mt-4 flex items-center justify-center gap-2 transition-all duration-500 delay-700 ${pageLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
         <span className="text-[10px] text-secondary tracking-[0.15em] uppercase">
           SECURE ACCESS
         </span>
