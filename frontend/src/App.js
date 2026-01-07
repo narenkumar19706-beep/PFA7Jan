@@ -2,6 +2,7 @@ import "@/App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { LocationProvider } from "@/context/LocationContext";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
+import { SOSProvider } from "@/context/SOSContext";
 import LoginScreen from "@/pages/LoginScreen";
 import OTPScreen from "@/pages/OTPScreen";
 import ProfileScreen from "@/pages/ProfileScreen";
@@ -85,10 +86,12 @@ function App() {
     <div className="App min-h-screen bg-background">
       <AuthProvider>
         <LocationProvider>
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
-          <Toaster position="top-center" />
+          <SOSProvider>
+            <BrowserRouter>
+              <AppRoutes />
+            </BrowserRouter>
+            <Toaster position="top-center" />
+          </SOSProvider>
         </LocationProvider>
       </AuthProvider>
     </div>
