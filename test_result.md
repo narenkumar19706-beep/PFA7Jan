@@ -219,6 +219,7 @@ frontend:
 
 test_plan:
   current_focus:
+    - "Add Proof Screen Functionality"
     - "Help & Support Screen with 2 Tiles"
     - "Report a User Screen with Searchable User Selector"
     - "Help & Support Navigation Flow Integration"
