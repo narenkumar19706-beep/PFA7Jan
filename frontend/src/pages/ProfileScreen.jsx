@@ -3,6 +3,7 @@ import { ArrowRight, Eye, EyeOff, User, Building2, GraduationCap, Stethoscope, C
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
+import { useLocationContext } from "@/context/LocationContext";
 
 // Role options with icons
 const roleOptions = [
@@ -34,12 +35,12 @@ const roleOptions = [
 
 export default function ProfileScreen() {
   const navigate = useNavigate();
+  const { location, isLocating, refreshLocation } = useLocationContext();
+  
   const [isLoading, setIsLoading] = useState(false);
-  const [isLocating, setIsLocating] = useState(true); // Start as locating
-  const [showAddress, setShowAddress] = useState(true); // Show address by default
+  const [showAddress, setShowAddress] = useState(true);
   const [pageLoaded, setPageLoaded] = useState(false);
   
-  // Initialize with empty values, will be filled by auto-populate
   const [formData, setFormData] = useState({
     role: "",
     fullName: "",
@@ -56,39 +57,16 @@ export default function ProfileScreen() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Auto-populate location immediately on mount
+  // Sync form data with global location when it changes
   useEffect(() => {
-    // Immediately start detecting and populate after short delay
-    const timer = setTimeout(() => {
+    if (location.isDetected) {
       setFormData(prev => ({
         ...prev,
-        address: "123 MG Road, Koramangala",
-        district: "Bangalore Urban"
+        address: location.address,
+        district: location.district
       }));
-      setIsLocating(false);
-      toast.success("Location detected successfully");
-    }, 1000);
-    
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleAutoPopulate = () => {
-    // Don't run if already locating
-    if (isLocating) return;
-    
-    setIsLocating(true);
-    
-    // Populate location after short delay (simulating detection)
-    setTimeout(() => {
-      setFormData(prev => ({
-        ...prev,
-        address: "123 MG Road, Koramangala",
-        district: "Bangalore Urban"
-      }));
-      setIsLocating(false);
-      toast.success("Location detected successfully");
-    }, 1000);
-  };
+    }
+  }, [location]);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
@@ -104,6 +82,10 @@ export default function ProfileScreen() {
     }));
   };
 
+  const handleAutoPopulate = () => {
+    refreshLocation();
+  };
+
   const handleCreateAccount = () => {
     if (!formData.role) {
       toast.error("Please select a role");
@@ -117,10 +99,8 @@ export default function ProfileScreen() {
 
     setIsLoading(true);
     
-    // Simulate API call - Mock functionality
     setTimeout(() => {
       setIsLoading(false);
-      // Navigate to account success screen
       navigate("/account-success");
     }, 1500);
   };
@@ -129,7 +109,7 @@ export default function ProfileScreen() {
 
   return (
     <div className={`min-h-screen min-h-dvh bg-background flex flex-col px-5 sm:px-6 md:px-8 pt-12 sm:pt-14 md:pt-16 pb-8 sm:pb-10 safe-area-top safe-area-bottom max-w-lg mx-auto w-full transition-opacity duration-500 ${pageLoaded ? 'opacity-100' : 'opacity-0'}`}>
-      {/* Logo - Paw icon in square border */}
+      {/* Logo */}
       <div className={`w-14 h-14 sm:w-16 sm:h-16 border border-accent flex items-center justify-center transition-all duration-500 delay-100 ${pageLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
         <PawIcon className="w-7 h-7 sm:w-8 sm:h-8 text-foreground" />
       </div>
@@ -169,30 +149,23 @@ export default function ProfileScreen() {
                   ? 'border-white bg-white/10' 
                   : 'border-accent hover:border-white/50 hover:bg-white/5'
               }`}
-              style={{
-                transitionDelay: `${400 + (index * 50)}ms`
-              }}
             >
-              {/* Selected checkmark */}
               {isSelected && (
                 <div className="absolute top-2 right-2 w-5 h-5 bg-white rounded-full flex items-center justify-center">
                   <Check className="w-3 h-3 text-black" />
                 </div>
               )}
               
-              {/* Icon */}
               <div className={`w-12 h-12 border flex items-center justify-center mb-3 ${
                 isSelected ? 'border-white' : 'border-accent'
               }`}>
                 <Icon className={`w-6 h-6 ${isSelected ? 'text-white' : 'text-secondary'}`} />
               </div>
               
-              {/* Title */}
               <h4 className={`text-base font-bold ${isSelected ? 'text-white' : 'text-foreground'}`}>
                 {role.title}
               </h4>
               
-              {/* Description */}
               <p className={`text-xs mt-1 ${isSelected ? 'text-white/70' : 'text-secondary'}`}>
                 {role.description}
               </p>
@@ -252,18 +225,13 @@ export default function ProfileScreen() {
               onChange={(e) => handleInputChange("address", e.target.value)}
               placeholder={isLocating ? "Detecting location..." : "Your Address"}
               className="w-full h-14 px-4 pr-12 bg-transparent border border-accent text-foreground placeholder-secondary/70 focus:outline-none focus:border-foreground transition-colors"
-              readOnly={isLocating}
             />
             <button
               type="button"
               onClick={() => setShowAddress(!showAddress)}
               className="absolute right-4 top-1/2 -translate-y-1/2 text-secondary hover:text-foreground transition-colors"
             >
-              {showAddress ? (
-                <EyeOff className="w-5 h-5" />
-              ) : (
-                <Eye className="w-5 h-5" />
-              )}
+              {showAddress ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -286,9 +254,8 @@ export default function ProfileScreen() {
             type="text"
             value={formData.district}
             onChange={(e) => handleInputChange("district", e.target.value)}
-            placeholder={isLocating ? "Detecting..." : "Autofilled district"}
+            placeholder={isLocating ? "Detecting..." : "Your District"}
             className="w-full h-14 px-4 bg-transparent border border-accent text-foreground placeholder-secondary/70 focus:outline-none focus:border-foreground transition-colors"
-            readOnly={isLocating}
           />
         </div>
       </div>
