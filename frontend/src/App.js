@@ -8,6 +8,7 @@ import DashboardScreen from "@/pages/DashboardScreen";
 import CommunityScreen from "@/pages/CommunityScreen";
 import SOSHistoryScreen from "@/pages/SOSHistoryScreen";
 import SOSActiveScreen from "@/pages/SOSActiveScreen";
+import AddProofScreen from "@/pages/AddProofScreen";
 import UserProfileScreen from "@/pages/UserProfileScreen";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/community" element={<CommunityScreen />} />
           <Route path="/sos" element={<SOSHistoryScreen />} />
           <Route path="/sos-active" element={<SOSActiveScreen />} />
+          <Route path="/add-proof" element={<AddProofScreen />} />
           <Route path="/user-profile" element={<UserProfileScreen />} />
         </Routes>
       </BrowserRouter>
