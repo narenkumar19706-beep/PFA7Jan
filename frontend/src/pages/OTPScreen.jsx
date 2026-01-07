@@ -92,10 +92,8 @@ export default function OTPScreen() {
     // Simulate API call - Mock functionality
     setTimeout(() => {
       setIsLoading(false);
-      // For demo, accept any 6-digit OTP
-      toast.success("Verification successful!");
-      // Navigate to next screen (home/dashboard)
-      navigate("/home");
+      // Navigate to verification success screen
+      navigate("/verified");
     }, 1500);
   };
 
