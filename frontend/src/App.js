@@ -7,6 +7,7 @@ import AccountSuccessScreen from "@/pages/AccountSuccessScreen";
 import DashboardScreen from "@/pages/DashboardScreen";
 import CommunityScreen from "@/pages/CommunityScreen";
 import SOSHistoryScreen from "@/pages/SOSHistoryScreen";
+import SOSActiveScreen from "@/pages/SOSActiveScreen";
 import UserProfileScreen from "@/pages/UserProfileScreen";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/home" element={<DashboardScreen />} />
           <Route path="/community" element={<CommunityScreen />} />
           <Route path="/sos" element={<SOSHistoryScreen />} />
+          <Route path="/sos-active" element={<SOSActiveScreen />} />
           <Route path="/user-profile" element={<UserProfileScreen />} />
         </Routes>
       </BrowserRouter>
