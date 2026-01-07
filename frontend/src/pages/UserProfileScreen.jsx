@@ -24,12 +24,6 @@ export default function UserProfileScreen() {
       label: 'Help & Support',
       onClick: () => navigate("/report-bug")
     },
-    { 
-      id: 'faq', 
-      icon: FileQuestion, 
-      label: 'FAQ',
-      onClick: () => navigate("/report-user")
-    },
   ];
 
   const handleEditProfile = () => {
