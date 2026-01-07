@@ -101,7 +101,18 @@ export default function ProfileScreen() {
     
     setTimeout(() => {
       setIsLoading(false);
-      navigate("/account-success");
+      // Pass user data to account success screen
+      navigate("/account-success", {
+        state: {
+          userData: {
+            name: formData.fullName.trim(),
+            email: formData.email,
+            role: formData.role,
+            address: formData.address,
+            district: formData.district
+          }
+        }
+      });
     }, 1500);
   };
 
