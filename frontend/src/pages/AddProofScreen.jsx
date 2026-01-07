@@ -32,7 +32,10 @@ export default function AddProofScreen() {
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      stopCamera();
+      // Cleanup camera stream
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+      }
       if (recordingTimerRef.current) {
         clearInterval(recordingTimerRef.current);
       }
