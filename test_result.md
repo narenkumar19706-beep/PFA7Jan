@@ -204,15 +204,18 @@ metadata:
 frontend:
   - task: "Complete Signup and Login Flow with Name Display Verification"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/DashboardScreen.jsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "testing"
         comment: "Critical bug fix verification required: Test complete flow from login → phone number → OTP → profile creation with custom name (John Smith) → account success → dashboard. Verify Dashboard displays 'Hello John!' instead of hardcoded 'Hello Ananya!' or any other hardcoded name. Key files: AuthContext.jsx (user state management), ProfileScreen.jsx (name input), AccountSuccessScreen.jsx (login trigger), DashboardScreen.jsx (name display)"
+      - working: true
+        agent: "testing"
+        comment: "✅ CRITICAL BUG FIX VERIFIED SUCCESSFULLY: Complete signup and login flow tested end-to-end. Flow: Login screen → Phone number entry (9876543210) → OTP screen → OTP entry (123456) → Profile/Create Account screen → Role selection (Individual) → Full name entry ('John Smith') → Account Success screen → Dashboard. CRITICAL TEST PASSED: Dashboard correctly displays 'Hello John!' using the actual user's name from profile creation instead of hardcoded 'Hello Ananya!'. Authentication flow working correctly with proper user data persistence in AuthContext. Bug fix implementation successful - user name display now dynamic based on actual user input."
 
 test_plan:
   current_focus:
