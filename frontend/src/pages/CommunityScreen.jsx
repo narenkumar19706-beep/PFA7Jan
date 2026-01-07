@@ -42,23 +42,18 @@ const volunteers = [
 
 export default function CommunityScreen() {
   const navigate = useNavigate();
-  const [userDistrict, setUserDistrict] = useState("Bengaluru District");
-  const [isLocating, setIsLocating] = useState(false);
+  const [userDistrict, setUserDistrict] = useState("Detecting...");
+  const [isLocating, setIsLocating] = useState(true);
 
-  // Auto-detect location on mount
+  // Auto-detect location immediately on mount
   useEffect(() => {
-    autoDetectLocation();
-  }, []);
-
-  const autoDetectLocation = () => {
-    setIsLocating(true);
-    
-    // Simulate location detection
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setUserDistrict("Bangalore Urban");
       setIsLocating(false);
-    }, 1500);
-  };
+    }, 800);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleMessage = (volunteer) => {
     navigate("/chat", { 
