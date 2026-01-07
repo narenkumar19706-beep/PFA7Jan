@@ -202,10 +202,7 @@ metadata:
   run_ui: true
 
 test_plan:
-  current_focus:
-    - "User Profile Screen UI Elements"
-    - "User Profile Screen Functionality"
-    - "User Profile Screen Responsive Design"
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
