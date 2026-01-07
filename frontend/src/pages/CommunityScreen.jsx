@@ -122,9 +122,14 @@ export default function CommunityScreen() {
           <p className="text-base text-foreground">
             Local Volunteer Network
           </p>
-          <h3 className="text-2xl sm:text-3xl font-bold text-foreground mt-1">
-            Bengaluru District
-          </h3>
+          <div className="flex items-center gap-2 mt-1">
+            <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
+              {isLocating ? "Detecting..." : userDistrict}
+            </h3>
+            {isLocating && (
+              <div className="w-4 h-4 border-2 border-secondary border-t-transparent rounded-full animate-spin" />
+            )}
+          </div>
           <p className="text-xs text-secondary tracking-[0.15em] mt-4 uppercase">
             VOLUNTEERS IN YOUR AREA
           </p>
