@@ -157,14 +157,13 @@ export default function LoginScreen() {
         <button
           onClick={handleProceed}
           disabled={!isPhoneComplete || isLoading}
-          className="w-full h-14 rounded-none flex items-center justify-between px-6 group disabled:opacity-50 disabled:cursor-not-allowed"
-          style={{ backgroundColor: '#FFFFFF' }}
+          className="btn-proceed w-full h-14 rounded-none flex items-center justify-between px-6 disabled:cursor-not-allowed"
         >
-          <span className="text-[24px] font-bold tracking-[1.5px] uppercase" style={{ color: '#0D0D0D' }}>
+          <span className="text-[24px] font-bold tracking-[1.5px] uppercase text-[#0D0D0D]">
             {isLoading ? "Sending..." : "Proceed"}
           </span>
-          <div className="w-12 h-12 flex items-center justify-center" style={{ border: '1px solid #0D0D0D' }}>
-            <ArrowRight className="w-5 h-5" style={{ color: '#0D0D0D' }} />
+          <div className="w-12 h-12 flex items-center justify-center border border-[#0D0D0D]">
+            <ArrowRight className="w-5 h-5 text-[#0D0D0D]" />
           </div>
         </button>
       </div>
