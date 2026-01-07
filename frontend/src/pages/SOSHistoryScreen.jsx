@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Bell, Home, Users, Megaphone, User, MapPin, Navigation, MessageSquare } from "lucide-react";
+import { Bell, Home, Users, Megaphone, User, MapPin, Navigation, MessageSquare, Clock, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
 
