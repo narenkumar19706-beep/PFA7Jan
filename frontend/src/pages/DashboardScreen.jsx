@@ -5,19 +5,21 @@ import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
 import BottomNav from "@/components/BottomNav";
 import { useLocationContext } from "@/context/LocationContext";
+import { useAuth } from "@/context/AuthContext";
 
 export default function DashboardScreen() {
   const navigate = useNavigate();
   const routeLocation = useLocation();
   const { location: userLocation, isLocating } = useLocationContext();
+  const { user } = useAuth();
   
   const [isHolding, setIsHolding] = useState(false);
   const [holdProgress, setHoldProgress] = useState(0);
   const holdTimerRef = useRef(null);
   const progressIntervalRef = useRef(null);
   
-  // Get user name from state or use default
-  const userName = routeLocation.state?.userName || "Ananya";
+  // Get user name from auth context, then route state, then default
+  const userName = user?.name || routeLocation.state?.userName || "User";
 
   const handleSOSStart = () => {
     setIsHolding(true);
