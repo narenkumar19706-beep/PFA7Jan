@@ -82,7 +82,7 @@ export default function UserProfileScreen() {
           </div>
 
           {/* User Name */}
-          <h2 className="mt-6 text-2xl sm:text-3xl font-bold text-foreground italic">
+          <h2 className="mt-6 text-2xl sm:text-3xl font-bold text-foreground">
             {userData.name}
           </h2>
 
