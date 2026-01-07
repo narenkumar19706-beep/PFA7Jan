@@ -46,7 +46,15 @@ export default function CommunityScreen() {
   const [hasNotification, setHasNotification] = useState(true);
 
   const handleMessage = (volunteer) => {
-    toast.success(`Opening chat with ${volunteer.name}...`);
+    navigate("/chat", { 
+      state: { 
+        volunteer: {
+          name: volunteer.name,
+          initials: volunteer.name.split(' ').map(n => n[0]).join(''),
+          status: volunteer.status
+        }
+      }
+    });
   };
 
   const getStatusColor = (status) => {
