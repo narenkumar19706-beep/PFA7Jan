@@ -99,9 +99,8 @@ export default function AddProofScreen() {
     ctx.drawImage(videoRef.current, 0, 0);
     
     const photoDataUrl = canvas.toDataURL('image/jpeg', 0.8);
-    const photoId = `photo_${Math.random().toString(36).substr(2, 9)}`;
     const newPhoto = {
-      id: photoId,
+      id: generateId('photo'),
       type: 'photo',
       data: photoDataUrl,
       timestamp: new Date().toISOString()
