@@ -86,7 +86,7 @@ export default function LoginScreen() {
   const isPhoneComplete = phoneDigits.every(d => d !== "");
 
   return (
-    <div className="min-h-screen min-h-dvh bg-background flex flex-col px-5 sm:px-6 md:px-8 py-8 sm:py-10 safe-area-top safe-area-bottom max-w-lg mx-auto w-full">
+    <div className="min-h-screen min-h-dvh bg-background flex flex-col px-5 sm:px-6 md:px-8 pt-12 sm:pt-14 md:pt-16 pb-8 sm:pb-10 safe-area-top safe-area-bottom max-w-lg mx-auto w-full">
       {/* Logo - Paw icon in square border */}
       <div 
         className="w-14 h-14 sm:w-16 sm:h-16 border border-accent flex items-center justify-center animate-fade-in"
@@ -130,17 +130,17 @@ export default function LoginScreen() {
           Mobile Number
         </label>
         
-        <div className="mt-3 sm:mt-4 flex items-center gap-2 sm:gap-3 border-b border-accent pb-2 sm:pb-3">
+        <div className="mt-3 sm:mt-4 flex items-center border-b border-accent pb-2 sm:pb-3">
           {/* Country Code */}
           <span 
-            className="text-2xl sm:text-3xl md:text-4xl text-secondary font-normal whitespace-nowrap"
+            className="text-2xl sm:text-3xl md:text-4xl text-secondary font-normal"
             style={{ letterSpacing: '-1px' }}
           >
             +91
           </span>
           
-          {/* Phone Digits */}
-          <div className="flex flex-1 justify-between">
+          {/* Phone Digits - Left to right input */}
+          <div className="flex ml-3 sm:ml-4">
             {phoneDigits.map((digit, index) => (
               <input
                 key={index}
@@ -153,8 +153,8 @@ export default function LoginScreen() {
                 onChange={(e) => handleDigitChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 onPaste={index === 0 ? handlePaste : undefined}
-                className="w-5 sm:w-6 md:w-7 h-8 sm:h-10 md:h-12 text-center text-2xl sm:text-3xl md:text-4xl font-normal bg-transparent border-none outline-none text-foreground placeholder:text-secondary"
-                style={{ letterSpacing: '-1px' }}
+                className="w-[22px] sm:w-[26px] md:w-[28px] h-8 sm:h-10 md:h-12 text-center text-2xl sm:text-3xl md:text-4xl font-normal bg-transparent border-none outline-none text-foreground placeholder:text-secondary focus:outline-none"
+                style={{ letterSpacing: '-1px', caretColor: 'white' }}
                 placeholder="0"
                 aria-label={`Digit ${index + 1}`}
               />
