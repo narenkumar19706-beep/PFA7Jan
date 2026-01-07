@@ -105,9 +105,10 @@ export default function ProfileScreen() {
     
     setTimeout(() => {
       setIsLoading(false);
-      // Pass user data to account success screen
+      // Pass user data AND phone number to account success screen
       navigate("/account-success", {
         state: {
+          phoneNumber: phoneNumber,
           userData: {
             name: formData.fullName.trim(),
             email: formData.email,
