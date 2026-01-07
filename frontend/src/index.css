@@ -191,6 +191,41 @@ code {
     }
 }
 
+/* SOS Button Glow Animation */
+.sos-glow {
+    animation: sos-pulse 2s ease-in-out infinite;
+}
+
+.sos-glow-active {
+    animation: sos-pulse-active 0.5s ease-in-out infinite;
+}
+
+@keyframes sos-pulse {
+    0%, 100% {
+        box-shadow: 0 0 40px 15px rgba(211, 47, 47, 0.3),
+                    0 0 80px 30px rgba(211, 47, 47, 0.15),
+                    0 0 120px 50px rgba(211, 47, 47, 0.05);
+    }
+    50% {
+        box-shadow: 0 0 50px 20px rgba(211, 47, 47, 0.4),
+                    0 0 100px 40px rgba(211, 47, 47, 0.2),
+                    0 0 150px 60px rgba(211, 47, 47, 0.1);
+    }
+}
+
+@keyframes sos-pulse-active {
+    0%, 100% {
+        box-shadow: 0 0 60px 25px rgba(211, 47, 47, 0.5),
+                    0 0 120px 50px rgba(211, 47, 47, 0.3),
+                    0 0 180px 80px rgba(211, 47, 47, 0.15);
+    }
+    50% {
+        box-shadow: 0 0 80px 35px rgba(211, 47, 47, 0.6),
+                    0 0 150px 70px rgba(211, 47, 47, 0.4),
+                    0 0 200px 100px rgba(211, 47, 47, 0.2);
+    }
+}
+
 @layer base {
     [data-debug-wrapper="true"] {
         display: contents !important;
