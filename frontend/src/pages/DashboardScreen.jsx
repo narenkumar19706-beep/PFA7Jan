@@ -9,7 +9,6 @@ export default function DashboardScreen() {
   const location = useLocation();
   const [isHolding, setIsHolding] = useState(false);
   const [holdProgress, setHoldProgress] = useState(0);
-  const [hasNotification, setHasNotification] = useState(true);
   const holdTimerRef = useRef(null);
   const progressIntervalRef = useRef(null);
   
@@ -102,40 +101,30 @@ export default function DashboardScreen() {
           {/* Notification Bell */}
           <button 
             className="relative p-2"
-            onClick={() => {
-              navigate("/notifications");
-            }}
+            onClick={() => navigate("/notifications")}
           >
             <Bell className="w-6 h-6 text-foreground" />
-            {hasNotification && (
-              <span className="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full" />
-            )}
+            <span className="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full" />
           </button>
         </div>
 
         {/* Title Section */}
-        <div className="mt-6 sm:mt-8">
-          <h1 
-            className="text-4xl sm:text-5xl font-bold text-foreground leading-none"
-            style={{ letterSpacing: '-1px' }}
-          >
+        <div className="mt-6">
+          <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
             Rapid
           </h1>
-          <h2 
-            className="text-2xl sm:text-3xl font-normal text-secondary leading-none mt-1"
-            style={{ letterSpacing: '-0.5px' }}
-          >
+          <h2 className="text-2xl sm:text-3xl font-bold text-secondary leading-none mt-1 italic">
             Response Team
           </h2>
         </div>
 
         {/* Greeting */}
-        <div className="mt-6 sm:mt-8">
+        <div className="mt-8">
           <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
             Hello {userName}!
           </h3>
-          <p className="text-xs sm:text-sm text-secondary tracking-[1px] mt-1 uppercase">
-            Welcome to People for Animals.
+          <p className="text-xs text-secondary tracking-[0.15em] mt-2 uppercase">
+            WELCOME TO PEOPLE FOR ANIMALS.
           </p>
         </div>
 
@@ -201,8 +190,8 @@ export default function DashboardScreen() {
           </div>
 
           {/* Instruction Text */}
-          <p className="mt-8 text-sm sm:text-base text-secondary text-center tracking-[0.5px] uppercase leading-relaxed">
-            Press and hold for 3 seconds<br />to activate
+          <p className="mt-8 text-xs text-secondary text-center tracking-[0.15em] uppercase leading-relaxed">
+            PRESS AND HOLD FOR 3 SECONDS<br />TO ACTIVATE
           </p>
         </div>
       </div>
@@ -218,10 +207,8 @@ export default function DashboardScreen() {
               <button
                 key={item.id}
                 onClick={() => navigate(item.path)}
-                className={`flex flex-col items-center justify-center px-4 py-2 rounded-lg transition-colors ${
-                  isActive 
-                    ? 'bg-white/10' 
-                    : 'hover:bg-white/5'
+                className={`flex flex-col items-center justify-center px-4 py-2 transition-colors ${
+                  isActive ? 'bg-white/10 rounded-lg' : ''
                 }`}
               >
                 <Icon 
