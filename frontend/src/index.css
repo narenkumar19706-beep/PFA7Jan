@@ -101,6 +101,16 @@ code {
     }
 }
 
+/* Proceed button - solid white */
+.btn-proceed {
+    background-color: #FFFFFF !important;
+    color: #0D0D0D !important;
+}
+
+.btn-proceed:disabled {
+    opacity: 0.5;
+}
+
 @layer base {
     [data-debug-wrapper="true"] {
         display: contents !important;
