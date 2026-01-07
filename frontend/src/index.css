@@ -127,6 +127,70 @@ code {
     color: transparent;
 }
 
+/* Profile Input Fields */
+.profile-input {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px;
+    background-color: #1A1A1A;
+    border: 1px solid #303030;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 400;
+    transition: border-color 0.2s ease;
+}
+
+.profile-input:focus {
+    border-color: #FFFFFF;
+    outline: none;
+}
+
+.profile-input::placeholder {
+    color: #666666;
+}
+
+.profile-input:read-only {
+    opacity: 0.7;
+}
+
+@media (min-width: 640px) {
+    .profile-input {
+        height: 52px;
+        font-size: 18px;
+    }
+}
+
+/* Auto Populate Badge */
+.auto-populate-badge {
+    padding: 4px 10px;
+    background-color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    border-radius: 4px;
+    color: #0F0F0F;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: opacity 0.2s ease;
+}
+
+.auto-populate-badge:hover {
+    opacity: 0.9;
+}
+
+.auto-populate-badge:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+@media (min-width: 640px) {
+    .auto-populate-badge {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+}
+
 @layer base {
     [data-debug-wrapper="true"] {
         display: contents !important;
