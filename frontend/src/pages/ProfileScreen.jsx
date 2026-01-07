@@ -54,8 +54,8 @@ export default function ProfileScreen() {
     // Simulate API call - Mock functionality
     setTimeout(() => {
       setIsLoading(false);
-      toast.success("Account created successfully!");
-      navigate("/home");
+      // Navigate to account success screen
+      navigate("/account-success");
     }, 1500);
   };
 
