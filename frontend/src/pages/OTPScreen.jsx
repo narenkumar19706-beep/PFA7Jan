@@ -3,6 +3,10 @@ import { ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate, useLocation } from "react-router-dom";
 import PawIcon from "@/components/icons/PawIcon";
+import { useAuth } from "@/context/AuthContext";
+
+// Storage key for registered users (simulates backend database)
+const REGISTERED_USERS_KEY = 'pfa_registered_users';
 
 export default function OTPScreen() {
   const [otpDigits, setOtpDigits] = useState(Array(6).fill(""));
@@ -12,6 +16,7 @@ export default function OTPScreen() {
   const [canResend, setCanResend] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { login } = useAuth();
   
   // Get phone number from navigation state (or use default for demo)
   const phoneNumber = location.state?.phoneNumber || "9876543210";
