@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bell, MessageSquare, MapPin } from "lucide-react";
+import { Bell, MessageSquare } from "lucide-react";
 import PawIcon from "@/components/icons/PawIcon";
 import BottomNav from "@/components/BottomNav";
+import { useLocationContext } from "@/context/LocationContext";
 
 // Mock volunteer data
 const volunteers = [
@@ -42,18 +42,7 @@ const volunteers = [
 
 export default function CommunityScreen() {
   const navigate = useNavigate();
-  const [userDistrict, setUserDistrict] = useState("Detecting...");
-  const [isLocating, setIsLocating] = useState(true);
-
-  // Auto-detect location immediately on mount
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setUserDistrict("Bangalore Urban");
-      setIsLocating(false);
-    }, 800);
-    
-    return () => clearTimeout(timer);
-  }, []);
+  const { location: userLocation, isLocating } = useLocationContext();
 
   const handleMessage = (volunteer) => {
     navigate("/chat", { 
@@ -69,30 +58,23 @@ export default function CommunityScreen() {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'available':
-        return '#4CAF50'; // Green
-      case 'busy':
-        return '#FF9800'; // Orange
-      case 'offline':
-        return '#9E9E9E'; // Gray
-      default:
-        return '#9E9E9E';
+      case 'available': return '#4CAF50';
+      case 'busy': return '#FF9800';
+      case 'offline': return '#9E9E9E';
+      default: return '#9E9E9E';
     }
   };
 
   return (
     <div className="min-h-screen min-h-dvh bg-background flex flex-col safe-area-top safe-area-bottom">
-      {/* Main Content */}
       <div className="flex-1 flex flex-col px-5 sm:px-6 md:px-8 pt-12 sm:pt-14 pb-24 max-w-lg mx-auto w-full">
         
-        {/* Header with Logo and Bell */}
+        {/* Header */}
         <div className="flex items-start justify-between">
-          {/* Logo */}
           <div className="w-14 h-14 sm:w-16 sm:h-16 border border-accent flex items-center justify-center">
             <PawIcon className="w-7 h-7 sm:w-8 sm:h-8 text-foreground" />
           </div>
           
-          {/* Notification Bell */}
           <button 
             className="relative p-2"
             onClick={() => navigate("/notifications")}
@@ -102,7 +84,7 @@ export default function CommunityScreen() {
           </button>
         </div>
 
-        {/* Title Section */}
+        {/* Title */}
         <div className="mt-6">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
             Rapid
@@ -119,7 +101,7 @@ export default function CommunityScreen() {
           </p>
           <div className="flex items-center gap-2 mt-1">
             <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
-              {isLocating ? "Detecting..." : userDistrict}
+              {isLocating ? "Detecting..." : userLocation.district || "Your District"}
             </h3>
             {isLocating && (
               <div className="w-4 h-4 border-2 border-secondary border-t-transparent rounded-full animate-spin" />
@@ -137,7 +119,6 @@ export default function CommunityScreen() {
               key={volunteer.id}
               className="bg-[#1A1A1A] border border-accent p-4 flex items-center gap-4"
             >
-              {/* Profile Image */}
               <div 
                 className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center overflow-hidden flex-shrink-0"
                 style={{ backgroundColor: volunteer.bgColor }}
@@ -146,13 +127,10 @@ export default function CommunityScreen() {
                   src={volunteer.avatar} 
                   alt={volunteer.name}
                   className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                  }}
+                  onError={(e) => { e.target.style.display = 'none'; }}
                 />
               </div>
 
-              {/* Volunteer Info */}
               <div className="flex-1 min-w-0">
                 <h4 className="text-lg font-bold text-foreground truncate">
                   {volunteer.name}
@@ -162,17 +140,12 @@ export default function CommunityScreen() {
                     className="w-2 h-2 rounded-full flex-shrink-0"
                     style={{ backgroundColor: getStatusColor(volunteer.status) }}
                   />
-                  <span 
-                    className={`text-sm ${
-                      volunteer.status === 'offline' ? 'text-secondary' : 'text-foreground'
-                    }`}
-                  >
+                  <span className={`text-sm ${volunteer.status === 'offline' ? 'text-secondary' : 'text-foreground'}`}>
                     {volunteer.statusText}
                   </span>
                 </div>
               </div>
 
-              {/* Message Button */}
               <button
                 onClick={() => handleMessage(volunteer)}
                 disabled={volunteer.status === 'offline'}
@@ -185,7 +158,6 @@ export default function CommunityScreen() {
         </div>
       </div>
 
-      {/* Bottom Navigation */}
       <BottomNav activePath="/community" />
     </div>
   );
