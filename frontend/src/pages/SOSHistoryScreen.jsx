@@ -73,26 +73,21 @@ export default function SOSHistoryScreen() {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState('current');
-  const [userDistrict, setUserDistrict] = useState("Bangalore Urban");
-  const [isLocating, setIsLocating] = useState(false);
+  const [userDistrict, setUserDistrict] = useState("Detecting...");
+  const [isLocating, setIsLocating] = useState(true);
   const [alerts, setAlerts] = useState(getAlertsData("Bangalore Urban"));
 
-  // Auto-detect location on mount
+  // Auto-detect location immediately on mount
   useEffect(() => {
-    autoDetectLocation();
-  }, []);
-
-  const autoDetectLocation = () => {
-    setIsLocating(true);
-    
-    // Simulate location detection
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       const district = "Bangalore Urban";
       setUserDistrict(district);
       setAlerts(getAlertsData(district));
       setIsLocating(false);
-    }, 1500);
-  };
+    }, 800);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleAttend = (alertId) => {
     setAlerts(prev => ({
