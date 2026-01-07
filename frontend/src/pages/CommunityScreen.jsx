@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bell, MessageSquare } from "lucide-react";
+import { Bell, MessageSquare, MapPin } from "lucide-react";
 import PawIcon from "@/components/icons/PawIcon";
 import BottomNav from "@/components/BottomNav";
 
@@ -42,6 +42,23 @@ const volunteers = [
 
 export default function CommunityScreen() {
   const navigate = useNavigate();
+  const [userDistrict, setUserDistrict] = useState("Bengaluru District");
+  const [isLocating, setIsLocating] = useState(false);
+
+  // Auto-detect location on mount
+  useEffect(() => {
+    autoDetectLocation();
+  }, []);
+
+  const autoDetectLocation = () => {
+    setIsLocating(true);
+    
+    // Simulate location detection
+    setTimeout(() => {
+      setUserDistrict("Bangalore Urban");
+      setIsLocating(false);
+    }, 1500);
+  };
 
   const handleMessage = (volunteer) => {
     navigate("/chat", { 
