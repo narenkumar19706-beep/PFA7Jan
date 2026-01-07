@@ -219,7 +219,9 @@ frontend:
 
 test_plan:
   current_focus:
-    - "FAQ Removal from User Profile Screen"
+    - "Help & Support Screen with 2 Tiles"
+    - "Report a User Screen with Searchable User Selector"
+    - "Help & Support Navigation Flow Integration"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
