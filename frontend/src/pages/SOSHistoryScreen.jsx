@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Bell, Home, Users, Megaphone, User, MapPin, Navigation, MessageSquare, Clock, CheckCircle } from "lucide-react";
+import { Bell, MapPin, Navigation, MessageSquare, Clock, CheckCircle, Users } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
+import BottomNav from "@/components/BottomNav";
 
 // Mock SOS alerts data
 const alertsData = {
@@ -73,7 +74,6 @@ export default function SOSHistoryScreen() {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState('current');
   const [alerts, setAlerts] = useState(alertsData);
-  const [hasNotification, setHasNotification] = useState(true);
 
   const handleAttend = (alertId) => {
     setAlerts(prev => ({
@@ -103,19 +103,6 @@ export default function SOSHistoryScreen() {
     });
   };
 
-  const getAlertsByTab = () => {
-    switch (activeTab) {
-      case 'current':
-        return alerts.current;
-      case 'past':
-        return alerts.past;
-      case 'myAlerts':
-        return alerts.myAlerts;
-      default:
-        return alerts.current;
-    }
-  };
-
   const handleChat = () => {
     navigate("/chat", { 
       state: { 
@@ -127,15 +114,6 @@ export default function SOSHistoryScreen() {
       }
     });
   };
-
-  const navItems = [
-    { id: 'home', icon: Home, label: 'HOME', path: '/home' },
-    { id: 'community', icon: Users, label: 'COMMUNITY', path: '/community' },
-    { id: 'sos', icon: Megaphone, label: 'SOS', path: '/sos' },
-    { id: 'profile', icon: User, label: 'PROFILE', path: '/user-profile' },
-  ];
-
-  const currentPath = location.pathname;
 
   return (
     <div className="min-h-screen min-h-dvh bg-background flex flex-col safe-area-top safe-area-bottom">
@@ -170,7 +148,7 @@ export default function SOSHistoryScreen() {
         </div>
 
         {/* SOS Alerts Header */}
-        <div className="mt-6 sm:mt-8 flex items-center gap-2">
+        <div className="mt-6 flex items-center gap-2">
           <h3 className="text-xl sm:text-2xl font-bold text-foreground">
             SOS Alerts
           </h3>
@@ -214,7 +192,6 @@ export default function SOSHistoryScreen() {
         {/* Alert Cards */}
         <div className="mt-4 space-y-3">
           {activeTab === 'current' && (
-            // CURRENT Alerts - Full card design with actions
             <>
               {alerts.current.length === 0 ? (
                 <div className="py-12 text-center">
@@ -226,16 +203,12 @@ export default function SOSHistoryScreen() {
                     key={alert.id}
                     className="bg-[#202020] border border-[#333333] rounded-lg p-4"
                   >
-                    {/* Top Row - Avatar, Name, Location, Distance */}
                     <div className="flex items-start gap-3">
-                      {/* Initials Avatar */}
                       <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#333333] rounded-lg flex items-center justify-center flex-shrink-0">
                         <span className="text-lg sm:text-xl font-bold text-foreground">
                           {alert.initials}
                         </span>
                       </div>
-
-                      {/* Info */}
                       <div className="flex-1 min-w-0">
                         <h4 className="text-lg sm:text-xl font-bold text-foreground">
                           {alert.name}
@@ -244,8 +217,6 @@ export default function SOSHistoryScreen() {
                           {alert.location}
                         </p>
                       </div>
-
-                      {/* Distance Badge */}
                       <div className="bg-[#333333] rounded-lg px-3 py-1.5 flex items-center gap-1.5 flex-shrink-0">
                         <MapPin className="w-4 h-4 text-foreground" />
                         <span className="text-sm font-semibold text-foreground">
@@ -253,10 +224,7 @@ export default function SOSHistoryScreen() {
                         </span>
                       </div>
                     </div>
-
-                    {/* Bottom Row - Actions */}
                     <div className="mt-4 flex items-center gap-2">
-                      {/* Attending Button */}
                       <button
                         onClick={() => handleAttend(alert.id)}
                         className={`flex-1 h-10 sm:h-11 rounded-lg font-bold text-sm tracking-wide transition-all ${
@@ -267,16 +235,12 @@ export default function SOSHistoryScreen() {
                       >
                         {alert.isAttending ? 'ATTENDING' : 'ATTEND'}
                       </button>
-
-                      {/* Navigate Button */}
                       <button
                         onClick={() => handleNavigate(alert)}
                         className="w-10 h-10 sm:w-11 sm:h-11 bg-[#202020] border border-[#333333] rounded-lg flex items-center justify-center hover:bg-[#2a2a2a] transition-colors"
                       >
                         <Navigation className="w-5 h-5 text-foreground" />
                       </button>
-
-                      {/* Message Button */}
                       <button
                         onClick={() => handleMessage(alert)}
                         className="w-10 h-10 sm:w-11 sm:h-11 bg-[#202020] border border-[#333333] rounded-lg flex items-center justify-center hover:bg-[#2a2a2a] transition-colors"
@@ -291,7 +255,6 @@ export default function SOSHistoryScreen() {
           )}
 
           {activeTab === 'past' && (
-            // PAST Alerts - Simplified card design with HISTORY label
             <>
               <div className="flex items-center gap-3 py-2">
                 <div className="flex-1 h-px bg-[#333333]" />
@@ -304,13 +267,10 @@ export default function SOSHistoryScreen() {
                   key={alert.id}
                   className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg overflow-hidden"
                 >
-                  {/* Top Row - Location and Resolved badge */}
                   <div className="p-4 flex items-center justify-between">
                     <p className="text-base text-secondary">
                       {alert.location}
                     </p>
-                    
-                    {/* Resolved Badge */}
                     <div className="bg-[#333333] border border-[#424242] rounded-lg px-3 py-1.5 flex items-center gap-2">
                       <Clock className="w-4 h-4 text-secondary" />
                       <span className="text-sm text-secondary">
@@ -318,8 +278,6 @@ export default function SOSHistoryScreen() {
                       </span>
                     </div>
                   </div>
-
-                  {/* CLOSED Status Row */}
                   <div className="bg-[#2A2A2A] px-4 py-3 flex items-center justify-center gap-2">
                     <CheckCircle className="w-5 h-5 text-foreground" />
                     <span className="text-sm font-semibold text-foreground tracking-wide uppercase">
@@ -332,18 +290,13 @@ export default function SOSHistoryScreen() {
           )}
 
           {activeTab === 'myAlerts' && (
-            // MY ALERTS - Active alert + History
             <>
-              {/* Active Alert Card */}
               {alerts.myAlerts.active && (
                 <div className="bg-[#1C1C1C] border border-[#333333] rounded-lg p-4">
-                  {/* Top Row - Location and Distance */}
                   <div className="flex items-center justify-between">
                     <h4 className="text-lg sm:text-xl font-bold text-foreground">
                       {alerts.myAlerts.active.location}
                     </h4>
-                    
-                    {/* Distance Badge */}
                     <div className="bg-[#2A2A2A] rounded-lg px-3 py-1.5 flex items-center gap-1.5">
                       <MapPin className="w-4 h-4 text-foreground" />
                       <span className="text-sm font-semibold text-foreground">
@@ -351,10 +304,7 @@ export default function SOSHistoryScreen() {
                       </span>
                     </div>
                   </div>
-
-                  {/* Action Buttons */}
                   <div className="mt-4 flex items-center gap-2">
-                    {/* Attending Count Button */}
                     <button
                       onClick={() => toast.info("Viewing attendees...")}
                       className="flex-1 h-11 sm:h-12 bg-[#2A2A2A] rounded-lg flex items-center justify-center gap-2"
@@ -364,8 +314,6 @@ export default function SOSHistoryScreen() {
                         {alerts.myAlerts.active.attendingCount} ATTENDING
                       </span>
                     </button>
-
-                    {/* Chat Button */}
                     <button
                       onClick={handleChat}
                       className="flex-1 h-11 sm:h-12 bg-white rounded-lg flex items-center justify-center gap-2"
@@ -379,26 +327,21 @@ export default function SOSHistoryScreen() {
                 </div>
               )}
 
-              {/* History Divider */}
               <div className="flex items-center gap-3 py-2 mt-2">
                 <div className="flex-1 h-px bg-[#333333]" />
                 <span className="text-xs text-secondary tracking-[1px] uppercase">History</span>
                 <div className="flex-1 h-px bg-[#333333]" />
               </div>
 
-              {/* Past Alerts in MY ALERTS */}
               {alerts.myAlerts.history.map((alert) => (
                 <div 
                   key={alert.id}
                   className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg overflow-hidden"
                 >
-                  {/* Top Row - Location and Resolved badge */}
                   <div className="p-4 flex items-center justify-between">
                     <p className="text-base text-secondary">
                       {alert.location}
                     </p>
-                    
-                    {/* Resolved Badge */}
                     <div className="bg-[#333333] border border-[#424242] rounded-lg px-3 py-1.5 flex items-center gap-2">
                       <Clock className="w-4 h-4 text-secondary" />
                       <span className="text-sm text-secondary">
@@ -406,8 +349,6 @@ export default function SOSHistoryScreen() {
                       </span>
                     </div>
                   </div>
-
-                  {/* CLOSED Status Row */}
                   <div className="bg-[#2A2A2A] px-4 py-3 flex items-center justify-center gap-2">
                     <CheckCircle className="w-5 h-5 text-foreground" />
                     <span className="text-sm font-semibold text-foreground tracking-wide uppercase">
@@ -422,37 +363,7 @@ export default function SOSHistoryScreen() {
       </div>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-[#1F1F1F] border-t border-accent safe-area-bottom">
-        <div className="max-w-lg mx-auto flex items-center justify-around h-16 sm:h-20">
-          {navItems.map((item) => {
-            const isActive = currentPath === item.path;
-            const Icon = item.icon;
-            
-            return (
-              <button
-                key={item.id}
-                onClick={() => navigate(item.path)}
-                className={`flex flex-col items-center justify-center px-4 py-2 transition-colors ${
-                  isActive ? 'bg-white/10 rounded-lg' : ''
-                }`}
-              >
-                <Icon 
-                  className={`w-5 h-5 sm:w-6 sm:h-6 ${
-                    isActive ? 'text-foreground' : 'text-secondary'
-                  }`} 
-                />
-                <span 
-                  className={`text-[10px] sm:text-xs mt-1 tracking-[0.5px] ${
-                    isActive ? 'text-foreground font-bold' : 'text-secondary font-normal'
-                  }`}
-                >
-                  {item.label}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </nav>
+      <BottomNav activePath="/sos" />
     </div>
   );
 }
