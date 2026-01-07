@@ -25,7 +25,7 @@ export default function UserProfileScreen() {
       id: 'faq', 
       icon: FileQuestion, 
       label: 'FAQ',
-      onClick: () => toast.info("FAQ coming soon!")
+      onClick: () => navigate("/report-user")
     },
   ];
 
