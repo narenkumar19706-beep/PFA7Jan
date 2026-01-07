@@ -87,9 +87,13 @@ export default function DashboardScreen() {
       duration: 2000,
     });
     
-    // Navigate to SOS active screen
+    // Navigate to SOS active screen with location data
     setTimeout(() => {
-      navigate("/sos-active");
+      navigate("/sos-active", {
+        state: {
+          userLocation: userLocation
+        }
+      });
     }, 500);
   };
 
