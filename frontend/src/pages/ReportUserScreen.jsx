@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Bell, Home, Users, Megaphone, User } from "lucide-react";
+import { Bell, Home, Users, Megaphone, User, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
 
@@ -17,8 +17,6 @@ export default function ReportUserScreen() {
     { id: 'sos', icon: Megaphone, label: 'SOS', path: '/sos' },
     { id: 'profile', icon: User, label: 'PROFILE', path: '/user-profile' },
   ];
-
-  const currentPath = location.pathname;
 
   const handleSubmit = async () => {
     if (!username.trim()) {
@@ -59,37 +57,34 @@ export default function ReportUserScreen() {
           {/* Notification Bell */}
           <button
             onClick={() => navigate("/notifications")}
-            className="relative p-2 hover:bg-white/5 rounded-lg transition-colors"
+            className="relative p-2"
           >
-            <Bell className="w-6 h-6 sm:w-7 sm:h-7 text-secondary" />
-            <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-background"></span>
+            <Bell className="w-6 h-6 text-foreground" />
+            <span className="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full"></span>
           </button>
         </div>
 
         {/* Title */}
         <div className="mt-6">
-          <h1 className="text-3xl sm:text-4xl font-bold">
-            <span className="text-foreground">Rapid</span>
-            <br />
-            <span className="text-secondary">Response Team</span>
+          <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
+            Rapid
           </h1>
-        </div>
-
-        {/* Tagline */}
-        <div className="mt-4">
-          <p className="text-sm text-secondary tracking-wide">
-            where empathy meets action.
-          </p>
-          <p className="text-xs text-secondary tracking-[0.15em] uppercase mt-1">
-            A COLLECTIVE FOR THE CONSCIOUS CITIZEN.
-          </p>
-        </div>
-
-        {/* Report a User Section */}
-        <div className="mt-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground italic">
-            Report a User
+          <h2 className="text-2xl sm:text-3xl font-bold text-secondary leading-none mt-1 italic">
+            Response Team
           </h2>
+        </div>
+
+        {/* Section Labels */}
+        <div className="mt-8">
+          <p className="text-xs text-secondary tracking-[0.2em] uppercase">
+            COMMUNITY
+          </p>
+        </div>
+
+        <div className="mt-4">
+          <h3 className="text-sm text-secondary tracking-[0.15em] uppercase">
+            REPORT A USER
+          </h3>
         </div>
 
         {/* Username Input */}
@@ -102,12 +97,12 @@ export default function ReportUserScreen() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="@username"
-            className="w-full h-14 px-4 bg-transparent border border-accent text-foreground placeholder-secondary/70 focus:outline-none focus:border-foreground transition-colors font-mono text-base"
+            className="w-full h-14 px-4 bg-transparent border border-accent text-foreground placeholder-secondary/60 focus:outline-none focus:border-foreground transition-colors text-base"
           />
         </div>
 
         {/* Reason Textarea */}
-        <div className="mt-6">
+        <div className="mt-6 flex-1">
           <label className="text-xs text-secondary tracking-[0.2em] uppercase block mb-3">
             REASON FOR REPORT
           </label>
@@ -115,7 +110,7 @@ export default function ReportUserScreen() {
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             placeholder="Describe the violation..."
-            className="w-full h-40 sm:h-48 p-4 bg-transparent border border-accent text-foreground placeholder-secondary/70 resize-none focus:outline-none focus:border-foreground transition-colors font-mono text-sm"
+            className="w-full h-32 sm:h-40 p-4 bg-transparent border border-accent text-foreground placeholder-secondary/60 resize-none focus:outline-none focus:border-foreground transition-colors text-base"
           />
         </div>
 
@@ -124,9 +119,12 @@ export default function ReportUserScreen() {
           <button
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="w-full h-14 bg-white text-black font-bold text-sm tracking-[0.2em] uppercase hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full h-14 bg-white flex items-center justify-between px-6 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 transition-colors"
           >
-            {isSubmitting ? "SUBMITTING..." : "SUBMIT REPORT"}
+            <span className="text-sm font-bold tracking-[0.15em] uppercase text-black">
+              {isSubmitting ? "SUBMITTING..." : "SUBMIT REPORT"}
+            </span>
+            <ChevronRight className="w-5 h-5 text-black" />
           </button>
         </div>
       </div>
@@ -135,13 +133,13 @@ export default function ReportUserScreen() {
       <nav className="fixed bottom-0 left-0 right-0 bg-[#1F1F1F] border-t border-accent safe-area-bottom">
         <div className="max-w-lg mx-auto flex items-center justify-around h-16 sm:h-20">
           {navItems.map((item) => {
-            const isActive = item.path === '/user-profile'; // Keep profile highlighted since this is a sub-page
+            const isActive = item.path === '/user-profile';
             const Icon = item.icon;
             return (
               <button
                 key={item.id}
                 onClick={() => navigate(item.path)}
-                className={`flex flex-col items-center justify-center px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-white/10' : 'hover:bg-white/5'}`}
+                className={`flex flex-col items-center justify-center px-4 py-2 transition-colors ${isActive ? 'bg-white/10 rounded-lg' : ''}`}
               >
                 <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${isActive ? 'text-foreground' : 'text-secondary'}`} />
                 <span className={`text-[10px] sm:text-xs mt-1 tracking-[0.5px] ${isActive ? 'text-foreground font-bold' : 'text-secondary font-normal'}`}>

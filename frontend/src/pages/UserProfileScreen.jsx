@@ -54,20 +54,21 @@ export default function UserProfileScreen() {
           {/* Notification Bell */}
           <button
             onClick={() => navigate("/notifications")}
-            className="relative p-2 hover:bg-white/5 rounded-lg transition-colors"
+            className="relative p-2"
           >
-            <Bell className="w-6 h-6 sm:w-7 sm:h-7 text-secondary" />
-            <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-background"></span>
+            <Bell className="w-6 h-6 text-foreground" />
+            <span className="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full"></span>
           </button>
         </div>
 
         {/* Title */}
         <div className="mt-6">
-          <h1 className="text-3xl sm:text-4xl font-bold">
-            <span className="text-foreground">Rapid</span>
-            <br />
-            <span className="text-secondary">Response Team</span>
+          <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
+            Rapid
           </h1>
+          <h2 className="text-2xl sm:text-3xl font-bold text-secondary leading-none mt-1 italic">
+            Response Team
+          </h2>
         </div>
 
         {/* User Avatar Section */}
@@ -82,7 +83,7 @@ export default function UserProfileScreen() {
             {/* Edit Button */}
             <button
               onClick={handleEditProfile}
-              className="absolute bottom-0 right-0 w-10 h-10 bg-white flex items-center justify-center hover:bg-gray-100 transition-colors"
+              className="absolute bottom-0 right-0 w-10 h-10 bg-white flex items-center justify-center"
             >
               <Pencil className="w-5 h-5 text-black" />
             </button>
@@ -94,7 +95,7 @@ export default function UserProfileScreen() {
           </h2>
 
           {/* Joined Date */}
-          <p className="mt-2 text-xs sm:text-sm text-secondary tracking-[0.2em] uppercase">
+          <p className="mt-2 text-xs text-secondary tracking-[0.2em] uppercase">
             JOINED {userData.joinedDays} DAYS AGO
           </p>
         </div>
@@ -107,7 +108,7 @@ export default function UserProfileScreen() {
               <button
                 key={item.id}
                 onClick={item.onClick}
-                className="w-full flex items-center border border-accent p-4 hover:bg-white/5 transition-colors"
+                className="w-full flex items-center border border-accent p-4"
               >
                 <div className="w-12 h-12 border border-accent flex items-center justify-center mr-4">
                   <Icon className="w-6 h-6 text-secondary" />
@@ -132,7 +133,7 @@ export default function UserProfileScreen() {
               <button
                 key={item.id}
                 onClick={() => navigate(item.path)}
-                className={`flex flex-col items-center justify-center px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-white/10' : 'hover:bg-white/5'}`}
+                className={`flex flex-col items-center justify-center px-4 py-2 transition-colors ${isActive ? 'bg-white/10 rounded-lg' : ''}`}
               >
                 <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${isActive ? 'text-foreground' : 'text-secondary'}`} />
                 <span className={`text-[10px] sm:text-xs mt-1 tracking-[0.5px] ${isActive ? 'text-foreground font-bold' : 'text-secondary font-normal'}`}>
