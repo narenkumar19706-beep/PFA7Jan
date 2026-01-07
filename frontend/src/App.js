@@ -17,6 +17,7 @@ import NotificationsScreen from "@/pages/NotificationsScreen";
 import UserProfileScreen from "@/pages/UserProfileScreen";
 import ReportBugScreen from "@/pages/ReportBugScreen";
 import ReportUserScreen from "@/pages/ReportUserScreen";
+import HelpSupportScreen from "@/pages/HelpSupportScreen";
 import { Toaster } from "@/components/ui/sonner";
 
 // Protected Route component
@@ -75,6 +76,7 @@ function AppRoutes() {
       <Route path="/chat" element={<ProtectedRoute><ChatScreen /></ProtectedRoute>} />
       <Route path="/notifications" element={<ProtectedRoute><NotificationsScreen /></ProtectedRoute>} />
       <Route path="/user-profile" element={<ProtectedRoute><UserProfileScreen /></ProtectedRoute>} />
+      <Route path="/help-support" element={<ProtectedRoute><HelpSupportScreen /></ProtectedRoute>} />
       <Route path="/report-bug" element={<ProtectedRoute><ReportBugScreen /></ProtectedRoute>} />
       <Route path="/report-user" element={<ProtectedRoute><ReportUserScreen /></ProtectedRoute>} />
     </Routes>
