@@ -208,117 +208,210 @@ export default function SOSHistoryScreen() {
 
         {/* Alert Cards */}
         <div className="mt-4 space-y-3">
-          {/* HISTORY Label for PAST tab */}
-          {activeTab === 'past' && (
-            <div className="flex items-center gap-3 py-2">
-              <div className="flex-1 h-px bg-[#333333]" />
-              <span className="text-xs text-secondary tracking-[1px] uppercase">History</span>
-              <div className="flex-1 h-px bg-[#333333]" />
-            </div>
+          {activeTab === 'current' && (
+            // CURRENT Alerts - Full card design with actions
+            <>
+              {alerts.current.length === 0 ? (
+                <div className="py-12 text-center">
+                  <p className="text-secondary">No active alerts in your area</p>
+                </div>
+              ) : (
+                alerts.current.map((alert) => (
+                  <div 
+                    key={alert.id}
+                    className="bg-[#202020] border border-[#333333] rounded-lg p-4"
+                  >
+                    {/* Top Row - Avatar, Name, Location, Distance */}
+                    <div className="flex items-start gap-3">
+                      {/* Initials Avatar */}
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#333333] rounded-lg flex items-center justify-center flex-shrink-0">
+                        <span className="text-lg sm:text-xl font-bold text-foreground">
+                          {alert.initials}
+                        </span>
+                      </div>
+
+                      {/* Info */}
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-lg sm:text-xl font-bold text-foreground">
+                          {alert.name}
+                        </h4>
+                        <p className="text-sm text-secondary mt-0.5">
+                          {alert.location}
+                        </p>
+                      </div>
+
+                      {/* Distance Badge */}
+                      <div className="bg-[#333333] rounded-lg px-3 py-1.5 flex items-center gap-1.5 flex-shrink-0">
+                        <MapPin className="w-4 h-4 text-foreground" />
+                        <span className="text-sm font-semibold text-foreground">
+                          {alert.distance}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Bottom Row - Actions */}
+                    <div className="mt-4 flex items-center gap-2">
+                      {/* Attending Button */}
+                      <button
+                        onClick={() => handleAttend(alert.id)}
+                        className={`flex-1 h-10 sm:h-11 rounded-lg font-bold text-sm tracking-wide transition-all ${
+                          alert.isAttending
+                            ? 'bg-white text-black'
+                            : 'bg-[#202020] border border-[#333333] text-foreground hover:bg-[#2a2a2a]'
+                        }`}
+                      >
+                        {alert.isAttending ? 'ATTENDING' : 'ATTEND'}
+                      </button>
+
+                      {/* Navigate Button */}
+                      <button
+                        onClick={() => handleNavigate(alert)}
+                        className="w-10 h-10 sm:w-11 sm:h-11 bg-[#202020] border border-[#333333] rounded-lg flex items-center justify-center hover:bg-[#2a2a2a] transition-colors"
+                      >
+                        <Navigation className="w-5 h-5 text-foreground" />
+                      </button>
+
+                      {/* Message Button */}
+                      <button
+                        onClick={() => handleMessage(alert)}
+                        className="w-10 h-10 sm:w-11 sm:h-11 bg-[#202020] border border-[#333333] rounded-lg flex items-center justify-center hover:bg-[#2a2a2a] transition-colors"
+                      >
+                        <MessageSquare className="w-5 h-5 text-foreground" />
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </>
           )}
 
-          {getAlertsByTab().length === 0 ? (
-            <div className="py-12 text-center">
-              <p className="text-secondary">No alerts in this category</p>
-            </div>
-          ) : activeTab === 'past' ? (
-            // PAST Alerts - Simplified card design
-            getAlertsByTab().map((alert) => (
-              <div 
-                key={alert.id}
-                className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg overflow-hidden"
-              >
-                {/* Top Row - Location and Resolved badge */}
-                <div className="p-4 flex items-center justify-between">
-                  <p className="text-base text-secondary">
-                    {alert.location}
-                  </p>
-                  
-                  {/* Resolved Badge */}
-                  <div className="bg-[#333333] border border-[#424242] rounded-lg px-3 py-1.5 flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-secondary" />
-                    <span className="text-sm text-secondary">
-                      Resolved
-                    </span>
-                  </div>
-                </div>
-
-                {/* CLOSED Status Row */}
-                <div className="bg-[#2A2A2A] px-4 py-3 flex items-center justify-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-foreground" />
-                  <span className="text-sm font-semibold text-foreground tracking-wide uppercase">
-                    Closed
-                  </span>
-                </div>
+          {activeTab === 'past' && (
+            // PAST Alerts - Simplified card design with HISTORY label
+            <>
+              <div className="flex items-center gap-3 py-2">
+                <div className="flex-1 h-px bg-[#333333]" />
+                <span className="text-xs text-secondary tracking-[1px] uppercase">History</span>
+                <div className="flex-1 h-px bg-[#333333]" />
               </div>
-            ))
-          ) : (
-            // CURRENT and MY ALERTS - Full card design with actions
-            getAlertsByTab().map((alert) => (
-              <div 
-                key={alert.id}
-                className="bg-[#202020] border border-[#333333] rounded-lg p-4"
-              >
-                {/* Top Row - Avatar, Name, Location, Distance */}
-                <div className="flex items-start gap-3">
-                  {/* Initials Avatar */}
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#333333] rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-lg sm:text-xl font-bold text-foreground">
-                      {alert.initials}
-                    </span>
-                  </div>
-
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-lg sm:text-xl font-bold text-foreground">
-                      {alert.name}
-                    </h4>
-                    <p className="text-sm text-secondary mt-0.5">
+              
+              {alerts.past.map((alert) => (
+                <div 
+                  key={alert.id}
+                  className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg overflow-hidden"
+                >
+                  {/* Top Row - Location and Resolved badge */}
+                  <div className="p-4 flex items-center justify-between">
+                    <p className="text-base text-secondary">
                       {alert.location}
                     </p>
+                    
+                    {/* Resolved Badge */}
+                    <div className="bg-[#333333] border border-[#424242] rounded-lg px-3 py-1.5 flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-secondary" />
+                      <span className="text-sm text-secondary">
+                        Resolved
+                      </span>
+                    </div>
                   </div>
 
-                  {/* Distance Badge */}
-                  <div className="bg-[#333333] rounded-lg px-3 py-1.5 flex items-center gap-1.5 flex-shrink-0">
-                    <MapPin className="w-4 h-4 text-foreground" />
-                    <span className="text-sm font-semibold text-foreground">
-                      {alert.distance}
+                  {/* CLOSED Status Row */}
+                  <div className="bg-[#2A2A2A] px-4 py-3 flex items-center justify-center gap-2">
+                    <CheckCircle className="w-5 h-5 text-foreground" />
+                    <span className="text-sm font-semibold text-foreground tracking-wide uppercase">
+                      Closed
                     </span>
                   </div>
                 </div>
+              ))}
+            </>
+          )}
 
-                {/* Bottom Row - Actions */}
-                <div className="mt-4 flex items-center gap-2">
-                  {/* Attending Button */}
-                  <button
-                    onClick={() => handleAttend(alert.id)}
-                    className={`flex-1 h-10 sm:h-11 rounded-lg font-bold text-sm tracking-wide transition-all ${
-                      alert.isAttending
-                        ? 'bg-white text-black'
-                        : 'bg-[#202020] border border-[#333333] text-foreground hover:bg-[#2a2a2a]'
-                    }`}
-                  >
-                    {alert.isAttending ? 'ATTENDING' : 'ATTEND'}
-                  </button>
+          {activeTab === 'myAlerts' && (
+            // MY ALERTS - Active alert + History
+            <>
+              {/* Active Alert Card */}
+              {alerts.myAlerts.active && (
+                <div className="bg-[#1C1C1C] border border-[#333333] rounded-lg p-4">
+                  {/* Top Row - Location and Distance */}
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-lg sm:text-xl font-bold text-foreground">
+                      {alerts.myAlerts.active.location}
+                    </h4>
+                    
+                    {/* Distance Badge */}
+                    <div className="bg-[#2A2A2A] rounded-lg px-3 py-1.5 flex items-center gap-1.5">
+                      <MapPin className="w-4 h-4 text-foreground" />
+                      <span className="text-sm font-semibold text-foreground">
+                        {alerts.myAlerts.active.distance}
+                      </span>
+                    </div>
+                  </div>
 
-                  {/* Navigate Button */}
-                  <button
-                    onClick={() => handleNavigate(alert)}
-                    className="w-10 h-10 sm:w-11 sm:h-11 bg-[#202020] border border-[#333333] rounded-lg flex items-center justify-center hover:bg-[#2a2a2a] transition-colors"
-                  >
-                    <Navigation className="w-5 h-5 text-foreground" />
-                  </button>
+                  {/* Action Buttons */}
+                  <div className="mt-4 flex items-center gap-2">
+                    {/* Attending Count Button */}
+                    <button
+                      onClick={() => toast.info("Viewing attendees...")}
+                      className="flex-1 h-11 sm:h-12 bg-[#2A2A2A] rounded-lg flex items-center justify-center gap-2"
+                    >
+                      <Users className="w-5 h-5 text-foreground" />
+                      <span className="text-base font-bold text-foreground">
+                        {alerts.myAlerts.active.attendingCount} ATTENDING
+                      </span>
+                    </button>
 
-                  {/* Message Button */}
-                  <button
-                    onClick={() => handleMessage(alert)}
-                    className="w-10 h-10 sm:w-11 sm:h-11 bg-[#202020] border border-[#333333] rounded-lg flex items-center justify-center hover:bg-[#2a2a2a] transition-colors"
-                  >
-                    <MessageSquare className="w-5 h-5 text-foreground" />
-                  </button>
+                    {/* Chat Button */}
+                    <button
+                      onClick={handleChat}
+                      className="flex-1 h-11 sm:h-12 bg-white rounded-lg flex items-center justify-center gap-2"
+                    >
+                      <MessageSquare className="w-5 h-5 text-black" />
+                      <span className="text-base font-bold text-black">
+                        CHAT
+                      </span>
+                    </button>
+                  </div>
                 </div>
+              )}
+
+              {/* History Divider */}
+              <div className="flex items-center gap-3 py-2 mt-2">
+                <div className="flex-1 h-px bg-[#333333]" />
+                <span className="text-xs text-secondary tracking-[1px] uppercase">History</span>
+                <div className="flex-1 h-px bg-[#333333]" />
               </div>
-            ))
+
+              {/* Past Alerts in MY ALERTS */}
+              {alerts.myAlerts.history.map((alert) => (
+                <div 
+                  key={alert.id}
+                  className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg overflow-hidden"
+                >
+                  {/* Top Row - Location and Resolved badge */}
+                  <div className="p-4 flex items-center justify-between">
+                    <p className="text-base text-secondary">
+                      {alert.location}
+                    </p>
+                    
+                    {/* Resolved Badge */}
+                    <div className="bg-[#333333] border border-[#424242] rounded-lg px-3 py-1.5 flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-secondary" />
+                      <span className="text-sm text-secondary">
+                        Resolved
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* CLOSED Status Row */}
+                  <div className="bg-[#2A2A2A] px-4 py-3 flex items-center justify-center gap-2">
+                    <CheckCircle className="w-5 h-5 text-foreground" />
+                    <span className="text-sm font-semibold text-foreground tracking-wide uppercase">
+                      Closed
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </>
           )}
         </div>
       </div>
