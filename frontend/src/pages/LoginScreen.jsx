@@ -8,6 +8,7 @@ export default function LoginScreen() {
   const [phoneDigits, setPhoneDigits] = useState(Array(10).fill(""));
   const inputRefs = useRef([]);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   // Auto-focus first input on mount
   useEffect(() => {
