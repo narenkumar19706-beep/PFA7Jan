@@ -227,6 +227,8 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: "Critical bug fix implemented: Dashboard name display now uses actual user name from AuthContext instead of hardcoded values. Need testing agent to verify complete signup flow with custom name entry and confirm Dashboard shows correct greeting."
+  - agent: "testing"
+    message: "✅ CRITICAL BUG FIX VERIFICATION COMPLETED SUCCESSFULLY: Tested complete signup and login flow end-to-end. All steps working perfectly: Login → Phone number (9876543210) → OTP (123456) → Profile creation with role selection (Individual) → Full name entry ('John Smith') → Account Success → Dashboard. CRITICAL TEST PASSED: Dashboard correctly displays 'Hello John!' using actual user's name instead of hardcoded 'Hello Ananya!'. Authentication system working correctly with proper user data flow from ProfileScreen → AccountSuccessScreen → AuthContext → DashboardScreen. Bug fix implementation successful and verified."
 
 frontend:
   - task: "Report Bug Screen UI Elements"
