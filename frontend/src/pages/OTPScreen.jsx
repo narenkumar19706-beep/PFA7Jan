@@ -92,8 +92,9 @@ export default function OTPScreen() {
     // Simulate API call - Mock functionality
     setTimeout(() => {
       setIsLoading(false);
-      // Navigate to verification success screen
-      navigate("/verified");
+      toast.success("OTP verified successfully!");
+      // Navigate directly to profile screen
+      navigate("/profile");
     }, 1500);
   };
 
