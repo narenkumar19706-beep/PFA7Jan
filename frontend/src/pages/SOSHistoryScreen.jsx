@@ -1,18 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Bell, MapPin, Navigation, MessageSquare, Clock, CheckCircle, Users } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
 import BottomNav from "@/components/BottomNav";
 
-// Mock SOS alerts data
-const alertsData = {
+// Mock SOS alerts data - will be updated with detected location
+const getAlertsData = (district) => ({
   current: [
     {
       id: 1,
       name: "Ananya Rao",
       initials: "AR",
-      location: "from Bengaluru District",
+      location: `from ${district}`,
       distance: "2km away",
       isAttending: true,
     },
@@ -48,7 +48,7 @@ const alertsData = {
   myAlerts: {
     active: {
       id: 6,
-      location: "from Bengaluru District",
+      location: `from ${district}`,
       distance: "2km away",
       attendingCount: 3,
     },
@@ -67,13 +67,32 @@ const alertsData = {
       },
     ],
   },
-};
+});
 
 export default function SOSHistoryScreen() {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState('current');
-  const [alerts, setAlerts] = useState(alertsData);
+  const [userDistrict, setUserDistrict] = useState("Bangalore Urban");
+  const [isLocating, setIsLocating] = useState(false);
+  const [alerts, setAlerts] = useState(getAlertsData("Bangalore Urban"));
+
+  // Auto-detect location on mount
+  useEffect(() => {
+    autoDetectLocation();
+  }, []);
+
+  const autoDetectLocation = () => {
+    setIsLocating(true);
+    
+    // Simulate location detection
+    setTimeout(() => {
+      const district = "Bangalore Urban";
+      setUserDistrict(district);
+      setAlerts(getAlertsData(district));
+      setIsLocating(false);
+    }, 1500);
+  };
 
   const handleAttend = (alertId) => {
     setAlerts(prev => ({
