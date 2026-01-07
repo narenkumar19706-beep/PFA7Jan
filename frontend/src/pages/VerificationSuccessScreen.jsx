@@ -6,8 +6,8 @@ export default function VerificationSuccessScreen() {
   const navigate = useNavigate();
 
   const handleContinue = () => {
-    // Navigate to home/dashboard
-    navigate("/home");
+    // Navigate to profile creation screen
+    navigate("/profile");
   };
 
   return (
