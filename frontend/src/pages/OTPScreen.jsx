@@ -120,16 +120,10 @@ export default function OTPScreen() {
 
       {/* Title Section */}
       <div className="mt-8 sm:mt-10 md:mt-12 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-        <h1 
-          className="text-5xl sm:text-6xl md:text-7xl font-bold text-foreground leading-none"
-          style={{ letterSpacing: '-1.5px' }}
-        >
+        <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
           Rapid
         </h1>
-        <h2 
-          className="text-3xl sm:text-4xl md:text-5xl font-normal text-secondary leading-none mt-2 sm:mt-3"
-          style={{ letterSpacing: '-1px' }}
-        >
+        <h2 className="text-2xl sm:text-3xl text-secondary leading-none mt-1">
           Response Team
         </h2>
       </div>
