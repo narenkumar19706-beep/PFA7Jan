@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Bell } from "lucide-react";
+import { Bell, MapPin } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
 import BottomNav from "@/components/BottomNav";
@@ -10,11 +10,34 @@ export default function DashboardScreen() {
   const location = useLocation();
   const [isHolding, setIsHolding] = useState(false);
   const [holdProgress, setHoldProgress] = useState(0);
+  const [userLocation, setUserLocation] = useState({
+    address: "",
+    district: "Bangalore Urban"
+  });
+  const [isLocating, setIsLocating] = useState(false);
   const holdTimerRef = useRef(null);
   const progressIntervalRef = useRef(null);
   
   // Get user name from state or use default
   const userName = location.state?.userName || "Ananya";
+
+  // Auto-detect location on mount
+  useEffect(() => {
+    autoDetectLocation();
+  }, []);
+
+  const autoDetectLocation = () => {
+    setIsLocating(true);
+    
+    // Simulate location detection
+    setTimeout(() => {
+      setUserLocation({
+        address: "123 MG Road, Koramangala",
+        district: "Bangalore Urban"
+      });
+      setIsLocating(false);
+    }, 1500);
+  };
 
   const handleSOSStart = () => {
     setIsHolding(true);
