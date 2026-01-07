@@ -92,7 +92,15 @@ export default function SOSHistoryScreen() {
   };
 
   const handleMessage = (alert) => {
-    toast.success(`Opening chat with ${alert.name}...`);
+    navigate("/chat", { 
+      state: { 
+        volunteer: {
+          name: alert.name,
+          initials: alert.initials,
+          status: 'available'
+        }
+      }
+    });
   };
 
   const getAlertsByTab = () => {
