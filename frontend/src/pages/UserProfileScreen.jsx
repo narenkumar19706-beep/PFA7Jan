@@ -1,18 +1,20 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { Bell, Headphones, FileQuestion, Pencil, ChevronRight } from "lucide-react";
+import { Bell, Headphones, FileQuestion, Pencil, ChevronRight, LogOut } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
 import BottomNav from "@/components/BottomNav";
+import { useAuth } from "@/context/AuthContext";
 
 export default function UserProfileScreen() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, logout } = useAuth();
 
-  // Mock user data
+  // Use auth user data or defaults
   const userData = {
-    initials: "AR",
-    name: "Ananya Rao",
-    joinedDays: 120
+    initials: user?.name ? user.name.split(' ').map(n => n[0]).join('') : "AR",
+    name: user?.name || "Ananya Rao",
+    joinedDays: user?.joinedDays || 120
   };
 
   const menuItems = [
@@ -32,6 +34,12 @@ export default function UserProfileScreen() {
 
   const handleEditProfile = () => {
     toast.info("Edit profile coming soon!");
+  };
+
+  const handleLogout = () => {
+    logout();
+    toast.success("Logged out successfully");
+    navigate("/");
   };
 
   return (
@@ -112,6 +120,20 @@ export default function UserProfileScreen() {
               </button>
             );
           })}
+
+          {/* Logout Button */}
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center border border-red-500/50 p-4 hover:bg-red-500/10 transition-colors"
+          >
+            <div className="w-12 h-12 border border-red-500/50 flex items-center justify-center mr-4">
+              <LogOut className="w-6 h-6 text-red-500" />
+            </div>
+            <span className="flex-1 text-left text-lg font-bold text-red-500">
+              Log Out
+            </span>
+            <ChevronRight className="w-6 h-6 text-red-500" />
+          </button>
         </div>
       </div>
 
