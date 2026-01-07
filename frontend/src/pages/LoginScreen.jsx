@@ -88,46 +88,46 @@ export default function LoginScreen() {
 
   return (
     <div className="min-h-screen min-h-dvh bg-background flex flex-col px-6 py-10 safe-area-top safe-area-bottom">
-      {/* Logo */}
+      {/* Logo - Paw icon in square border */}
       <div 
-        className="w-16 h-16 border border-foreground flex items-center justify-center animate-fade-in"
+        className="w-16 h-16 border border-accent flex items-center justify-center animate-fade-in"
         style={{ animationDelay: '0.1s' }}
       >
         <PawIcon className="w-8 h-8 text-foreground" />
       </div>
 
       {/* Title Section */}
-      <div className="mt-10 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-        <h1 className="text-[48px] font-extrabold text-foreground leading-none tracking-tight">
+      <div className="mt-12 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+        <h1 className="text-[72px] font-bold text-foreground leading-none" style={{ letterSpacing: '-1.5px' }}>
           Rapid
         </h1>
-        <h2 className="text-[42px] font-normal text-secondary leading-none mt-1">
+        <h2 className="text-[48px] font-normal text-secondary leading-none mt-4" style={{ letterSpacing: '-1px' }}>
           Response Team
         </h2>
       </div>
 
       {/* Tagline */}
-      <div className="mt-10 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-        <p className="text-[22px] text-foreground font-medium leading-snug">
+      <div className="mt-12 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+        <p className="text-[32px] text-foreground font-normal leading-snug" style={{ letterSpacing: '-0.8px' }}>
           where empathy meets action.
         </p>
-        <p className="text-xs text-muted tracking-[0.2em] mt-2 uppercase font-normal">
+        <p className="text-[16px] text-secondary tracking-[1.2px] mt-4 uppercase font-normal">
           A collective for the conscious citizen.
         </p>
       </div>
 
       {/* Phone Input Section */}
-      <div className="mt-12 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-        <label className="text-sm text-secondary tracking-wide-custom uppercase font-normal">
+      <div className="mt-16 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+        <label className="text-[16px] text-secondary tracking-[1.2px] uppercase font-normal">
           Mobile Number
         </label>
         
-        <div className="mt-4 flex items-center gap-4 border-b border-accent pb-3">
+        <div className="mt-4 flex items-center gap-2 border-b border-accent pb-3">
           {/* Country Code */}
-          <span className="text-3xl text-foreground font-light">+91</span>
+          <span className="text-[40px] text-secondary font-normal" style={{ letterSpacing: '-1px' }}>+91</span>
           
           {/* Phone Digits */}
-          <div className="flex gap-1 flex-1">
+          <div className="flex gap-0 flex-1 ml-2">
             {phoneDigits.map((digit, index) => (
               <input
                 key={index}
@@ -140,7 +140,8 @@ export default function LoginScreen() {
                 onChange={(e) => handleDigitChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 onPaste={index === 0 ? handlePaste : undefined}
-                className="w-6 h-10 text-center text-3xl font-light bg-transparent border-none outline-none text-foreground placeholder:text-muted"
+                className="w-[26px] h-12 text-center text-[40px] font-normal bg-transparent border-none outline-none text-foreground placeholder:text-secondary"
+                style={{ letterSpacing: '-1px' }}
                 placeholder="0"
                 aria-label={`Digit ${index + 1}`}
               />
@@ -150,7 +151,7 @@ export default function LoginScreen() {
       </div>
 
       {/* Spacer */}
-      <div className="flex-1 min-h-[80px]" />
+      <div className="flex-1 min-h-[60px]" />
 
       {/* Proceed Button */}
       <div className="animate-slide-up" style={{ animationDelay: '0.5s' }}>
@@ -159,8 +160,8 @@ export default function LoginScreen() {
           disabled={!isPhoneComplete || isLoading}
           className="w-full h-14 bg-primary hover:bg-primary/90 text-primary-foreground rounded-none flex items-center justify-between px-6 group disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <span className="text-base font-semibold tracking-widest-custom uppercase">
-            {isLoading ? "Sending OTP..." : "Proceed"}
+          <span className="text-[24px] font-bold tracking-[1.5px] uppercase">
+            {isLoading ? "Sending..." : "Proceed"}
           </span>
           <div className="w-12 h-12 border border-primary-foreground flex items-center justify-center group-hover:bg-primary-foreground/10 transition-colors">
             <ArrowRight className="w-5 h-5 text-primary-foreground" />
@@ -170,14 +171,14 @@ export default function LoginScreen() {
 
       {/* Footer */}
       <div 
-        className="mt-6 flex items-center justify-center gap-3 animate-fade-in" 
+        className="mt-8 flex items-center justify-center gap-2 animate-fade-in" 
         style={{ animationDelay: '0.6s' }}
       >
-        <span className="text-xs text-secondary tracking-wide-custom uppercase">
+        <span className="text-[12px] text-secondary tracking-[0.6px] uppercase font-normal">
           Secure Access
         </span>
-        <span className="text-xs text-secondary">•</span>
-        <span className="text-xs text-secondary tracking-wide-custom uppercase">
+        <span className="text-[12px] text-secondary">•</span>
+        <span className="text-[12px] text-secondary tracking-[0.6px] uppercase font-normal">
           Privacy Ensured
         </span>
       </div>
