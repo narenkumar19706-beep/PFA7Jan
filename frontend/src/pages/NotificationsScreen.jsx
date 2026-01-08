@@ -213,7 +213,7 @@ export default function NotificationsScreen() {
                         className="w-full h-11 bg-white rounded flex items-center justify-center gap-2 hover:bg-white/90 transition-colors"
                       >
                         <span className="text-sm font-bold text-[#0D0D0D] tracking-wide uppercase">
-                          View Alert
+                          {t('viewAlert')}
                         </span>
                         <ArrowRight className="w-4 h-4 text-[#0D0D0D]" />
                       </button>
@@ -223,7 +223,7 @@ export default function NotificationsScreen() {
                         className="w-full h-11 bg-[#333333] rounded flex items-center justify-center gap-2 hover:bg-[#3a3a3a] transition-colors"
                       >
                         <span className="text-sm font-bold text-foreground tracking-wide uppercase">
-                          Dismiss
+                          {t('dismiss')}
                         </span>
                       </button>
                     ) : null}
