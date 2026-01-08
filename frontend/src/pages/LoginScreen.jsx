@@ -3,12 +3,15 @@ import { ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import PawIcon from "@/components/icons/PawIcon";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function LoginScreen() {
   const [phoneDigits, setPhoneDigits] = useState(Array(10).fill(""));
   const inputRefs = useRef([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   // Auto-focus first input on mount
   useEffect(() => {
@@ -71,7 +74,7 @@ export default function LoginScreen() {
     const phoneNumber = phoneDigits.join("");
     
     if (phoneNumber.length !== 10) {
-      toast.error("Please enter a valid 10-digit mobile number");
+      toast.error(t('errorPhoneRequired'));
       return;
     }
 
@@ -80,7 +83,7 @@ export default function LoginScreen() {
     // Simulate API call - Mock functionality
     setTimeout(() => {
       setIsLoading(false);
-      toast.success("OTP sent to +91 " + phoneNumber);
+      toast.success(t('otpSentTo') + " +91 " + phoneNumber);
       // Navigate to OTP screen with phone number
       navigate("/otp", { state: { phoneNumber } });
     }, 1500);
@@ -90,21 +93,29 @@ export default function LoginScreen() {
 
   return (
     <div className="min-h-screen min-h-dvh bg-background flex flex-col px-5 sm:px-6 md:px-8 pt-12 sm:pt-14 md:pt-16 pb-8 sm:pb-10 safe-area-top safe-area-bottom max-w-lg mx-auto w-full">
-      {/* Logo - Paw icon in square border */}
-      <div 
-        className="w-14 h-14 sm:w-16 sm:h-16 border border-accent flex items-center justify-center animate-fade-in"
-        style={{ animationDelay: '0.1s' }}
-      >
-        <PawIcon className="w-7 h-7 sm:w-8 sm:h-8 text-foreground" />
+      {/* Header with Logo and Language Switcher */}
+      <div className="flex items-start justify-between">
+        {/* Logo - Paw icon in square border */}
+        <div 
+          className="w-14 h-14 sm:w-16 sm:h-16 border border-accent flex items-center justify-center animate-fade-in"
+          style={{ animationDelay: '0.1s' }}
+        >
+          <PawIcon className="w-7 h-7 sm:w-8 sm:h-8 text-foreground" />
+        </div>
+        
+        {/* Language Switcher */}
+        <div className="animate-fade-in" style={{ animationDelay: '0.1s' }}>
+          <LanguageSwitcher variant="compact" />
+        </div>
       </div>
 
       {/* Title Section */}
       <div className="mt-8 sm:mt-10 md:mt-12 animate-fade-in" style={{ animationDelay: '0.2s' }}>
         <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
-          Rapid
+          {t('appName')}
         </h1>
         <h2 className="text-2xl sm:text-3xl text-secondary leading-none mt-1">
-          Response Team
+          {t('appSubtitle')}
         </h2>
       </div>
 
@@ -114,17 +125,17 @@ export default function LoginScreen() {
           className="text-xl sm:text-2xl md:text-3xl text-foreground font-normal leading-snug"
           style={{ letterSpacing: '-0.5px' }}
         >
-          where empathy meets action.
+          {t('tagline')}
         </p>
         <p className="text-xs sm:text-sm text-secondary tracking-[1.2px] mt-2 sm:mt-3 uppercase font-normal">
-          A collective for the conscious citizen.
+          {t('taglineSubtext')}
         </p>
       </div>
 
       {/* Phone Input Section */}
       <div className="mt-10 sm:mt-12 md:mt-16 animate-fade-in" style={{ animationDelay: '0.4s' }}>
         <label className="text-xs sm:text-sm text-secondary tracking-[1.2px] uppercase font-normal">
-          Mobile Number
+          {t('loginTitle')}
         </label>
         
         <div className="mt-3 sm:mt-4 flex items-center border-b border-accent pb-2 sm:pb-3">
@@ -173,7 +184,7 @@ export default function LoginScreen() {
             style={{ backgroundColor: 'white' }}
           >
             <span className="text-lg sm:text-xl md:text-2xl font-bold tracking-[1.5px] uppercase text-black">
-              {isLoading ? "Sending..." : "Proceed"}
+              {isLoading ? t('loginSending') : t('loginProceed')}
             </span>
             <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center border border-black flex-shrink-0">
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
@@ -188,11 +199,11 @@ export default function LoginScreen() {
         style={{ animationDelay: '0.6s' }}
       >
         <span className="text-[10px] sm:text-xs text-secondary tracking-[0.6px] uppercase font-normal">
-          Secure Access
+          {t('secureAccess')}
         </span>
         <span className="text-[10px] sm:text-xs text-secondary">•</span>
         <span className="text-[10px] sm:text-xs text-secondary tracking-[0.6px] uppercase font-normal">
-          Privacy Ensured
+          {t('privacyEnsured')}
         </span>
       </div>
     </div>

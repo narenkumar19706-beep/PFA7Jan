@@ -3,6 +3,7 @@ import { Bell, MessageSquare } from "lucide-react";
 import PawIcon from "@/components/icons/PawIcon";
 import BottomNav from "@/components/BottomNav";
 import { useLocationContext } from "@/context/LocationContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 // Mock volunteer data
 const volunteers = [
@@ -10,7 +11,6 @@ const volunteers = [
     id: 1,
     name: "Ananya Rao",
     status: "available",
-    statusText: "Available Now",
     avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
     bgColor: "#29B6F6"
   },
@@ -18,7 +18,6 @@ const volunteers = [
     id: 2,
     name: "Arjun Nair",
     status: "busy",
-    statusText: "Busy",
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
     bgColor: "#00BCD4"
   },
@@ -26,7 +25,6 @@ const volunteers = [
     id: 3,
     name: "Meera Iyer",
     status: "available",
-    statusText: "Available Now",
     avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop",
     bgColor: "#009688"
   },
@@ -34,7 +32,6 @@ const volunteers = [
     id: 4,
     name: "Vikram Singh",
     status: "offline",
-    statusText: "Offline",
     avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
     bgColor: "#7CB342"
   }
@@ -43,6 +40,7 @@ const volunteers = [
 export default function CommunityScreen() {
   const navigate = useNavigate();
   const { location: userLocation, isLocating } = useLocationContext();
+  const { t } = useLanguage();
 
   const handleMessage = (volunteer) => {
     navigate("/chat", { 
@@ -62,6 +60,15 @@ export default function CommunityScreen() {
       case 'busy': return '#FF9800';
       case 'offline': return '#9E9E9E';
       default: return '#9E9E9E';
+    }
+  };
+
+  const getStatusText = (status) => {
+    switch (status) {
+      case 'available': return t('availableNow');
+      case 'busy': return t('busy');
+      case 'offline': return t('offline');
+      default: return t('offline');
     }
   };
 
@@ -87,28 +94,28 @@ export default function CommunityScreen() {
         {/* Title */}
         <div className="mt-6">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
-            Rapid
+            {t('appName')}
           </h1>
           <h2 className="text-2xl sm:text-3xl text-secondary leading-none mt-1">
-            Response Team
+            {t('appSubtitle')}
           </h2>
         </div>
 
         {/* Location Info */}
         <div className="mt-8">
           <p className="text-base text-foreground">
-            Local Volunteer Network
+            {t('localVolunteerNetwork')}
           </p>
           <div className="flex items-center gap-2 mt-1">
             <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
-              {isLocating ? "Detecting..." : userLocation.district || "Your District"}
+              {isLocating ? t('detecting') : userLocation.district || t('yourDistrict')}
             </h3>
             {isLocating && (
               <div className="w-4 h-4 border-2 border-secondary border-t-transparent rounded-full animate-spin" />
             )}
           </div>
           <p className="text-xs text-secondary tracking-[0.15em] mt-4 uppercase">
-            VOLUNTEERS IN YOUR AREA
+            {t('volunteersInArea')}
           </p>
         </div>
 
@@ -141,7 +148,7 @@ export default function CommunityScreen() {
                     style={{ backgroundColor: getStatusColor(volunteer.status) }}
                   />
                   <span className={`text-sm ${volunteer.status === 'offline' ? 'text-secondary' : 'text-foreground'}`}>
-                    {volunteer.statusText}
+                    {getStatusText(volunteer.status)}
                   </span>
                 </div>
               </div>

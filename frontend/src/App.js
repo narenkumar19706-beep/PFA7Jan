@@ -2,6 +2,8 @@ import "@/App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { LocationProvider } from "@/context/LocationContext";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
+import { SOSProvider } from "@/context/SOSContext";
+import { LanguageProvider } from "@/context/LanguageContext";
 import LoginScreen from "@/pages/LoginScreen";
 import OTPScreen from "@/pages/OTPScreen";
 import ProfileScreen from "@/pages/ProfileScreen";
@@ -16,6 +18,7 @@ import NotificationsScreen from "@/pages/NotificationsScreen";
 import UserProfileScreen from "@/pages/UserProfileScreen";
 import ReportBugScreen from "@/pages/ReportBugScreen";
 import ReportUserScreen from "@/pages/ReportUserScreen";
+import HelpSupportScreen from "@/pages/HelpSupportScreen";
 import { Toaster } from "@/components/ui/sonner";
 
 // Protected Route component
@@ -74,6 +77,7 @@ function AppRoutes() {
       <Route path="/chat" element={<ProtectedRoute><ChatScreen /></ProtectedRoute>} />
       <Route path="/notifications" element={<ProtectedRoute><NotificationsScreen /></ProtectedRoute>} />
       <Route path="/user-profile" element={<ProtectedRoute><UserProfileScreen /></ProtectedRoute>} />
+      <Route path="/help-support" element={<ProtectedRoute><HelpSupportScreen /></ProtectedRoute>} />
       <Route path="/report-bug" element={<ProtectedRoute><ReportBugScreen /></ProtectedRoute>} />
       <Route path="/report-user" element={<ProtectedRoute><ReportUserScreen /></ProtectedRoute>} />
     </Routes>
@@ -83,14 +87,18 @@ function AppRoutes() {
 function App() {
   return (
     <div className="App min-h-screen bg-background">
-      <AuthProvider>
-        <LocationProvider>
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
-          <Toaster position="top-center" />
-        </LocationProvider>
-      </AuthProvider>
+      <LanguageProvider>
+        <AuthProvider>
+          <LocationProvider>
+            <SOSProvider>
+              <BrowserRouter>
+                <AppRoutes />
+              </BrowserRouter>
+              <Toaster position="top-center" />
+            </SOSProvider>
+          </LocationProvider>
+        </AuthProvider>
+      </LanguageProvider>
     </div>
   );
 }

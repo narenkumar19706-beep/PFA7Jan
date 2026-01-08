@@ -1,45 +1,47 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { Bell, Headphones, FileQuestion, Pencil, ChevronRight, LogOut } from "lucide-react";
+import { Bell, Headphones, Pencil, ChevronRight, LogOut, Globe } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
 import BottomNav from "@/components/BottomNav";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage, LANGUAGES } from "@/context/LanguageContext";
 
 export default function UserProfileScreen() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
+  const { t, language, changeLanguage } = useLanguage();
 
-  // Use auth user data or defaults
+  // Use auth user data - display actual user name from context
   const userData = {
-    initials: user?.name ? user.name.split(' ').map(n => n[0]).join('') : "AR",
-    name: user?.name || "Ananya Rao",
-    joinedDays: user?.joinedDays || 120
+    initials: user?.name ? user.name.split(' ').map(n => n[0]).join('').toUpperCase() : "U",
+    name: user?.name || "User",
+    joinedDays: user?.joinedDays || 0
   };
 
   const menuItems = [
     { 
       id: 'help', 
       icon: Headphones, 
-      label: 'Help & Support',
-      onClick: () => navigate("/report-bug")
-    },
-    { 
-      id: 'faq', 
-      icon: FileQuestion, 
-      label: 'FAQ',
-      onClick: () => navigate("/report-user")
+      labelKey: 'profileMenuHelp',
+      onClick: () => navigate("/help-support")
     },
   ];
 
   const handleEditProfile = () => {
-    toast.info("Edit profile coming soon!");
+    toast.info(t('editProfile'));
   };
 
   const handleLogout = () => {
     logout();
-    toast.success("Logged out successfully");
+    toast.success(t('loggedOut'));
     navigate("/");
+  };
+
+  const toggleLanguage = () => {
+    const newLang = language === 'en' ? 'hi' : 'en';
+    changeLanguage(newLang);
+    toast.success(newLang === 'hi' ? 'भाषा बदल गई: हिंदी' : 'Language changed: English');
   };
 
   return (
@@ -64,10 +66,10 @@ export default function UserProfileScreen() {
         {/* Title */}
         <div className="mt-6">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
-            Rapid
+            {t('appName')}
           </h1>
           <h2 className="text-2xl sm:text-3xl text-secondary leading-none mt-1">
-            Response Team
+            {t('appSubtitle')}
           </h2>
         </div>
 
@@ -96,7 +98,7 @@ export default function UserProfileScreen() {
 
           {/* Joined Date */}
           <p className="mt-2 text-xs text-secondary tracking-[0.2em] uppercase">
-            JOINED {userData.joinedDays} DAYS AGO
+            {t('joinedDaysAgo', { days: userData.joinedDays })}
           </p>
         </div>
 
@@ -114,12 +116,38 @@ export default function UserProfileScreen() {
                   <Icon className="w-6 h-6 text-secondary" />
                 </div>
                 <span className="flex-1 text-left text-lg font-bold text-foreground">
-                  {item.label}
+                  {t(item.labelKey)}
                 </span>
                 <ChevronRight className="w-6 h-6 text-secondary" />
               </button>
             );
           })}
+
+          {/* Language Toggle Button */}
+          <button
+            onClick={toggleLanguage}
+            className="w-full flex items-center border border-accent p-4 hover:bg-white/5 transition-colors"
+          >
+            <div className="w-12 h-12 border border-accent flex items-center justify-center mr-4">
+              <Globe className="w-6 h-6 text-secondary" />
+            </div>
+            <div className="flex-1 text-left">
+              <span className="text-lg font-bold text-foreground block">
+                {t('profileMenuLanguage')}
+              </span>
+              <span className="text-sm text-secondary">
+                {language === 'en' ? 'English' : 'हिंदी'}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className={`text-sm px-2 py-1 rounded ${language === 'en' ? 'bg-white text-black' : 'text-secondary'}`}>
+                EN
+              </span>
+              <span className={`text-sm px-2 py-1 rounded ${language === 'hi' ? 'bg-white text-black' : 'text-secondary'}`}>
+                हि
+              </span>
+            </div>
+          </button>
 
           {/* Logout Button */}
           <button
@@ -130,7 +158,7 @@ export default function UserProfileScreen() {
               <LogOut className="w-6 h-6 text-red-500" />
             </div>
             <span className="flex-1 text-left text-lg font-bold text-red-500">
-              Log Out
+              {t('profileMenuLogout')}
             </span>
             <ChevronRight className="w-6 h-6 text-red-500" />
           </button>

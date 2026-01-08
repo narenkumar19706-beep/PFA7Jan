@@ -2,30 +2,46 @@ import { ArrowRight, Check } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import PawIcon from "@/components/icons/PawIcon";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
+
+// Storage key for registered users (simulates backend database)
+const REGISTERED_USERS_KEY = 'pfa_registered_users';
 
 export default function AccountSuccessScreen() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();
+  const { t } = useLanguage();
   
   // Get user data from navigation state
   const userData = location.state?.userData;
+  const phoneNumber = location.state?.phoneNumber;
 
   const handleProceed = () => {
-    // Log the user in with actual user data from profile creation
-    login({
+    const userToSave = {
       name: userData?.name || 'User',
       email: userData?.email || '',
+      phone: phoneNumber || '',
       role: userData?.role || 'individual',
       address: userData?.address || '',
       district: userData?.district || '',
-      joinedDays: 0 // New user
-    });
+      joinedDays: 0, // New user
+      createdAt: Date.now()
+    };
     
-    // Navigate to home with user name
-    navigate("/home", {
-      state: { userName: userData?.name || 'User' }
-    });
+    // Save user to registered users storage (simulates database)
+    // This allows returning users to skip profile creation on future logins
+    if (phoneNumber) {
+      const registeredUsers = JSON.parse(localStorage.getItem(REGISTERED_USERS_KEY) || '{}');
+      registeredUsers[phoneNumber] = userToSave;
+      localStorage.setItem(REGISTERED_USERS_KEY, JSON.stringify(registeredUsers));
+    }
+    
+    // Log the user in with actual user data from profile creation
+    login(userToSave);
+    
+    // Navigate to home
+    navigate("/home", { replace: true });
   };
 
   return (
@@ -41,10 +57,10 @@ export default function AccountSuccessScreen() {
       {/* Title Section */}
       <div className="mt-8 sm:mt-10 md:mt-12 animate-fade-in" style={{ animationDelay: '0.2s' }}>
         <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
-          Rapid
+          {t('appName')}
         </h1>
         <h2 className="text-2xl sm:text-3xl text-secondary leading-none mt-1">
-          Response Team
+          {t('appSubtitle')}
         </h2>
       </div>
 
@@ -54,10 +70,10 @@ export default function AccountSuccessScreen() {
           className="text-base sm:text-lg md:text-xl text-foreground font-normal leading-snug"
           style={{ letterSpacing: '-0.3px' }}
         >
-          where empathy meets action.
+          {t('tagline')}
         </p>
         <p className="text-xs sm:text-sm text-secondary tracking-[1px] mt-2 uppercase font-normal">
-          A collective for the conscious citizen.
+          {t('taglineSubtext')}
         </p>
       </div>
 
@@ -73,12 +89,12 @@ export default function AccountSuccessScreen() {
 
         {/* Success Message */}
         <h3 className="mt-8 sm:mt-10 text-2xl sm:text-3xl md:text-4xl font-bold text-foreground text-center leading-tight">
-          Account Successfully<br />Created!
+          {t('accountCreated')}
         </h3>
 
         {/* Welcome Text */}
         <p className="mt-4 sm:mt-5 text-sm sm:text-base text-secondary font-normal text-center leading-relaxed max-w-xs">
-          Welcome to Rapid Response Team! You are now ready to make a difference.
+          {t('welcomeMessage')}
         </p>
       </div>
 
@@ -94,7 +110,7 @@ export default function AccountSuccessScreen() {
             style={{ backgroundColor: 'white' }}
           >
             <span className="text-sm sm:text-base md:text-lg font-bold tracking-[0.5px] uppercase text-black">
-              Proceed to Dashboard
+              {t('proceedToDashboard')}
             </span>
             <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center border border-black flex-shrink-0">
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
@@ -109,11 +125,11 @@ export default function AccountSuccessScreen() {
         style={{ animationDelay: '0.6s' }}
       >
         <span className="text-[10px] sm:text-xs text-secondary tracking-[0.6px] uppercase font-normal">
-          Secure Access
+          {t('secureAccess')}
         </span>
         <span className="text-[10px] sm:text-xs text-secondary">•</span>
         <span className="text-[10px] sm:text-xs text-secondary tracking-[0.6px] uppercase font-normal">
-          Privacy Ensured
+          {t('privacyEnsured')}
         </span>
       </div>
     </div>

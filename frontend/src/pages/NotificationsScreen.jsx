@@ -3,15 +3,17 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Bell, Home, Users, Megaphone, User, ArrowRight, CheckCircle, UserPlus } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
+import { useLanguage } from "@/context/LanguageContext";
 
 // Mock notifications data
 const initialNotifications = [
   {
     id: 1,
     type: "alert_attending",
-    title: "Ananya Rao is attending your alert",
+    titleKey: "alertAttending",
+    titleParams: { name: "Ananya Rao" },
     subtitle: "Bangalore District",
-    time: "5m ago",
+    time: "5m",
     icon: "megaphone",
     iconBg: "#FFCDD2",
     iconColor: "#C62828",
@@ -20,9 +22,9 @@ const initialNotifications = [
   {
     id: 2,
     type: "new_volunteer",
-    title: "New volunteer joined your district",
+    titleKey: "newVolunteerJoined",
     subtitle: "Indiranagar Team",
-    time: "2h ago",
+    time: "2h",
     icon: "user",
     iconBg: "#333333",
     iconColor: "#FFFFFF",
@@ -31,9 +33,10 @@ const initialNotifications = [
   {
     id: 3,
     type: "alert_resolved",
-    title: "Alert Resolved: Mysore Road",
-    subtitle: "Status updated by admin",
-    time: "1d ago",
+    titleKey: "alertResolved",
+    titleParams: { location: "Mysore Road" },
+    subtitle: "Status updated",
+    time: "1d",
     icon: "check",
     iconBg: "#C8E6C9",
     iconColor: "#2E7D32",
@@ -44,17 +47,18 @@ const initialNotifications = [
 export default function NotificationsScreen() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t, isHindi } = useLanguage();
   const [notifications, setNotifications] = useState(initialNotifications);
   const [hasNotification, setHasNotification] = useState(true);
 
   const handleViewAlert = (notification) => {
-    toast.success("Viewing alert details...");
+    toast.success(t('viewAlert'));
     navigate("/sos");
   };
 
   const handleDismiss = (notificationId) => {
     setNotifications(prev => prev.filter(n => n.id !== notificationId));
-    toast.success("Notification dismissed");
+    toast.success(t('dismiss'));
   };
 
   const getIcon = (iconType) => {
@@ -70,11 +74,38 @@ export default function NotificationsScreen() {
     }
   };
 
+  // Get notification title text based on type
+  const getNotificationTitle = (notification) => {
+    if (isHindi) {
+      switch (notification.type) {
+        case "alert_attending":
+          return `${notification.titleParams?.name || 'कोई'} आपके अलर्ट पर आ रहे हैं`;
+        case "new_volunteer":
+          return "नया वॉलंटियर आपके जिले में जुड़ा";
+        case "alert_resolved":
+          return `अलर्ट हल हो गया: ${notification.titleParams?.location || ''}`;
+        default:
+          return notification.subtitle;
+      }
+    } else {
+      switch (notification.type) {
+        case "alert_attending":
+          return `${notification.titleParams?.name || 'Someone'} is attending your alert`;
+        case "new_volunteer":
+          return "New volunteer joined your district";
+        case "alert_resolved":
+          return `Alert Resolved: ${notification.titleParams?.location || ''}`;
+        default:
+          return notification.subtitle;
+      }
+    }
+  };
+
   const navItems = [
-    { id: 'home', icon: Home, label: 'HOME', path: '/home' },
-    { id: 'community', icon: Users, label: 'COMMUNITY', path: '/community' },
-    { id: 'sos', icon: Megaphone, label: 'SOS', path: '/sos' },
-    { id: 'profile', icon: User, label: 'PROFILE', path: '/user-profile' },
+    { id: 'home', icon: Home, labelKey: 'navHome', path: '/home' },
+    { id: 'community', icon: Users, labelKey: 'navCommunity', path: '/community' },
+    { id: 'sos', icon: Megaphone, labelKey: 'navSOS', path: '/sos' },
+    { id: 'profile', icon: User, labelKey: 'navProfile', path: '/user-profile' },
   ];
 
   const currentPath = location.pathname;
@@ -108,27 +139,27 @@ export default function NotificationsScreen() {
         {/* Title Section */}
         <div className="mt-6 sm:mt-8">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
-            Rapid
+            {t('appName')}
           </h1>
           <h2 className="text-2xl sm:text-3xl text-secondary leading-none mt-1">
-            Response Team
+            {t('appSubtitle')}
           </h2>
         </div>
 
         {/* Tagline with Red Border */}
         <div className="mt-6 sm:mt-8 border-l-4 border-[#E53935] pl-4">
           <p className="text-sm sm:text-base text-[#E0E0E0] uppercase tracking-wider">
-            where empathy meets action.
+            {t('tagline')}
           </p>
           <p className="text-xs sm:text-sm text-[#E0E0E0] uppercase tracking-wider mt-1">
-            A collective for the conscious citizen.
+            {t('taglineSubtext')}
           </p>
         </div>
 
         {/* Notifications Title */}
         <div className="mt-8">
           <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
-            Notifications
+            {t('notificationsTitle')}
           </h3>
         </div>
 
@@ -137,7 +168,7 @@ export default function NotificationsScreen() {
           {notifications.length === 0 ? (
             <div className="py-12 text-center">
               <Bell className="w-12 h-12 text-secondary mx-auto mb-4 opacity-50" />
-              <p className="text-secondary">No notifications yet</p>
+              <p className="text-secondary">{t('noNotifications')}</p>
             </div>
           ) : (
             notifications.map((notification) => (
@@ -160,7 +191,7 @@ export default function NotificationsScreen() {
                   {/* Text Content */}
                   <div className="flex-1 min-w-0">
                     <h4 className="text-base sm:text-lg font-bold text-foreground leading-snug">
-                      {notification.title}
+                      {getNotificationTitle(notification)}
                     </h4>
                     <p className="text-sm text-secondary mt-0.5">
                       {notification.subtitle}
@@ -182,7 +213,7 @@ export default function NotificationsScreen() {
                         className="w-full h-11 bg-white rounded flex items-center justify-center gap-2 hover:bg-white/90 transition-colors"
                       >
                         <span className="text-sm font-bold text-[#0D0D0D] tracking-wide uppercase">
-                          View Alert
+                          {t('viewAlert')}
                         </span>
                         <ArrowRight className="w-4 h-4 text-[#0D0D0D]" />
                       </button>
@@ -192,7 +223,7 @@ export default function NotificationsScreen() {
                         className="w-full h-11 bg-[#333333] rounded flex items-center justify-center gap-2 hover:bg-[#3a3a3a] transition-colors"
                       >
                         <span className="text-sm font-bold text-foreground tracking-wide uppercase">
-                          Dismiss
+                          {t('dismiss')}
                         </span>
                       </button>
                     ) : null}
@@ -229,7 +260,7 @@ export default function NotificationsScreen() {
                     isActive ? 'text-foreground font-bold' : 'text-secondary font-normal'
                   }`}
                 >
-                  {item.label}
+                  {t(item.labelKey)}
                 </span>
               </button>
             );

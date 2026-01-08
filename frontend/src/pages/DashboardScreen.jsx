@@ -6,12 +6,16 @@ import PawIcon from "@/components/icons/PawIcon";
 import BottomNav from "@/components/BottomNav";
 import { useLocationContext } from "@/context/LocationContext";
 import { useAuth } from "@/context/AuthContext";
+import { useSOS } from "@/context/SOSContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function DashboardScreen() {
   const navigate = useNavigate();
   const routeLocation = useLocation();
   const { location: userLocation, isLocating } = useLocationContext();
   const { user } = useAuth();
+  const { activateSOS, isSOSActive } = useSOS();
+  const { t } = useLanguage();
   
   const [isHolding, setIsHolding] = useState(false);
   const [holdProgress, setHoldProgress] = useState(0);
@@ -20,6 +24,13 @@ export default function DashboardScreen() {
   
   // Get user name from auth context, then route state, then default
   const userName = user?.name || routeLocation.state?.userName || "User";
+
+  // If SOS is already active, redirect to SOS Active screen
+  useEffect(() => {
+    if (isSOSActive) {
+      navigate("/sos-active", { replace: true });
+    }
+  }, [isSOSActive, navigate]);
 
   const handleSOSStart = () => {
     setIsHolding(true);
@@ -62,12 +73,16 @@ export default function DashboardScreen() {
       navigator.vibrate([200, 100, 200, 100, 200]);
     }
     
+    // Activate SOS through context (sets activatedAt timestamp for count-up timer)
+    activateSOS(
+      { name: userName, id: user?.id },
+      { address: userLocation.address, district: userLocation.district }
+    );
+    
     toast.success("SOS Alert Activated!", { duration: 2000 });
     
     setTimeout(() => {
-      navigate("/sos-active", {
-        state: { userLocation }
-      });
+      navigate("/sos-active", { replace: true });
     }, 500);
   };
 
@@ -100,27 +115,27 @@ export default function DashboardScreen() {
         {/* Title */}
         <div className="mt-6">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
-            Rapid
+            {t('appName')}
           </h1>
           <h2 className="text-2xl sm:text-3xl text-secondary leading-none mt-1">
-            Response Team
+            {t('appSubtitle')}
           </h2>
         </div>
 
         {/* Greeting */}
         <div className="mt-8">
           <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
-            Hello {userName.split(' ')[0]}!
+            {t('hello')} {userName.split(' ')[0]}!
           </h3>
           <p className="text-xs text-secondary tracking-[0.15em] mt-2 uppercase">
-            WELCOME TO PEOPLE FOR ANIMALS.
+            {t('welcomeToPFA')}
           </p>
           
           {/* Location Display */}
           <div className="mt-4 flex items-center gap-2">
             <MapPin className="w-4 h-4 text-secondary" />
             <span className="text-sm text-secondary">
-              {isLocating ? "Detecting location..." : userLocation.district || "Location not available"}
+              {isLocating ? t('locationDetecting') : userLocation.district || t('locationNotAvailable')}
             </span>
           </div>
         </div>
@@ -148,7 +163,7 @@ export default function DashboardScreen() {
               onTouchCancel={handleSOSEnd}
             >
               <span className="text-5xl sm:text-6xl font-bold text-white">SOS</span>
-              <span className="text-xl sm:text-2xl font-normal text-white mt-1">HELP</span>
+              <span className="text-xl sm:text-2xl font-normal text-white mt-1">{t('sosHelp')}</span>
               
               {isHolding && (
                 <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
@@ -160,7 +175,7 @@ export default function DashboardScreen() {
           </div>
 
           <p className="mt-8 text-xs text-secondary text-center tracking-[0.15em] uppercase leading-relaxed">
-            PRESS AND HOLD FOR 3 SECONDS<br />TO ACTIVATE
+            {t('sosHoldInstruction')}
           </p>
         </div>
       </div>

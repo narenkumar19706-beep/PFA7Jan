@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Bell, Home, Users, Megaphone, User, Plus, Send, ArrowLeft } from "lucide-react";
+import { Bell, Home, Users, Megaphone, User, Plus, Send } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
+import { useLanguage } from "@/context/LanguageContext";
 
 // Mock chat messages
 const initialMessages = [
@@ -31,6 +32,7 @@ const initialMessages = [
 export default function ChatScreen() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useLanguage();
   const [messages, setMessages] = useState(initialMessages);
   const [newMessage, setNewMessage] = useState("");
   const [hasNotification, setHasNotification] = useState(true);
@@ -98,10 +100,10 @@ export default function ChatScreen() {
   };
 
   const navItems = [
-    { id: 'home', icon: Home, label: 'HOME', path: '/home' },
-    { id: 'community', icon: Users, label: 'COMMUNITY', path: '/community' },
-    { id: 'sos', icon: Megaphone, label: 'SOS', path: '/sos' },
-    { id: 'profile', icon: User, label: 'PROFILE', path: '/user-profile' },
+    { id: 'home', icon: Home, labelKey: 'navHome', path: '/home' },
+    { id: 'community', icon: Users, labelKey: 'navCommunity', path: '/community' },
+    { id: 'sos', icon: Megaphone, labelKey: 'navSOS', path: '/sos' },
+    { id: 'profile', icon: User, labelKey: 'navProfile', path: '/user-profile' },
   ];
 
   return (
@@ -123,7 +125,7 @@ export default function ChatScreen() {
               className="relative p-2"
               onClick={() => {
                 setHasNotification(false);
-                toast.info("No new notifications");
+                toast.info(t('noNotifications'));
               }}
             >
               <Bell className="w-6 h-6 text-foreground" />
@@ -136,10 +138,10 @@ export default function ChatScreen() {
           {/* Title Section */}
           <div className="mt-4">
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
-              Rapid
+              {t('appName')}
             </h1>
             <h2 className="text-2xl sm:text-3xl text-secondary leading-none mt-1">
-              Response Team
+              {t('appSubtitle')}
             </h2>
           </div>
 
@@ -162,8 +164,8 @@ export default function ChatScreen() {
                 <h3 className="text-lg sm:text-xl font-bold text-foreground">
                   {volunteer.name}
                 </h3>
-                <p className="text-xs font-bold text-[#FF0000] tracking-wide uppercase">
-                  Volunteer
+                <p className="text-xs font-bold text-[#00FF00] tracking-wide uppercase">
+                  {t('online')}
                 </p>
               </div>
             </div>
@@ -234,7 +236,7 @@ export default function ChatScreen() {
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Type a message..."
+              placeholder={t('typeMessage')}
               className="w-full h-10 bg-[#2E2E2E] rounded-lg px-4 text-base text-foreground placeholder:text-[#B3B3B3] focus:outline-none focus:ring-1 focus:ring-white/30"
             />
           </div>
@@ -273,7 +275,7 @@ export default function ChatScreen() {
                     isSOS ? 'text-[#FF0000] font-bold' : 'text-foreground font-normal'
                   }`}
                 >
-                  {item.label}
+                  {t(item.labelKey)}
                 </span>
               </button>
             );

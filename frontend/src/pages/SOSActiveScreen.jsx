@@ -1,42 +1,110 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Bell, Camera, Square } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
 import { HomeIcon, CommunityIcon, SOSIcon, ProfileIcon } from "@/components/BottomNav";
+import { useSOS } from "@/context/SOSContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function SOSActiveScreen() {
   const navigate = useNavigate();
-  const [timeRemaining, setTimeRemaining] = useState(150); // 2:30 in seconds
+  const { sosState, isSOSActive, activatedAt, deactivateSOS } = useSOS();
+  const { t } = useLanguage();
+  
+  // COUNT-UP timer state - starts at 0 and increments
+  const [elapsedSeconds, setElapsedSeconds] = useState(() => {
+    // Initialize with calculated elapsed time if activatedAt exists
+    if (activatedAt) {
+      return Math.floor((Date.now() - activatedAt) / 1000);
+    }
+    return 0;
+  });
   const timerRef = useRef(null);
+  const startTimeRef = useRef(activatedAt);
 
-  // Start countdown timer
+  // Calculate elapsed time accurately based on activatedAt timestamp
+  const calculateElapsedTime = useCallback(() => {
+    if (!activatedAt) return 0;
+    return Math.floor((Date.now() - activatedAt) / 1000);
+  }, [activatedAt]);
+
+  // Initialize and run COUNT-UP timer
   useEffect(() => {
+    // If SOS is not active, redirect to home
+    if (!isSOSActive) {
+      navigate("/home", { replace: true });
+      return;
+    }
+
+    // Update ref when activatedAt changes
+    startTimeRef.current = activatedAt;
+
+    // Start the COUNT-UP timer interval
     timerRef.current = setInterval(() => {
-      setTimeRemaining(prev => {
-        if (prev <= 0) {
-          clearInterval(timerRef.current);
-          return 0;
-        }
-        return prev - 1;
-      });
+      // Always calculate from the original activatedAt timestamp
+      // This ensures accuracy even after app backgrounding
+      const currentElapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
+      setElapsedSeconds(currentElapsed);
     }, 1000);
 
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
     };
-  }, []);
+  }, [isSOSActive, activatedAt, navigate]);
 
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
+  // Listen for SOS deactivation (real-time sync)
+  useEffect(() => {
+    if (!isSOSActive && timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+      // Auto-navigate away when SOS is deactivated by anyone
+      navigate("/home", { replace: true });
+    }
+  }, [isSOSActive, navigate]);
+
+  // Handle visibility change (app backgrounding/foregrounding)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && isSOSActive && activatedAt) {
+        // Recalculate elapsed time when app comes to foreground
+        const currentElapsed = calculateElapsedTime();
+        setElapsedSeconds(currentElapsed);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [isSOSActive, activatedAt, calculateElapsedTime]);
+
+  // Format time as MM:SS or HH:MM:SS if over an hour
+  const formatTime = (totalSeconds) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const mins = Math.floor((totalSeconds % 3600) / 60);
+    const secs = totalSeconds % 60;
+    
+    if (hours > 0) {
+      return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  // Handle STOP SOS - immediately deactivates for all users
   const handleStopSOS = () => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    toast.success("SOS Alert Stopped");
-    navigate("/home");
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    
+    // Deactivate SOS system-wide (updates localStorage and dispatches events)
+    deactivateSOS();
+    
+    toast.success(t('success'));
+    
+    navigate("/home", { replace: true });
   };
 
   const handleAddProof = () => {
@@ -44,10 +112,10 @@ export default function SOSActiveScreen() {
   };
 
   const navItems = [
-    { id: 'home', icon: HomeIcon, label: 'HOME', path: '/home' },
-    { id: 'community', icon: CommunityIcon, label: 'COMMUNITY', path: '/community' },
-    { id: 'sos', icon: SOSIcon, label: 'SOS', path: '/sos-active', isActive: true },
-    { id: 'profile', icon: ProfileIcon, label: 'PROFILE', path: '/user-profile' },
+    { id: 'home', icon: HomeIcon, labelKey: 'navHome', path: '/home' },
+    { id: 'community', icon: CommunityIcon, labelKey: 'navCommunity', path: '/community' },
+    { id: 'sos', icon: SOSIcon, labelKey: 'navSOS', path: '/sos-active', isActive: true },
+    { id: 'profile', icon: ProfileIcon, labelKey: 'navProfile', path: '/user-profile' },
   ];
 
   return (
@@ -75,10 +143,10 @@ export default function SOSActiveScreen() {
         {/* Title Section */}
         <div className="mt-6">
           <h1 className="text-4xl sm:text-5xl font-bold text-white leading-none">
-            Rapid
+            {t('appName')}
           </h1>
           <h2 className="text-2xl sm:text-3xl text-white/60 leading-none mt-1">
-            Response Team
+            {t('appSubtitle')}
           </h2>
         </div>
 
@@ -88,7 +156,7 @@ export default function SOSActiveScreen() {
             className="text-lg sm:text-xl font-bold tracking-[0.2em] uppercase"
             style={{ color: '#E50000' }}
           >
-            SOS ACTIVATED!
+            {t('sosActivated')}
           </h3>
         </div>
 
@@ -113,18 +181,18 @@ export default function SOSActiveScreen() {
                 <div className="w-1 h-3 bg-white rounded-full opacity-60"></div>
               </div>
               <span className="text-lg sm:text-xl font-bold text-white tracking-[0.15em]">
-                ACTIVE
+                {t('sosActive')}
               </span>
             </div>
           </div>
 
-          {/* Countdown Timer */}
+          {/* COUNT-UP Timer - Shows elapsed time since activation */}
           <div className="mt-10 text-center">
             <p className="text-xs text-white/60 tracking-[0.2em] uppercase mb-2">
-              ALERT DURATION
+              {t('elapsedTime')}
             </p>
-            <p className="text-5xl sm:text-6xl font-bold text-white tracking-wider">
-              {formatTime(timeRemaining)}
+            <p className="text-5xl sm:text-6xl font-bold text-white tracking-wider font-mono">
+              {formatTime(elapsedSeconds)}
             </p>
           </div>
         </div>
@@ -138,7 +206,7 @@ export default function SOSActiveScreen() {
           >
             <Square className="w-4 h-4" style={{ color: '#E50000', fill: '#E50000' }} />
             <span className="text-sm font-bold text-white tracking-[0.15em] uppercase">
-              STOP SOS
+              {t('stopSOS')}
             </span>
           </button>
 
@@ -151,7 +219,7 @@ export default function SOSActiveScreen() {
               <Camera className="w-4 h-4 text-white" />
             </div>
             <span className="text-sm font-bold text-white tracking-[0.15em] uppercase">
-              ADD PROOF
+              {t('addProof')}
             </span>
           </button>
         </div>
@@ -183,7 +251,7 @@ export default function SOSActiveScreen() {
                     isSOS ? 'text-[#E50000] font-bold' : isActive ? 'text-white font-bold' : 'text-white/50 font-normal'
                   }`}
                 >
-                  {item.label}
+                  {t(item.labelKey)}
                 </span>
               </button>
             );

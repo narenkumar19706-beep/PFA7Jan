@@ -4,15 +4,17 @@ import { Bell, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
 import BottomNav from "@/components/BottomNav";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function ReportBugScreen() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [bugDescription, setBugDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async () => {
     if (!bugDescription.trim()) {
-      toast.error("Please describe the bug before submitting");
+      toast.error(t('errorDescribeIssue'));
       return;
     }
 
@@ -21,13 +23,13 @@ export default function ReportBugScreen() {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    toast.success("Bug report submitted successfully! Thank you for your feedback.");
+    toast.success(t('bugSubmitted'));
     setBugDescription("");
     setIsSubmitting(false);
     
-    // Navigate back to profile after submission
+    // Navigate back to help & support after submission
     setTimeout(() => {
-      navigate("/user-profile");
+      navigate("/help-support");
     }, 1500);
   };
 
@@ -53,24 +55,24 @@ export default function ReportBugScreen() {
         {/* Title */}
         <div className="mt-6">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
-            Rapid
+            {t('appName')}
           </h1>
           <h2 className="text-2xl sm:text-3xl text-secondary leading-none mt-1">
-            Response Team
+            {t('appSubtitle')}
           </h2>
         </div>
 
         {/* Section Label */}
         <div className="mt-8">
           <p className="text-xs text-secondary tracking-[0.2em] uppercase">
-            HELP
+            {t('profileMenuHelp')}
           </p>
         </div>
 
         {/* Report a Bug Title */}
         <div className="mt-4">
           <h3 className="text-sm text-secondary tracking-[0.15em] uppercase">
-            REPORT A BUG
+            {t('reportBugTitle')}
           </h3>
         </div>
 
@@ -79,7 +81,7 @@ export default function ReportBugScreen() {
           <textarea
             value={bugDescription}
             onChange={(e) => setBugDescription(e.target.value)}
-            placeholder="Describe the bug or issue you encountered..."
+            placeholder={t('bugDescription')}
             className="w-full h-48 sm:h-56 p-4 bg-transparent border border-accent text-foreground placeholder-secondary/60 resize-none focus:outline-none focus:border-foreground transition-colors text-base"
           />
         </div>
@@ -92,7 +94,7 @@ export default function ReportBugScreen() {
             className="w-full h-14 bg-white flex items-center justify-between px-6 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 transition-colors"
           >
             <span className="text-sm font-bold tracking-[0.15em] uppercase text-black">
-              {isSubmitting ? "SUBMITTING..." : "SUBMIT BUG"}
+              {isSubmitting ? t('loading') : t('submitBug')}
             </span>
             <ChevronRight className="w-5 h-5 text-black" />
           </button>
