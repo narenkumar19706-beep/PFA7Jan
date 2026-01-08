@@ -1,4 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import { useLanguage } from "@/context/LanguageContext";
 
 // Custom icons matching the reference design exactly
 const HomeIcon = ({ className }) => (
@@ -30,14 +31,15 @@ const ProfileIcon = ({ className }) => (
 export default function BottomNav({ activePath }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useLanguage();
   
   const currentPath = activePath || location.pathname;
 
   const navItems = [
-    { id: 'home', icon: HomeIcon, label: 'HOME', path: '/home' },
-    { id: 'community', icon: CommunityIcon, label: 'COMMUNITY', path: '/community' },
-    { id: 'sos', icon: SOSIcon, label: 'SOS', path: '/sos' },
-    { id: 'profile', icon: ProfileIcon, label: 'PROFILE', path: '/user-profile' },
+    { id: 'home', icon: HomeIcon, labelKey: 'navHome', path: '/home' },
+    { id: 'community', icon: CommunityIcon, labelKey: 'navCommunity', path: '/community' },
+    { id: 'sos', icon: SOSIcon, labelKey: 'navSOS', path: '/sos' },
+    { id: 'profile', icon: ProfileIcon, labelKey: 'navProfile', path: '/user-profile' },
   ];
 
   return (
@@ -67,7 +69,7 @@ export default function BottomNav({ activePath }) {
                   isActive ? 'text-foreground font-bold' : 'text-secondary font-normal'
                 }`}
               >
-                {item.label}
+                {t(item.labelKey)}
               </span>
             </button>
           );
