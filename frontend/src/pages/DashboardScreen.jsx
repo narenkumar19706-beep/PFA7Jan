@@ -175,7 +175,7 @@ export default function DashboardScreen() {
           </div>
 
           <p className="mt-8 text-xs text-secondary text-center tracking-[0.15em] uppercase leading-relaxed">
-            PRESS AND HOLD FOR 3 SECONDS<br />TO ACTIVATE
+            {t('sosHoldInstruction')}
           </p>
         </div>
       </div>
