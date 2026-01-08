@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { LocationProvider } from "@/context/LocationContext";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { SOSProvider } from "@/context/SOSContext";
+import { LanguageProvider } from "@/context/LanguageContext";
 import LoginScreen from "@/pages/LoginScreen";
 import OTPScreen from "@/pages/OTPScreen";
 import ProfileScreen from "@/pages/ProfileScreen";
