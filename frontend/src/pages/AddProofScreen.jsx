@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Bell, Home, Users, Megaphone, User, Camera, Video, X, Play, Trash2, Eye, Square, CircleDot } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
+import { useLanguage } from "@/context/LanguageContext";
 
 const MAX_VIDEOS = 4;
 const MAX_VIDEO_DURATION = 120; // 2 minutes in seconds
@@ -14,6 +15,7 @@ const generateId = (prefix) => `${prefix}_${++idCounter}_${performance.now()}`;
 export default function AddProofScreen() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useLanguage();
   
   // Media state
   const [photos, setPhotos] = useState([]);
