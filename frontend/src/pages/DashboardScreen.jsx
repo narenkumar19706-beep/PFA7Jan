@@ -7,6 +7,7 @@ import BottomNav from "@/components/BottomNav";
 import { useLocationContext } from "@/context/LocationContext";
 import { useAuth } from "@/context/AuthContext";
 import { useSOS } from "@/context/SOSContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function DashboardScreen() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ export default function DashboardScreen() {
   const { location: userLocation, isLocating } = useLocationContext();
   const { user } = useAuth();
   const { activateSOS, isSOSActive } = useSOS();
+  const { t } = useLanguage();
   
   const [isHolding, setIsHolding] = useState(false);
   const [holdProgress, setHoldProgress] = useState(0);
