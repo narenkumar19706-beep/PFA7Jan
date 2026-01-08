@@ -4,30 +4,44 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
 import { useLocationContext } from "@/context/LocationContext";
+import { useLanguage } from "@/context/LanguageContext";
 
-// Role options with icons
-const roleOptions = [
-  {
-    id: "individual",
-    title: "Individual",
-    description: "Personal volunteer account",
-    icon: User
-  },
-  {
-    id: "ngo",
-    title: "NGO",
-    description: "Animal Welfare Organization",
-    icon: Building2
-  },
-  {
-    id: "school",
-    title: "School",
-    description: "Educational Institution",
-    icon: GraduationCap
-  },
-  {
-    id: "veterinarian",
-    title: "Veterinarian",
+export default function ProfileScreen() {
+  const navigate = useNavigate();
+  const routeLocation = useLocation();
+  const { location, isLocating, refreshLocation } = useLocationContext();
+  const { t } = useLanguage();
+  
+  // Get phone number from OTP screen
+  const phoneNumber = routeLocation.state?.phoneNumber;
+
+  // Role options with translation keys
+  const roleOptions = [
+    {
+      id: "individual",
+      titleKey: "roleIndividual",
+      descKey: "roleIndividualDesc",
+      icon: User
+    },
+    {
+      id: "ngo",
+      titleKey: "roleNGO",
+      descKey: "roleNGODesc",
+      icon: Building2
+    },
+    {
+      id: "school",
+      titleKey: "roleSchool",
+      descKey: "roleSchoolDesc",
+      icon: GraduationCap
+    },
+    {
+      id: "veterinarian",
+      titleKey: "roleVet",
+      descKey: "roleVetDesc",
+      icon: Stethoscope
+    }
+  ];
     description: "Veterinary Clinic",
     icon: Stethoscope
   }
