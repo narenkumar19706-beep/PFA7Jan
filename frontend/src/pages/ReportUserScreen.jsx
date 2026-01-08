@@ -133,14 +133,14 @@ export default function ReportUserScreen() {
 
         <div className="mt-4">
           <h3 className="text-sm text-secondary tracking-[0.15em] uppercase">
-            REPORT A USER
+            {t('reportUserTitle')}
           </h3>
         </div>
 
         {/* User Search/Select Field */}
         <div className="mt-6" ref={searchRef}>
           <label className="text-xs text-secondary tracking-[0.2em] uppercase block mb-3">
-            SELECT USER
+            {t('selectUser')}
           </label>
           <div className="relative">
             <div className="relative flex items-center">
@@ -157,7 +157,7 @@ export default function ReportUserScreen() {
                     setShowDropdown(true);
                   }
                 }}
-                placeholder="Search by name..."
+                placeholder={t('searchByName')}
                 className="w-full h-14 pl-12 pr-12 bg-transparent border border-accent text-foreground placeholder-secondary/60 focus:outline-none focus:border-foreground transition-colors text-base"
               />
               {selectedUser && (
@@ -196,7 +196,7 @@ export default function ReportUserScreen() {
                   </button>
                 ))}
               </div>
-            )}
+            )}}
 
             {/* No Results */}
             {showDropdown && searchQuery.trim() && filteredUsers.length === 0 && (
