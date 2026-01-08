@@ -251,7 +251,7 @@ export default function SOSActiveScreen() {
                     isSOS ? 'text-[#E50000] font-bold' : isActive ? 'text-white font-bold' : 'text-white/50 font-normal'
                   }`}
                 >
-                  {item.label}
+                  {t(item.labelKey)}
                 </span>
               </button>
             );
