@@ -181,7 +181,7 @@ export default function SOSActiveScreen() {
                 <div className="w-1 h-3 bg-white rounded-full opacity-60"></div>
               </div>
               <span className="text-lg sm:text-xl font-bold text-white tracking-[0.15em]">
-                ACTIVE
+                {t('sosActive')}
               </span>
             </div>
           </div>
@@ -189,7 +189,7 @@ export default function SOSActiveScreen() {
           {/* COUNT-UP Timer - Shows elapsed time since activation */}
           <div className="mt-10 text-center">
             <p className="text-xs text-white/60 tracking-[0.2em] uppercase mb-2">
-              ELAPSED TIME
+              {t('elapsedTime')}
             </p>
             <p className="text-5xl sm:text-6xl font-bold text-white tracking-wider font-mono">
               {formatTime(elapsedSeconds)}
@@ -206,7 +206,7 @@ export default function SOSActiveScreen() {
           >
             <Square className="w-4 h-4" style={{ color: '#E50000', fill: '#E50000' }} />
             <span className="text-sm font-bold text-white tracking-[0.15em] uppercase">
-              STOP SOS
+              {t('stopSOS')}
             </span>
           </button>
 
@@ -219,7 +219,7 @@ export default function SOSActiveScreen() {
               <Camera className="w-4 h-4 text-white" />
             </div>
             <span className="text-sm font-bold text-white tracking-[0.15em] uppercase">
-              ADD PROOF
+              {t('addProof')}
             </span>
           </button>
         </div>
