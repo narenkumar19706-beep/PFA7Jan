@@ -60,10 +60,10 @@ export default function UserProfileScreen() {
         {/* Title */}
         <div className="mt-6">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
-            Rapid
+            {t('appName')}
           </h1>
           <h2 className="text-2xl sm:text-3xl text-secondary leading-none mt-1">
-            Response Team
+            {t('appSubtitle')}
           </h2>
         </div>
 
@@ -92,7 +92,7 @@ export default function UserProfileScreen() {
 
           {/* Joined Date */}
           <p className="mt-2 text-xs text-secondary tracking-[0.2em] uppercase">
-            JOINED {userData.joinedDays} DAYS AGO
+            {t('joinedDaysAgo', { days: userData.joinedDays })}
           </p>
         </div>
 
