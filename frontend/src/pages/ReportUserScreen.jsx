@@ -69,12 +69,12 @@ export default function ReportUserScreen() {
 
   const handleSubmit = async () => {
     if (!selectedUser) {
-      toast.error("Please select a user to report");
+      toast.error(t('errorSelectUser'));
       return;
     }
     
     if (!issueDetails.trim()) {
-      toast.error("Please describe the issue you faced");
+      toast.error(t('errorDescribeIssue'));
       return;
     }
 
@@ -83,7 +83,7 @@ export default function ReportUserScreen() {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    toast.success("User report submitted successfully! Our team will review it.");
+    toast.success(t('reportSubmitted'));
     setSelectedUser(null);
     setSearchQuery("");
     setIssueDetails("");
@@ -117,17 +117,17 @@ export default function ReportUserScreen() {
         {/* Title */}
         <div className="mt-6">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
-            Rapid
+            {t('appName')}
           </h1>
           <h2 className="text-2xl sm:text-3xl text-secondary leading-none mt-1">
-            Response Team
+            {t('appSubtitle')}
           </h2>
         </div>
 
         {/* Section Labels */}
         <div className="mt-8">
           <p className="text-xs text-secondary tracking-[0.2em] uppercase">
-            HELP
+            {t('profileMenuHelp')}
           </p>
         </div>
 
