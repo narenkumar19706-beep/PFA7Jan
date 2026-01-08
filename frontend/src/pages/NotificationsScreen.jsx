@@ -260,7 +260,7 @@ export default function NotificationsScreen() {
                     isActive ? 'text-foreground font-bold' : 'text-secondary font-normal'
                   }`}
                 >
-                  {item.label}
+                  {t(item.labelKey)}
                 </span>
               </button>
             );
