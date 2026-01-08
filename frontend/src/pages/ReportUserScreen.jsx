@@ -4,6 +4,7 @@ import { Bell, ChevronRight, Search, X, Check } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
 import BottomNav from "@/components/BottomNav";
+import { useLanguage } from "@/context/LanguageContext";
 
 // Mock users data for search
 const mockUsers = [
@@ -21,6 +22,7 @@ const mockUsers = [
 
 export default function ReportUserScreen() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const [issueDetails, setIssueDetails] = useState("");
