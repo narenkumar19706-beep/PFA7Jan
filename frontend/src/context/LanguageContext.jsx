@@ -96,6 +96,21 @@ export const translations = {
     addProof: 'Add Proof',
     sosActive: 'Active',
     
+    // SOS History/Tab Screen
+    sosAlerts: 'SOS Alerts',
+    current: 'Current',
+    past: 'Past',
+    myAlerts: 'My Alerts',
+    noActiveAlerts: 'No active alerts in your area',
+    attending: 'Attending',
+    attend: 'Attend',
+    history: 'History',
+    resolved: 'Resolved',
+    closed: 'Closed',
+    chat: 'Chat',
+    kmAway: 'km away',
+    from: 'from',
+    
     // Add Proof Screen
     addProofTitle: 'Add Proof',
     addProofSubtitle: 'Max 4 videos (2 min each) • Unlimited photos',
