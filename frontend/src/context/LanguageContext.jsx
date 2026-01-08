@@ -109,15 +109,40 @@ export const translations = {
     
     // Community Screen
     communityTitle: 'Community',
-    volunteers: 'Volunteers',
-    activeAlerts: 'Active Alerts',
+    localVolunteerNetwork: 'Local Volunteer Network',
+    volunteersInArea: 'Volunteers in your area',
+    yourDistrict: 'Your District',
+    availableNow: 'Available Now',
+    busy: 'Busy',
+    offline: 'Offline',
+    message: 'Message',
+    
+    // Chat Screen
+    chatTitle: 'Chat',
+    typeMessage: 'Type a message...',
+    send: 'Send',
+    online: 'Online',
+    
+    // Notifications Screen  
+    notificationsTitle: 'Notifications',
+    noNotifications: 'No notifications yet',
+    sosAlert: 'SOS Alert',
+    newAlert: 'New Alert',
+    alertNearby: 'Alert nearby',
+    responding: 'Responding',
+    viewAlert: 'View Alert',
+    dismiss: 'Dismiss',
+    minutesAgo: '{mins} mins ago',
+    justNow: 'Just now',
     
     // User Profile Screen
     profileMenuHelp: 'Help & Support',
     profileMenuLogout: 'Log Out',
+    profileMenuLanguage: 'Language',
     joinedDaysAgo: 'Joined {days} days ago',
     editProfile: 'Edit profile coming soon!',
     loggedOut: 'Logged out successfully',
+    changeLanguage: 'Change Language',
     
     // Help & Support
     helpSupportTitle: 'Help & Support',
