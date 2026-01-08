@@ -5,10 +5,12 @@ import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
 import { HomeIcon, CommunityIcon, SOSIcon, ProfileIcon } from "@/components/BottomNav";
 import { useSOS } from "@/context/SOSContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function SOSActiveScreen() {
   const navigate = useNavigate();
   const { sosState, isSOSActive, activatedAt, deactivateSOS } = useSOS();
+  const { t } = useLanguage();
   
   // COUNT-UP timer state - starts at 0 and increments
   const [elapsedSeconds, setElapsedSeconds] = useState(() => {
