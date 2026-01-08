@@ -4,11 +4,13 @@ import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
 import BottomNav from "@/components/BottomNav";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function UserProfileScreen() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
+  const { t } = useLanguage();
 
   // Use auth user data - display actual user name from context
   const userData = {
@@ -21,18 +23,18 @@ export default function UserProfileScreen() {
     { 
       id: 'help', 
       icon: Headphones, 
-      label: 'Help & Support',
+      labelKey: 'profileMenuHelp',
       onClick: () => navigate("/help-support")
     },
   ];
 
   const handleEditProfile = () => {
-    toast.info("Edit profile coming soon!");
+    toast.info(t('editProfile'));
   };
 
   const handleLogout = () => {
     logout();
-    toast.success("Logged out successfully");
+    toast.success(t('loggedOut'));
     navigate("/");
   };
 
