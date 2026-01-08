@@ -87,16 +87,18 @@ function AppRoutes() {
 function App() {
   return (
     <div className="App min-h-screen bg-background">
-      <AuthProvider>
-        <LocationProvider>
-          <SOSProvider>
-            <BrowserRouter>
-              <AppRoutes />
-            </BrowserRouter>
-            <Toaster position="top-center" />
-          </SOSProvider>
-        </LocationProvider>
-      </AuthProvider>
+      <LanguageProvider>
+        <AuthProvider>
+          <LocationProvider>
+            <SOSProvider>
+              <BrowserRouter>
+                <AppRoutes />
+              </BrowserRouter>
+              <Toaster position="top-center" />
+            </SOSProvider>
+          </LocationProvider>
+        </AuthProvider>
+      </LanguageProvider>
     </div>
   );
 }
