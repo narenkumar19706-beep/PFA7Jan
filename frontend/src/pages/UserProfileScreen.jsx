@@ -110,7 +110,7 @@ export default function UserProfileScreen() {
                   <Icon className="w-6 h-6 text-secondary" />
                 </div>
                 <span className="flex-1 text-left text-lg font-bold text-foreground">
-                  {item.label}
+                  {t(item.labelKey)}
                 </span>
                 <ChevronRight className="w-6 h-6 text-secondary" />
               </button>
@@ -126,7 +126,7 @@ export default function UserProfileScreen() {
               <LogOut className="w-6 h-6 text-red-500" />
             </div>
             <span className="flex-1 text-left text-lg font-bold text-red-500">
-              Log Out
+              {t('profileMenuLogout')}
             </span>
             <ChevronRight className="w-6 h-6 text-red-500" />
           </button>
