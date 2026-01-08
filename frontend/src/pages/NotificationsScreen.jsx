@@ -52,13 +52,13 @@ export default function NotificationsScreen() {
   const [hasNotification, setHasNotification] = useState(true);
 
   const handleViewAlert = (notification) => {
-    toast.success("Viewing alert details...");
+    toast.success(t('viewAlert'));
     navigate("/sos");
   };
 
   const handleDismiss = (notificationId) => {
     setNotifications(prev => prev.filter(n => n.id !== notificationId));
-    toast.success("Notification dismissed");
+    toast.success(t('dismiss'));
   };
 
   const getIcon = (iconType) => {
@@ -74,11 +74,38 @@ export default function NotificationsScreen() {
     }
   };
 
+  // Get notification title text based on type
+  const getNotificationTitle = (notification) => {
+    if (isHindi) {
+      switch (notification.type) {
+        case "alert_attending":
+          return `${notification.titleParams?.name || 'कोई'} आपके अलर्ट पर आ रहे हैं`;
+        case "new_volunteer":
+          return "नया वॉलंटियर आपके जिले में जुड़ा";
+        case "alert_resolved":
+          return `अलर्ट हल हो गया: ${notification.titleParams?.location || ''}`;
+        default:
+          return notification.subtitle;
+      }
+    } else {
+      switch (notification.type) {
+        case "alert_attending":
+          return `${notification.titleParams?.name || 'Someone'} is attending your alert`;
+        case "new_volunteer":
+          return "New volunteer joined your district";
+        case "alert_resolved":
+          return `Alert Resolved: ${notification.titleParams?.location || ''}`;
+        default:
+          return notification.subtitle;
+      }
+    }
+  };
+
   const navItems = [
-    { id: 'home', icon: Home, label: 'HOME', path: '/home' },
-    { id: 'community', icon: Users, label: 'COMMUNITY', path: '/community' },
-    { id: 'sos', icon: Megaphone, label: 'SOS', path: '/sos' },
-    { id: 'profile', icon: User, label: 'PROFILE', path: '/user-profile' },
+    { id: 'home', icon: Home, labelKey: 'navHome', path: '/home' },
+    { id: 'community', icon: Users, labelKey: 'navCommunity', path: '/community' },
+    { id: 'sos', icon: Megaphone, labelKey: 'navSOS', path: '/sos' },
+    { id: 'profile', icon: User, labelKey: 'navProfile', path: '/user-profile' },
   ];
 
   const currentPath = location.pathname;
@@ -112,20 +139,20 @@ export default function NotificationsScreen() {
         {/* Title Section */}
         <div className="mt-6 sm:mt-8">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
-            Rapid
+            {t('appName')}
           </h1>
           <h2 className="text-2xl sm:text-3xl text-secondary leading-none mt-1">
-            Response Team
+            {t('appSubtitle')}
           </h2>
         </div>
 
         {/* Tagline with Red Border */}
         <div className="mt-6 sm:mt-8 border-l-4 border-[#E53935] pl-4">
           <p className="text-sm sm:text-base text-[#E0E0E0] uppercase tracking-wider">
-            where empathy meets action.
+            {t('tagline')}
           </p>
           <p className="text-xs sm:text-sm text-[#E0E0E0] uppercase tracking-wider mt-1">
-            A collective for the conscious citizen.
+            {t('taglineSubtext')}
           </p>
         </div>
 
