@@ -102,9 +102,7 @@ export default function SOSActiveScreen() {
     // Deactivate SOS system-wide (updates localStorage and dispatches events)
     deactivateSOS();
     
-    toast.success("SOS Alert Stopped", {
-      description: "Alert has been deactivated for all responders"
-    });
+    toast.success(t('success'));
     
     navigate("/home", { replace: true });
   };
@@ -114,10 +112,10 @@ export default function SOSActiveScreen() {
   };
 
   const navItems = [
-    { id: 'home', icon: HomeIcon, label: 'HOME', path: '/home' },
-    { id: 'community', icon: CommunityIcon, label: 'COMMUNITY', path: '/community' },
-    { id: 'sos', icon: SOSIcon, label: 'SOS', path: '/sos-active', isActive: true },
-    { id: 'profile', icon: ProfileIcon, label: 'PROFILE', path: '/user-profile' },
+    { id: 'home', icon: HomeIcon, labelKey: 'navHome', path: '/home' },
+    { id: 'community', icon: CommunityIcon, labelKey: 'navCommunity', path: '/community' },
+    { id: 'sos', icon: SOSIcon, labelKey: 'navSOS', path: '/sos-active', isActive: true },
+    { id: 'profile', icon: ProfileIcon, labelKey: 'navProfile', path: '/user-profile' },
   ];
 
   return (
@@ -145,10 +143,10 @@ export default function SOSActiveScreen() {
         {/* Title Section */}
         <div className="mt-6">
           <h1 className="text-4xl sm:text-5xl font-bold text-white leading-none">
-            Rapid
+            {t('appName')}
           </h1>
           <h2 className="text-2xl sm:text-3xl text-white/60 leading-none mt-1">
-            Response Team
+            {t('appSubtitle')}
           </h2>
         </div>
 
@@ -158,7 +156,7 @@ export default function SOSActiveScreen() {
             className="text-lg sm:text-xl font-bold tracking-[0.2em] uppercase"
             style={{ color: '#E50000' }}
           >
-            SOS ACTIVATED!
+            {t('sosActivated')}
           </h3>
         </div>
 
