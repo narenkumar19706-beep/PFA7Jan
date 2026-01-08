@@ -288,15 +288,40 @@ export const translations = {
     
     // Community Screen
     communityTitle: 'कम्युनिटी',
-    volunteers: 'वॉलंटियर्स',
-    activeAlerts: 'चालू अलर्ट्स',
+    localVolunteerNetwork: 'लोकल वॉलंटियर नेटवर्क',
+    volunteersInArea: 'आपके एरिया में वॉलंटियर्स',
+    yourDistrict: 'आपका जिला',
+    availableNow: 'अभी उपलब्ध',
+    busy: 'व्यस्त',
+    offline: 'ऑफलाइन',
+    message: 'मैसेज',
+    
+    // Chat Screen
+    chatTitle: 'चैट',
+    typeMessage: 'मैसेज लिखें...',
+    send: 'भेजें',
+    online: 'ऑनलाइन',
+    
+    // Notifications Screen
+    notificationsTitle: 'नोटिफिकेशन',
+    noNotifications: 'अभी कोई नोटिफिकेशन नहीं',
+    sosAlert: 'SOS अलर्ट',
+    newAlert: 'नया अलर्ट',
+    alertNearby: 'पास में अलर्ट',
+    responding: 'जवाब दे रहे हैं',
+    viewAlert: 'अलर्ट देखें',
+    dismiss: 'हटाएं',
+    minutesAgo: '{mins} मिनट पहले',
+    justNow: 'अभी',
     
     // User Profile Screen
     profileMenuHelp: 'मदद और सहायता',
     profileMenuLogout: 'लॉग आउट',
+    profileMenuLanguage: 'भाषा',
     joinedDaysAgo: '{days} दिन पहले जुड़े',
     editProfile: 'प्रोफाइल एडिट जल्द आ रहा है!',
     loggedOut: 'लॉग आउट हो गया',
+    changeLanguage: 'भाषा बदलें',
     
     // Help & Support
     helpSupportTitle: 'मदद और सहायता',
