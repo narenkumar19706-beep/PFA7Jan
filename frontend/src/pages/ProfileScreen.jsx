@@ -17,43 +17,11 @@ export default function ProfileScreen() {
 
   // Role options with translation keys
   const roleOptions = [
-    {
-      id: "individual",
-      titleKey: "roleIndividual",
-      descKey: "roleIndividualDesc",
-      icon: User
-    },
-    {
-      id: "ngo",
-      titleKey: "roleNGO",
-      descKey: "roleNGODesc",
-      icon: Building2
-    },
-    {
-      id: "school",
-      titleKey: "roleSchool",
-      descKey: "roleSchoolDesc",
-      icon: GraduationCap
-    },
-    {
-      id: "veterinarian",
-      titleKey: "roleVet",
-      descKey: "roleVetDesc",
-      icon: Stethoscope
-    }
+    { id: "individual", titleKey: "roleIndividual", descKey: "roleIndividualDesc", icon: User },
+    { id: "ngo", titleKey: "roleNGO", descKey: "roleNGODesc", icon: Building2 },
+    { id: "school", titleKey: "roleSchool", descKey: "roleSchoolDesc", icon: GraduationCap },
+    { id: "veterinarian", titleKey: "roleVet", descKey: "roleVetDesc", icon: Stethoscope }
   ];
-    description: "Veterinary Clinic",
-    icon: Stethoscope
-  }
-];
-
-export default function ProfileScreen() {
-  const navigate = useNavigate();
-  const routeLocation = useLocation();
-  const { location, isLocating, refreshLocation } = useLocationContext();
-  
-  // Get phone number from OTP screen
-  const phoneNumber = routeLocation.state?.phoneNumber;
   
   const [isLoading, setIsLoading] = useState(false);
   const [showAddress, setShowAddress] = useState(true);
@@ -67,15 +35,11 @@ export default function ProfileScreen() {
     district: ""
   });
 
-  // Page load animation
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setPageLoaded(true);
-    }, 100);
+    const timer = setTimeout(() => setPageLoaded(true), 100);
     return () => clearTimeout(timer);
   }, []);
 
-  // Sync form data with global location when it changes
   useEffect(() => {
     if (location.isDetected) {
       setFormData(prev => ({
@@ -87,17 +51,11 @@ export default function ProfileScreen() {
   }, [location]);
 
   const handleInputChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleRoleSelect = (roleId) => {
-    setFormData(prev => ({
-      ...prev,
-      role: roleId
-    }));
+    setFormData(prev => ({ ...prev, role: roleId }));
   };
 
   const handleAutoPopulate = () => {
@@ -106,12 +64,12 @@ export default function ProfileScreen() {
 
   const handleCreateAccount = () => {
     if (!formData.role) {
-      toast.error("Please select a role");
+      toast.error(t('errorRoleRequired'));
       return;
     }
     
     if (!formData.fullName.trim()) {
-      toast.error("Please enter your full name");
+      toast.error(t('errorNameRequired'));
       return;
     }
 
@@ -119,7 +77,6 @@ export default function ProfileScreen() {
     
     setTimeout(() => {
       setIsLoading(false);
-      // Pass user data AND phone number to account success screen
       navigate("/account-success", {
         state: {
           phoneNumber: phoneNumber,
@@ -147,26 +104,26 @@ export default function ProfileScreen() {
       {/* Title Section */}
       <div className={`mt-6 sm:mt-8 transition-all duration-500 delay-200 ${pageLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
         <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
-          Rapid
+          {t('appName')}
         </h1>
         <h2 className="text-2xl sm:text-3xl text-secondary leading-none mt-1">
-          Response Team
+          {t('appSubtitle')}
         </h2>
       </div>
 
       {/* Role Selection Section */}
       <div className={`mt-6 sm:mt-8 transition-all duration-500 delay-300 ${pageLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
         <h3 className="text-xl sm:text-2xl font-bold text-foreground">
-          How would you like to use PFA?
+          {t('profileTitle')}
         </h3>
         <p className="text-sm text-secondary mt-2">
-          Choose the option that best describes you
+          {t('profileSubtitle')}
         </p>
       </div>
 
       {/* Role Cards */}
       <div className={`mt-5 grid grid-cols-2 gap-3 transition-all duration-500 delay-400 ${pageLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
-        {roleOptions.map((role, index) => {
+        {roleOptions.map((role) => {
           const Icon = role.icon;
           const isSelected = formData.role === role.id;
           
@@ -186,18 +143,16 @@ export default function ProfileScreen() {
                 </div>
               )}
               
-              <div className={`w-12 h-12 border flex items-center justify-center mb-3 ${
-                isSelected ? 'border-white' : 'border-accent'
-              }`}>
+              <div className={`w-12 h-12 border flex items-center justify-center mb-3 ${isSelected ? 'border-white' : 'border-accent'}`}>
                 <Icon className={`w-6 h-6 ${isSelected ? 'text-white' : 'text-secondary'}`} />
               </div>
               
               <h4 className={`text-base font-bold ${isSelected ? 'text-white' : 'text-foreground'}`}>
-                {role.title}
+                {t(role.titleKey)}
               </h4>
               
               <p className={`text-xs mt-1 ${isSelected ? 'text-white/70' : 'text-secondary'}`}>
-                {role.description}
+                {t(role.descKey)}
               </p>
             </button>
           );
@@ -209,13 +164,13 @@ export default function ProfileScreen() {
         {/* Full Name */}
         <div>
           <label className="text-xs text-secondary tracking-[0.2em] uppercase block mb-2">
-            FULL NAME
+            {t('fullName')}
           </label>
           <input
             type="text"
             value={formData.fullName}
             onChange={(e) => handleInputChange("fullName", e.target.value)}
-            placeholder="Your Name"
+            placeholder={t('fullNamePlaceholder')}
             className="w-full h-14 px-4 bg-transparent border border-accent text-foreground placeholder-secondary/70 focus:outline-none focus:border-foreground transition-colors"
           />
         </div>
@@ -223,13 +178,13 @@ export default function ProfileScreen() {
         {/* Email Address */}
         <div>
           <label className="text-xs text-secondary tracking-[0.2em] uppercase block mb-2">
-            EMAIL ADDRESS <span className="text-secondary/70">(OPTIONAL)</span>
+            {t('emailAddress')} <span className="text-secondary/70">{t('emailOptional')}</span>
           </label>
           <input
             type="email"
             value={formData.email}
             onChange={(e) => handleInputChange("email", e.target.value)}
-            placeholder="name@example.com"
+            placeholder={t('emailPlaceholder')}
             className="w-full h-14 px-4 bg-transparent border border-accent text-foreground placeholder-secondary/70 focus:outline-none focus:border-foreground transition-colors"
           />
         </div>
@@ -238,14 +193,14 @@ export default function ProfileScreen() {
         <div>
           <div className="flex items-center justify-between mb-2">
             <label className="text-xs text-secondary tracking-[0.2em] uppercase">
-              ADDRESS
+              {t('address')}
             </label>
             <button 
               onClick={handleAutoPopulate}
               disabled={isLocating}
               className="px-3 py-1 bg-transparent border border-accent text-[10px] text-secondary tracking-[0.1em] uppercase hover:bg-white/5 transition-colors disabled:opacity-50"
             >
-              {isLocating ? "DETECTING..." : "AUTO POPULATE"}
+              {isLocating ? t('detecting') : t('autoPopulate')}
             </button>
           </div>
           <div className="relative">
@@ -253,7 +208,7 @@ export default function ProfileScreen() {
               type={showAddress ? "text" : "password"}
               value={formData.address}
               onChange={(e) => handleInputChange("address", e.target.value)}
-              placeholder={isLocating ? "Detecting location..." : "Your Address"}
+              placeholder={isLocating ? t('detecting') : t('addressPlaceholder')}
               className="w-full h-14 px-4 pr-12 bg-transparent border border-accent text-foreground placeholder-secondary/70 focus:outline-none focus:border-foreground transition-colors"
             />
             <button
@@ -270,21 +225,21 @@ export default function ProfileScreen() {
         <div>
           <div className="flex items-center justify-between mb-2">
             <label className="text-xs text-secondary tracking-[0.2em] uppercase">
-              DISTRICT
+              {t('district')}
             </label>
             <button 
               onClick={handleAutoPopulate}
               disabled={isLocating}
               className="px-3 py-1 bg-transparent border border-accent text-[10px] text-secondary tracking-[0.1em] uppercase hover:bg-white/5 transition-colors disabled:opacity-50"
             >
-              {isLocating ? "DETECTING..." : "AUTO POPULATE"}
+              {isLocating ? t('detecting') : t('autoPopulate')}
             </button>
           </div>
           <input
             type="text"
             value={formData.district}
             onChange={(e) => handleInputChange("district", e.target.value)}
-            placeholder={isLocating ? "Detecting..." : "Your District"}
+            placeholder={isLocating ? t('detecting') : t('districtPlaceholder')}
             className="w-full h-14 px-4 bg-transparent border border-accent text-foreground placeholder-secondary/70 focus:outline-none focus:border-foreground transition-colors"
           />
         </div>
@@ -298,7 +253,7 @@ export default function ProfileScreen() {
           className="w-full h-14 bg-white flex items-center justify-between px-4 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-gray-100 transition-colors"
         >
           <span className="text-sm font-bold tracking-[0.2em] uppercase text-black">
-            {isLoading ? "Creating..." : "CREATE ACCOUNT"}
+            {isLoading ? t('creating') : t('createAccount')}
           </span>
           <div className="w-10 h-10 flex items-center justify-center border border-black">
             <ArrowRight className="w-4 h-4 text-black" />
@@ -309,11 +264,11 @@ export default function ProfileScreen() {
       {/* Footer */}
       <div className={`mt-4 flex items-center justify-center gap-2 transition-all duration-500 delay-700 ${pageLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
         <span className="text-[10px] text-secondary tracking-[0.15em] uppercase">
-          SECURE ACCESS
+          {t('secureAccess')}
         </span>
         <span className="text-[10px] text-secondary">•</span>
         <span className="text-[10px] text-secondary tracking-[0.15em] uppercase">
-          PRIVACY ENSURED
+          {t('privacyEnsured')}
         </span>
       </div>
     </div>
