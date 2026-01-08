@@ -3,15 +3,17 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Bell, Home, Users, Megaphone, User, ArrowRight, CheckCircle, UserPlus } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
+import { useLanguage } from "@/context/LanguageContext";
 
 // Mock notifications data
 const initialNotifications = [
   {
     id: 1,
     type: "alert_attending",
-    title: "Ananya Rao is attending your alert",
+    titleKey: "alertAttending",
+    titleParams: { name: "Ananya Rao" },
     subtitle: "Bangalore District",
-    time: "5m ago",
+    time: "5m",
     icon: "megaphone",
     iconBg: "#FFCDD2",
     iconColor: "#C62828",
@@ -20,9 +22,9 @@ const initialNotifications = [
   {
     id: 2,
     type: "new_volunteer",
-    title: "New volunteer joined your district",
+    titleKey: "newVolunteerJoined",
     subtitle: "Indiranagar Team",
-    time: "2h ago",
+    time: "2h",
     icon: "user",
     iconBg: "#333333",
     iconColor: "#FFFFFF",
@@ -31,9 +33,10 @@ const initialNotifications = [
   {
     id: 3,
     type: "alert_resolved",
-    title: "Alert Resolved: Mysore Road",
-    subtitle: "Status updated by admin",
-    time: "1d ago",
+    titleKey: "alertResolved",
+    titleParams: { location: "Mysore Road" },
+    subtitle: "Status updated",
+    time: "1d",
     icon: "check",
     iconBg: "#C8E6C9",
     iconColor: "#2E7D32",
@@ -44,6 +47,7 @@ const initialNotifications = [
 export default function NotificationsScreen() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t, isHindi } = useLanguage();
   const [notifications, setNotifications] = useState(initialNotifications);
   const [hasNotification, setHasNotification] = useState(true);
 
