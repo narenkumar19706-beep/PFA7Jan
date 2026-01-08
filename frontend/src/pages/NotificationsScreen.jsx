@@ -159,7 +159,7 @@ export default function NotificationsScreen() {
         {/* Notifications Title */}
         <div className="mt-8">
           <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
-            Notifications
+            {t('notificationsTitle')}
           </h3>
         </div>
 
@@ -168,7 +168,7 @@ export default function NotificationsScreen() {
           {notifications.length === 0 ? (
             <div className="py-12 text-center">
               <Bell className="w-12 h-12 text-secondary mx-auto mb-4 opacity-50" />
-              <p className="text-secondary">No notifications yet</p>
+              <p className="text-secondary">{t('noNotifications')}</p>
             </div>
           ) : (
             notifications.map((notification) => (
@@ -191,7 +191,7 @@ export default function NotificationsScreen() {
                   {/* Text Content */}
                   <div className="flex-1 min-w-0">
                     <h4 className="text-base sm:text-lg font-bold text-foreground leading-snug">
-                      {notification.title}
+                      {getNotificationTitle(notification)}
                     </h4>
                     <p className="text-sm text-secondary mt-0.5">
                       {notification.subtitle}
