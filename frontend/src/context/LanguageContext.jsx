@@ -290,6 +290,21 @@ export const translations = {
     addProof: 'सबूत जोड़ें',
     sosActive: 'चालू',
     
+    // SOS History/Tab Screen
+    sosAlerts: 'SOS अलर्ट्स',
+    current: 'अभी',
+    past: 'पुराने',
+    myAlerts: 'मेरे अलर्ट',
+    noActiveAlerts: 'आपके एरिया में कोई अलर्ट नहीं',
+    attending: 'जा रहे हैं',
+    attend: 'जाएं',
+    history: 'इतिहास',
+    resolved: 'हल हो गया',
+    closed: 'बंद',
+    chat: 'चैट',
+    kmAway: 'km दूर',
+    from: 'से',
+    
     // Add Proof Screen
     addProofTitle: 'सबूत जोड़ें',
     addProofSubtitle: 'ज़्यादा से ज़्यादा 4 वीडियो (2 मिनट) • कितनी भी फोटो',
