@@ -274,6 +274,22 @@ frontend:
         agent: "testing"
         comment: "✅ COMPREHENSIVE LOGIN FLOW TESTING COMPLETED SUCCESSFULLY: Both critical scenarios verified perfectly. FIRST-TIME USER FLOW: Login → Phone number (9876543210) → OTP (123456) → Profile/Create Account screen with role selection - PASSED. RETURNING USER FLOW: Login → Phone number (9876543210) → OTP (123456) → Dashboard DIRECTLY (skipped profile screen) → Dashboard shows 'Hello First!' - PASSED. CRITICAL REQUIREMENTS VERIFIED: ✅ First-time users see Profile/Create Account screen after OTP, ✅ Returning users go DIRECTLY to Dashboard after OTP (skip profile screen), ✅ Dashboard displays correct user name from registration. Implementation working exactly as specified - OTPScreen.jsx correctly checks localStorage 'pfa_registered_users' and routes accordingly."
 
+frontend:
+  - task: "Language Switcher Feature on Login Screen"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/LoginScreen.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing required for language switcher feature on Login screen. Must verify: 1) Login screen shows in English by default with correct tagline 'where empathy meets action.', subtext 'A collective for the conscious citizen.', mobile number label, and PROCEED button, 2) Language switcher button visible showing 'हिंदी' to switch to Hindi, 3) Clicking switcher changes all text to conversational Hindi style, 4) Clicking again switches back to English, 5) Language preference persisted in localStorage after reload. Key files: LanguageContext.jsx (translations), LanguageSwitcher.jsx (toggle component), LoginScreen.jsx (implementation)"
+      - working: true
+        agent: "testing"
+        comment: "✅ LANGUAGE SWITCHER FEATURE COMPREHENSIVE TESTING COMPLETED SUCCESSFULLY: All test requirements verified perfectly. DEFAULT ENGLISH CONTENT: Login screen correctly displays English tagline 'where empathy meets action.', subtext 'A collective for the conscious citizen.', 'Mobile Number' label, and 'PROCEED' button. LANGUAGE SWITCHER: Button with 'हिंदी' text visible in top-right corner with Globe icon. HINDI SWITCH: Clicking switcher successfully changes all text to conversational Hindi - tagline 'जहाँ दया और काम मिलते हैं।', subtext 'जागरूक नागरिकों का एक समूह।', mobile label 'मोबाइल नंबर', button 'आगे बढ़ें'. ENGLISH RESTORE: Clicking switcher again (now showing 'EN') successfully restores all English content. LANGUAGE PERSISTENCE: Language preference correctly saved to localStorage as 'pfa_language', Hindi content persists after page reload. Implementation working exactly as specified with proper conversational Hindi translations and seamless switching functionality."
+
 agent_communication:
   - agent: "main"
     message: "Critical bug fix implemented: Dashboard name display now uses actual user name from AuthContext instead of hardcoded values. Need testing agent to verify complete signup flow with custom name entry and confirm Dashboard shows correct greeting."
@@ -287,6 +303,8 @@ agent_communication:
     message: "✅ FAQ REMOVAL VERIFICATION COMPLETED SUCCESSFULLY: Tested complete signup flow (Phone: 9876543210 → OTP: 123456 → Profile: Individual role + 'Test User' name → Account Success → Dashboard → User Profile). CRITICAL VERIFICATION PASSED: User Profile screen (/user-profile) now shows ONLY 'Help & Support' menu item and 'Log Out' button. FAQ option has been successfully removed from the menuItems array in UserProfileScreen.jsx. Screenshot captured showing clean menu with only expected items. Total menu items found: 2 (Help & Support + Log Out). Implementation correctly removes FAQ while maintaining all other functionality."
   - agent: "testing"
     message: "✅ HELP & SUPPORT FLOW COMPREHENSIVE CODE ANALYSIS COMPLETED: Analyzed new Help & Support implementation with updated screens. KEY FINDINGS: 1) HelpSupportScreen.jsx - NEW screen with 2 tiles ('Report a Bug' and 'Report a User') with proper descriptions and navigation, 2) ReportUserScreen.jsx - UPDATED with searchable user selector including search input, mock users data with 'Rahul Sharma', dropdown filtering, selected user display with green indicator (Check icon + green border), 3) UserProfileScreen.jsx - 'Help & Support' navigation properly configured to /help-support, 4) Authentication system correctly protects Help & Support routes (verified redirect to login when accessing directly), 5) Route configuration in App.js shows /help-support as protected route. TECHNICAL LIMITATION: Playwright automation tool encountered script execution issues preventing full UI testing, but comprehensive code analysis confirms all required functionality is properly implemented according to review request specifications."
+  - agent: "testing"
+    message: "✅ LANGUAGE SWITCHER FEATURE TESTING COMPLETED SUCCESSFULLY: Comprehensive testing of language switcher on Login screen completed with all requirements verified. CRITICAL TESTS PASSED: 1) Default English content displayed correctly (tagline, subtext, mobile label, proceed button), 2) Language switcher button with 'हिंदी' text visible and functional, 3) Clicking switcher successfully changes all text to conversational Hindi with proper translations, 4) Clicking again restores English content, 5) Language preference persisted in localStorage and maintained after page reload. Implementation working perfectly with seamless language switching and proper persistence. Screenshots captured showing English default, Hindi switched, and Hindi persisted states. All review request specifications met successfully."
 
 frontend:
   - task: "Report Bug Screen UI Elements"
