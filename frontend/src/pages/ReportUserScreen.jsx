@@ -201,7 +201,7 @@ export default function ReportUserScreen() {
             {/* No Results */}
             {showDropdown && searchQuery.trim() && filteredUsers.length === 0 && (
               <div className="absolute top-full left-0 right-0 mt-1 bg-[#1A1A1A] border border-accent p-4 z-10">
-                <p className="text-sm text-secondary text-center">No users found</p>
+                <p className="text-sm text-secondary text-center">{t('noUsersFound')}</p>
               </div>
             )}
           </div>
@@ -210,12 +210,12 @@ export default function ReportUserScreen() {
         {/* Issue Details Textarea */}
         <div className="mt-6 flex-1">
           <label className="text-xs text-secondary tracking-[0.2em] uppercase block mb-3">
-            DETAILS OF ISSUE FACED
+            {t('issueDetails')}
           </label>
           <textarea
             value={issueDetails}
             onChange={(e) => setIssueDetails(e.target.value)}
-            placeholder="Describe the issue you experienced with this user..."
+            placeholder={t('issueDetailsPlaceholder')}
             className="w-full h-32 sm:h-40 p-4 bg-transparent border border-accent text-foreground placeholder-secondary/60 resize-none focus:outline-none focus:border-foreground transition-colors text-base"
           />
         </div>
@@ -228,7 +228,7 @@ export default function ReportUserScreen() {
             className="w-full h-14 bg-white flex items-center justify-between px-6 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 transition-colors"
           >
             <span className="text-sm font-bold tracking-[0.15em] uppercase text-black">
-              {isSubmitting ? "SUBMITTING..." : "SUBMIT REPORT"}
+              {isSubmitting ? t('loading') : t('submitReport')}
             </span>
             <ChevronRight className="w-5 h-5 text-black" />
           </button>
