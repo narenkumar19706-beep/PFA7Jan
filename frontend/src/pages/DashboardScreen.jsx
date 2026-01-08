@@ -115,27 +115,27 @@ export default function DashboardScreen() {
         {/* Title */}
         <div className="mt-6">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
-            Rapid
+            {t('appName')}
           </h1>
           <h2 className="text-2xl sm:text-3xl text-secondary leading-none mt-1">
-            Response Team
+            {t('appSubtitle')}
           </h2>
         </div>
 
         {/* Greeting */}
         <div className="mt-8">
           <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
-            Hello {userName.split(' ')[0]}!
+            {t('hello')} {userName.split(' ')[0]}!
           </h3>
           <p className="text-xs text-secondary tracking-[0.15em] mt-2 uppercase">
-            WELCOME TO PEOPLE FOR ANIMALS.
+            {t('welcomeToPFA')}
           </p>
           
           {/* Location Display */}
           <div className="mt-4 flex items-center gap-2">
             <MapPin className="w-4 h-4 text-secondary" />
             <span className="text-sm text-secondary">
-              {isLocating ? "Detecting location..." : userLocation.district || "Location not available"}
+              {isLocating ? t('locationDetecting') : userLocation.district || t('locationNotAvailable')}
             </span>
           </div>
         </div>
@@ -163,7 +163,7 @@ export default function DashboardScreen() {
               onTouchCancel={handleSOSEnd}
             >
               <span className="text-5xl sm:text-6xl font-bold text-white">SOS</span>
-              <span className="text-xl sm:text-2xl font-normal text-white mt-1">HELP</span>
+              <span className="text-xl sm:text-2xl font-normal text-white mt-1">{t('sosHelp')}</span>
               
               {isHolding && (
                 <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
