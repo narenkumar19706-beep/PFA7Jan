@@ -2,23 +2,25 @@ import { useNavigate } from "react-router-dom";
 import { Bell, Bug, UserX, ChevronRight } from "lucide-react";
 import PawIcon from "@/components/icons/PawIcon";
 import BottomNav from "@/components/BottomNav";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function HelpSupportScreen() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const supportOptions = [
     {
       id: 'report-bug',
       icon: Bug,
-      label: 'Report a Bug',
-      description: 'Found an issue? Let us know',
+      labelKey: 'reportBug',
+      descKey: 'reportBugDesc',
       path: '/report-bug'
     },
     {
       id: 'report-user',
       icon: UserX,
-      label: 'Report a User',
-      description: 'Report inappropriate behavior',
+      labelKey: 'reportUser',
+      descKey: 'reportUserDesc',
       path: '/report-user'
     }
   ];
@@ -45,20 +47,20 @@ export default function HelpSupportScreen() {
         {/* Title */}
         <div className="mt-6">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
-            Rapid
+            {t('appName')}
           </h1>
           <h2 className="text-2xl sm:text-3xl text-secondary leading-none mt-1">
-            Response Team
+            {t('appSubtitle')}
           </h2>
         </div>
 
         {/* Section Label */}
         <div className="mt-8">
           <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
-            Help & Support
+            {t('helpSupportTitle')}
           </h3>
           <p className="text-sm text-secondary mt-2">
-            How can we assist you today?
+            {t('helpSupportSubtitle')}
           </p>
         </div>
 
@@ -77,10 +79,10 @@ export default function HelpSupportScreen() {
                 </div>
                 <div className="flex-1 text-left">
                   <span className="text-lg font-bold text-foreground block">
-                    {option.label}
+                    {t(option.labelKey)}
                   </span>
                   <span className="text-sm text-secondary">
-                    {option.description}
+                    {t(option.descKey)}
                   </span>
                 </div>
                 <ChevronRight className="w-6 h-6 text-secondary" />
