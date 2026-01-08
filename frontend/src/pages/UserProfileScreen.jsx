@@ -1,16 +1,16 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { Bell, Headphones, Pencil, ChevronRight, LogOut } from "lucide-react";
+import { Bell, Headphones, Pencil, ChevronRight, LogOut, Globe } from "lucide-react";
 import { toast } from "sonner";
 import PawIcon from "@/components/icons/PawIcon";
 import BottomNav from "@/components/BottomNav";
 import { useAuth } from "@/context/AuthContext";
-import { useLanguage } from "@/context/LanguageContext";
+import { useLanguage, LANGUAGES } from "@/context/LanguageContext";
 
 export default function UserProfileScreen() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
-  const { t } = useLanguage();
+  const { t, language, changeLanguage } = useLanguage();
 
   // Use auth user data - display actual user name from context
   const userData = {
@@ -36,6 +36,12 @@ export default function UserProfileScreen() {
     logout();
     toast.success(t('loggedOut'));
     navigate("/");
+  };
+
+  const toggleLanguage = () => {
+    const newLang = language === 'en' ? 'hi' : 'en';
+    changeLanguage(newLang);
+    toast.success(newLang === 'hi' ? 'भाषा बदल गई: हिंदी' : 'Language changed: English');
   };
 
   return (
@@ -116,6 +122,32 @@ export default function UserProfileScreen() {
               </button>
             );
           })}
+
+          {/* Language Toggle Button */}
+          <button
+            onClick={toggleLanguage}
+            className="w-full flex items-center border border-accent p-4 hover:bg-white/5 transition-colors"
+          >
+            <div className="w-12 h-12 border border-accent flex items-center justify-center mr-4">
+              <Globe className="w-6 h-6 text-secondary" />
+            </div>
+            <div className="flex-1 text-left">
+              <span className="text-lg font-bold text-foreground block">
+                {t('profileMenuLanguage')}
+              </span>
+              <span className="text-sm text-secondary">
+                {language === 'en' ? 'English' : 'हिंदी'}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className={`text-sm px-2 py-1 rounded ${language === 'en' ? 'bg-white text-black' : 'text-secondary'}`}>
+                EN
+              </span>
+              <span className={`text-sm px-2 py-1 rounded ${language === 'hi' ? 'bg-white text-black' : 'text-secondary'}`}>
+                हि
+              </span>
+            </div>
+          </button>
 
           {/* Logout Button */}
           <button
