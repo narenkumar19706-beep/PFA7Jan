@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { useNavigate, useLocation } from "react-router-dom";
 import PawIcon from "@/components/icons/PawIcon";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 // Storage key for registered users (simulates backend database)
 const REGISTERED_USERS_KEY = 'pfa_registered_users';
@@ -17,6 +18,7 @@ export default function OTPScreen() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();
+  const { t } = useLanguage();
   
   // Get phone number from navigation state (or use default for demo)
   const phoneNumber = location.state?.phoneNumber || "9876543210";
@@ -88,7 +90,7 @@ export default function OTPScreen() {
     const otp = otpDigits.join("");
     
     if (otp.length !== 6) {
-      toast.error("Please enter the complete 6-digit OTP");
+      toast.error(t('errorOTPRequired'));
       return;
     }
 
@@ -104,12 +106,12 @@ export default function OTPScreen() {
       
       if (existingUser) {
         // RETURNING USER - Log them in directly and go to Dashboard
-        toast.success("Welcome back!");
+        toast.success(t('success'));
         login(existingUser);
         navigate("/home", { replace: true });
       } else {
         // NEW USER - Go to profile screen for first-time signup
-        toast.success("OTP verified! Please complete your profile.");
+        toast.success(t('otpVerified'));
         navigate("/profile", { state: { phoneNumber } });
       }
     }, 1500);
@@ -120,7 +122,7 @@ export default function OTPScreen() {
     
     setCanResend(false);
     setResendTimer(30);
-    toast.success("OTP resent to +91 " + phoneNumber);
+    toast.success(t('otpSentTo') + " +91 " + phoneNumber);
   };
 
   const isOTPComplete = otpDigits.every(d => d !== "");
@@ -138,10 +140,10 @@ export default function OTPScreen() {
       {/* Title Section */}
       <div className="mt-8 sm:mt-10 md:mt-12 animate-fade-in" style={{ animationDelay: '0.2s' }}>
         <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-none">
-          Rapid
+          {t('appName')}
         </h1>
         <h2 className="text-2xl sm:text-3xl text-secondary leading-none mt-1">
-          Response Team
+          {t('appSubtitle')}
         </h2>
       </div>
 
@@ -151,17 +153,17 @@ export default function OTPScreen() {
           className="text-xl sm:text-2xl md:text-3xl text-foreground font-normal leading-snug"
           style={{ letterSpacing: '-0.5px' }}
         >
-          where empathy meets action.
+          {t('tagline')}
         </p>
         <p className="text-xs sm:text-sm text-secondary tracking-[1.2px] mt-2 sm:mt-3 uppercase font-normal">
-          A collective for the conscious citizen.
+          {t('taglineSubtext')}
         </p>
       </div>
 
       {/* OTP Section */}
       <div className="mt-10 sm:mt-12 md:mt-16 animate-fade-in" style={{ animationDelay: '0.4s' }}>
         <p className="text-base sm:text-lg md:text-xl text-foreground font-normal leading-relaxed">
-          Enter the 6 digit OTP received on your mobile number.
+          {t('otpTitle')}
         </p>
         
         {/* OTP Input Boxes */}
@@ -201,7 +203,7 @@ export default function OTPScreen() {
             disabled={!canResend}
             className="text-xs sm:text-sm text-secondary tracking-[1.2px] uppercase font-normal hover:text-foreground transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {canResend ? "Resend OTP" : `Resend OTP in ${resendTimer}s`}
+            {canResend ? t('otpResend') : `${t('otpResendIn')} ${resendTimer}s`}
           </button>
         </div>
       </div>
@@ -219,7 +221,7 @@ export default function OTPScreen() {
             style={{ backgroundColor: 'white' }}
           >
             <span className="text-lg sm:text-xl md:text-2xl font-bold tracking-[1.5px] uppercase text-black">
-              {isLoading ? "Verifying..." : "Verify"}
+              {isLoading ? t('otpVerifying') : t('otpVerify')}
             </span>
             <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center border border-black flex-shrink-0">
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
@@ -234,11 +236,11 @@ export default function OTPScreen() {
         style={{ animationDelay: '0.6s' }}
       >
         <span className="text-[10px] sm:text-xs text-secondary tracking-[0.6px] uppercase font-normal">
-          Secure Access
+          {t('secureAccess')}
         </span>
         <span className="text-[10px] sm:text-xs text-secondary">•</span>
         <span className="text-[10px] sm:text-xs text-secondary tracking-[0.6px] uppercase font-normal">
-          Privacy Ensured
+          {t('privacyEnsured')}
         </span>
       </div>
     </div>
